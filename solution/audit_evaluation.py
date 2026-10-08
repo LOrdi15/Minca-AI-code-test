@@ -22,16 +22,16 @@ from solution.predict import CHAR_WEIGHT, PredictionPipeline, read_queries
 DECIMAL_TOKEN_PATTERN = r"(?u)\b[A-Z0-9]+(?:\.[0-9]+[A-Z0-9]*)*\b"
 
 ERROR_ANALYSIS = {
-    "q0005": "Capacidad 28000 frente a 30000 LBS; el esperado queda segundo. No puntuamos capacidad explícitamente y 28,000 se separa en tokens.",
-    "q0016": "La entrada dice PLATAFORMA; la etiqueta Z0000M describe CAJA CERRADA. Recuperada en posición 43. Posible clasificación genérica de negocio por confirmar.",
-    "q0024": "Tanque inoxidable de 31000 LTS, 2023. El candidato textual más cercano termina en 2022; el esperado genérico sí incluye 2023, pero queda fuera de 50.",
-    "q0035": "AUDI S3 SEDAN: devolvemos 3 puertas y se espera 4 puertas. Falta usar carrocería y puertas; el esperado queda segundo.",
-    "q0050": "CAJA REFRIGERADA coincide con el devuelto; etiqueta CAJA CERRADA en posición 34. Falta confirmar una posible regla genérica de negocio.",
-    "q0085": "TOLVA DALTO conduce a tolva, mientras la etiqueta es CAJA CERRADA. El esperado no aparece en 50; discrepancia semántica pendiente de experto.",
-    "q0094": "DODEGE RAM 400: marca con errata y número 400 favorecen ISUZU ELF 400. Se espera RAM 2500, recuperado en posición 10; confirmar texto/etiqueta.",
-    "q0095": "Descripción 35451 con DODGE DURANGO no especifica motor ni versión. GT PLUS 3.6L frente a RT 5.7L; esperado segundo. Información insuficiente.",
-    "q0132": "F150 no especifica tracción. XL 4X4 frente a XL 4X2 del mismo año; esperado segundo. No se puede inferir el atributo ausente.",
-    "q0186": "Entrada 4400 250HP 4X2: devuelto 4400 250HP 6X2; esperado 4300 210HP 4X2 en posición 28. Hay señales cruzadas y falta puntuar tracción.",
+    "q0005": "Capacity 28000 versus 30000 LBS; expected code is second. Capacity is not explicitly scored and thousands punctuation differs.",
+    "q0016": "Platform query versus closed-box label; expected retrieval rank 43. Confirm generic business classification.",
+    "q0024": "2023 stainless tank query; closest text ends in 2022. The valid generic expected code is outside the 50 candidates.",
+    "q0035": "S3 sedan: three-door versus four-door version. Expected code is second; body style and doors are not extracted.",
+    "q0050": "Refrigerated-box query versus closed-box label. Expected retrieval rank 34; clarify domain classification.",
+    "q0085": "Hopper query versus closed-box label. Expected code is absent from retrieval; ask a domain expert.",
+    "q0094": "Misspelled DODEGE RAM 400 favors ISUZU ELF 400, while the label is RAM 2500. Confirm brand/model evidence.",
+    "q0095": "DODGE DURANGO with numeric description lacks engine/trim. Expected RT 5.7L is second to GT PLUS 3.6L.",
+    "q0132": "F150 query lacks drivetrain. Expected 4X2 is second to 4X4; do not infer absent attributes.",
+    "q0186": "4400/250HP/4X2 query has crossed model/power/drivetrain evidence. Expected code is retrieval rank 28."
 }
 
 

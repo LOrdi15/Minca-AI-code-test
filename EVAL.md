@@ -1,317 +1,196 @@
-# Evaluación — recuperación y ranking
+# Final evaluation
 
-Experimento L1, [reranking OpenAI aislado](evaluation/llm_rerank/REPORT.md): 38 consultas
-ambiguas planeadas de 59 de validación, diez candidatos de la recuperación actual;
-gpt-4.1-mini-2025-04-14. Primera llamada HTTP 429, cero respuestas válidas, sin
-reintentos. Ejecución **inconclusa**, excluida de producción. Top-3 79.66% y utilidad
-+0.109322 de la salida experimental solo comprueban el fallback local, no calidad
-del LLM. Reserva conservadora USD 0.0039368; costo facturado no medido sin usage.
-Se conservan plan, requests, ledger y reporte; suite completa 103 pruebas aprobadas.
+## 1. Results, retrieval and ranking evaluated separately
 
-Auditoría adicional de confianza: [comparación de umbrales](evaluation/confidence_audit/REPORT.md).
-53 de 233 consultas sí tienen confidence 0.8444; ninguna cohorte tiene límite
-inferior Wilson >=0.80. Central 0.80 es la mejor simulación por utilidad observada
-(+0.191379 desarrollo OOF, +0.238983 validación anterior), pero su intervalo de
-ganancia en desarrollo incluye pérdidas. Se conserva la política protegida de
-review y se documenta su costo de oportunidad; no se presenta como el máximo
-promedio observado. Sin usar blind ni modificar el modelo. Suite: 95 pruebas.
+We ship frozen local configuration E8 with review-only decisions. The 155 blind
+predictions meet the format contract. Blind utility cannot be measured without
+the evaluator's labels. OpenAI is excluded: its isolated trial returned HTTP 429
+before any valid response.
 
-Reevaluación más reciente: [informe y diez errores](evaluation/reassessment/REPORT.md).
-Se reprodujeron baseline y pipeline sobre 233 consultas: 142 top-1, 187 top-3,
-204 recuperaciones entre 50, utilidad +0.110515. Precisión auto-accept no estimable
-(cero aceptaciones). R1 conserva motores con unidad en un token y sube top-1 a
-145 y recuperación a 206, pero mantiene top-3/utilidad y no mejora validación:
-se rechaza para producción. Métricas y cambios reales quedan en
-`evaluation/reassessment/metrics.json` y `R1_changed_queries.csv`. Suite: 92 pruebas.
+### Protocol and baseline comparison
 
-Estado actual: recuperación, ranking y confianza por grupos de evidencia
-implementados. La política seleccionada conserva `review` porque ningún umbral
-superó los requisitos de incertidumbre y soporte. En la etapa original de ranking
-la confianza era `0.0`; ahora se exporta una estimación empírica suavizada. El score
-de ranking no es una probabilidad. `make predict` ya ejecuta el pipeline integrado;
-se generaron las 155 predicciones ciegas y su formato fue validado oficialmente.
-La utilidad ciega no puede medirse sin las etiquetas que conserva el evaluador.
+There are **233 labeled queries**: 174 development, 59 validation. We use the first
+StratifiedGroupKFold split, four folds, seed 42, grouping normalized description
+and year. Equivalent groups do not cross subsets. Indexes fit catalog text only;
+expected_code is never an inference feature. Ranking weights were selected on
+development and frozen before the first validation evaluation. Subsequent audits
+reuse previously inspected data; they are not new independent tests. Blind data
+were never used to optimize weights, thresholds or routing rules.
 
-## 1. Resultados y separación de componentes
-
-Hay **233 consultas etiquetadas**, no 223. Separamos 174 para desarrollo y 59 para
-validación. Usamos el primer fold de `StratifiedGroupKFold`, cuatro folds y semilla
-42; la agrupación por descripción normalizada + año evita distribuir consultas
-repetidas equivalentes entre ambos conjuntos. La estratificación por segmento es
-aproximada al respetar esos grupos. El detalle de pertenencia está en
-`evaluation/split.csv`.
-
-Los índices se ajustan exclusivamente con el catálogo. Las respuestas esperadas
-no entran en recuperación ni ranking. Los pesos se seleccionaron utilizando
-desarrollo; después se congelaron en `evaluation/ranking_selection.json` antes de
-abrir las métricas de validación. No hubo ajustes posteriores sobre validación.
-Los diez fallos se analizaron después de congelar la configuración.
-
-| Conjunto / sistema | Top-1 | Recall top-3 | Recall@50 | Utilidad, todo a revisión |
+| Subset / system | Top-1 accuracy | Top-3 recall | Recall@50 | Mean utility |
 |---|---:|---:|---:|---:|
-| Desarrollo, baseline original (174) | 56/174 = 32.2% | 76/174 = 43.7% | 121/174 = 69.5%* | +0.0374 |
-| Desarrollo, seleccionado (174) | 107/174 = 61.5% | 140/174 = 80.5% | 151/174 = 86.8% | +0.1109 |
-| Validación, baseline original (59) | 16/59 = 27.1% | 25/59 = 42.4% | 36/59 = 61.0%* | +0.0347 |
-| Validación, seleccionado (59) | 35/59 = 59.3% | 47/59 = 79.7% | 53/59 = 89.8% | +0.1093 |
-| Total descriptivo, baseline (233) | 72/233 = 30.9% | 101/233 = 43.3% | 157/233 = 67.4%* | +0.0367 |
-| Total descriptivo, seleccionado (233) | 142/233 = 60.9% | 187/233 = 80.3% | 204/233 = 87.6% | +0.1105 |
+| Development baseline (174) | 56/174 = 32.18% | 76/174 = 43.68% | 121/174 = 69.54%* | +0.037356 |
+| Development solution (174) | 107/174 = 61.49% | 140/174 = 80.46% | 151/174 = 86.78% | +0.110920 |
+| Validation baseline (59) | 16/59 = 27.12% | 25/59 = 42.37% | 36/59 = 61.02%* | +0.034746 |
+| Validation solution (59) | 35/59 = 59.32% | 47/59 = 79.66% | 53/59 = 89.83% | +0.109322 |
+| Overall descriptive baseline (233) | 72/233 = 30.90% | 101/233 = 43.35% | 157/233 = 67.38%* | +0.036695 |
+| Overall descriptive solution (233) | 142/233 = 60.94% | 187/233 = 80.26% | 204/233 = 87.55% | +0.110515 |
 
-\* El baseline original solo devuelve tres filas. Su recall@50 es una extensión
-diagnóstica de la misma fórmula y desempate a 50 códigos distintos; no es una
-métrica que produzca el script original. Top-1 y top-3 sí reproducen exactamente
-el baseline incluido, sin modificarlo. Se comprobó también con `score.py`.
+Both policies review 100%. Auto-accept precision is **undefined**, because neither
+accepts any cases; the scorer prints zero by convention. Accepting all our results
+would yield utility -0.562232.
 
-El recall@50 se mide **antes del ranking**, sobre códigos distintos. Entre las 53
-consultas de validación cuyo código esperado fue recuperado, el ranking acertó
-35: **66.0%**. En los 233 casos, tenemos 29 fallos de recuperación, 17 casos con
-respuesta recuperada pero fuera del top-3, y 45 casos con respuesta en top-3 pero
-no en primera posición. Son problemas diferentes.
+*The original baseline returns three rows. Its diagnostic recall@50 extends the
+same scoring/tie-break to 50 distinct codes. Top-1/top-3 match its unmodified CLI.
 
-El total mezcla desarrollo y validación: es descriptivo, no una estimación
-independiente. La validación es pequeña y proviene del conjunto etiquetado; no
-garantiza la misma utilidad sobre las consultas ciegas, con más peso comercial.
+Recall@50 is measured **before ranking**. Conditional ranking top-1 accuracy when
+the expected code was retrieved: 35/53 = **66.04%** on validation, 142/204 =
+**69.61%** overall. The 91 top-1 failures comprise 29 retrieval misses, 17 recovered
+codes outside top-3 and 45 expected codes in top-3 but not first. Reranking cannot
+repair the first category without changing retrieval.
 
-### Configuración seleccionada
+### Frozen configuration
 
-- Recuperación: texto de fabricante + submodelo + descripción, sobre cada
-  variante; TF-IDF de palabras/unigramas-bigramas (65%) y caracteres 3–5 (35%).
-- Se conserva el mejor score por código para recuperar 50 códigos distintos;
-  todas sus variantes siguen disponibles para ranking, sin filtros previos de
-  marca, año o tipo.
-- Ranking base: **90% TF-IDF + 10% RapidFuzz WRatio**.
-- Año: +0.12 si está registrado, −0.20 si el catálogo conoce años y no lo incluye.
-- Fabricante reconocido: +0.02 si coincide, −0.10 si contradice.
-- Submodelo reconocido: +0.02 si coincide, −0.05 si contradice.
-- Tipo: incompatibilidad detectada y registrada, pero aporte al score desactivado
-  porque perjudicó desarrollo. Los valores genéricos o desconocidos son neutros.
+The integrated catalog retains 13298 rows and 13140 distinct codes, with complete
+description variants and no unmatched relationships. Years belong to codes, not
+individual variants; missing years are not filled. Retrieval combines 65% word
+TF-IDF (unigrams/bigrams) with 35% character TF-IDF (3–5), taking the maximum by
+code and retrieving 50 distinct codes without hard attribute filters.
 
-Los nombres se reconocen con el vocabulario del catálogo, coincidencias explícitas
-y, para pequeñas erratas, ratio >=90 con margen >=10 sobre la segunda opción.
-No hay diccionario manual de marcas. La equivalencia de tipos es una traducción
-limitada entre taxonomías, separada de la normalización textual. `TOLVA`, `CAJA`
-y `CAMIONETA` no determinan un tipo por sí mismas.
+Ranking uses 90% TF-IDF, 10% RapidFuzz WRatio and year +0.12/-0.20, manufacturer
++0.02/-0.10 and submodel +0.02/-0.05 adjustments. Vehicle-type scoring was disabled
+after development regressions; recognized conflicts still block acceptance.
+Complete variants are scored, never mixing descriptions and attributes across rows.
+No manual semantic aliases were added.
 
-Se evalúa cada variante completa y luego se toma la mejor por código: no se toma
-la descripción de una variante y el fabricante de otra. Los conflictos conocidos,
-catálogo ambiguo y ausencia de evidencia textual quedan expuestos para revisión.
-En esta etapa no se acepta automáticamente ningún caso.
+REMOLQUE is the weakest segment: 35 rows, top-3 31.43%, recall@50 48.57%. Z0000M
+occurs in 33 labels and explains 23/29 retrieval misses, although it describes a
+closed box while some queries describe platforms, hoppers or trucks. This may be
+a business rule or disputed labeling. We did not relabel or add a frequency-based fallback.
 
-### Segmentos, total descriptivo
+### Confidence, thresholds and final decision
 
-| Segmento | n | Top-1 | Top-3 | Recall@50 |
-|---|---:|---:|---:|---:|
-| AUTO | 67 | 77.6% | 92.5% | 98.5% |
-| CAMION | 41 | 53.7% | 80.5% | 82.9% |
-| OTHER | 55 | 63.6% | 90.9% | 96.4% |
-| PICKUP | 18 | 61.1% | 88.9% | 100.0% |
-| REMOLQUE | 35 | 25.7% | 31.4% | 48.6% |
-| TRACTO | 17 | 76.5% | 88.2% | 94.1% |
+Confidence is a Beta(1,1)-smoothed cohort success rate:
+`(correct groups+1)/(groups+2)`. A repeated group counts once per cohort and is
+correct only if all its rows are correct. This is not similarity or a guaranteed
+individual probability. Blockers include recognized attribute conflicts, ambiguous
+or incomplete catalog relations, uninformative descriptions, no runner-up/text
+evidence, unconfirmed year, no other confirmed attribute, score <0.55 or margin <0.03.
+Without blockers, strong evidence requires score >=0.75 and margin >=0.08.
 
-REMOLQUE es la principal debilidad. El código `Z0000M` aparece como etiqueta en 33
-consultas y concentra 23 de los 29 fallos de recuperación. Su descripción es
-`RM CAJA CERRADA 2 EJES 40`, pero aparece en consultas de tolvas, plataformas e
-incluso camiones. Esto puede reflejar una regla del dominio o etiquetas discutibles;
-no se corrigieron etiquetas ni se introdujo ese código como fallback para elevar
-la métrica. Es una pregunta prioritaria para el experto de dominio.
-
-### Confianza y política de decisión
-
-Se congeló el ranking E8. La calibración usa solo los 174 casos de desarrollo;
-los 59 casos reservados no se usan para ajustarla ni seleccionar umbrales. Para
-seleccionar la política se ejecutan cuatro folds agrupados por descripción + año
-(semilla 17): cada caso recibe confianza de un calibrador que no vio su grupo.
-Esto es validación fuera de fold **del calibrador**. Los pesos del ranking ya
-fueron seleccionados con ese desarrollo: no es validación anidada del sistema
-entero. Además, los 59 casos ya se habían inspeccionado en la etapa anterior;
-su comparación secundaria no se presenta como un nuevo test intacto.
-
-Antes de observar resultados de esta etapa se fijaron tres grupos de evidencia:
-
-- Bloqueado: contradicciones, relaciones incompletas, catálogo ambiguo, descripción
-  no informativa, falta de segundo candidato, similitud TF-IDF nula, año no
-  confirmado, ningún otro atributo confirmado, score <0.55 o margen <0.03.
-- Fuerte: sin bloqueos, score >=0.75 y margen contra el segundo >=0.08.
-- Moderado: sin bloqueos, pero sin cumplir ambos requisitos del grupo fuerte.
-
-La confianza es `(grupos correctos + 1) / (grupos observados + 2)`, con suavizado
-Beta(1,1). Un grupo repetido cuenta una vez por cohorte; si alguna de sus filas
-falla, se cuenta como fallo del grupo. Así las repeticiones no inflan soporte.
-No es similitud ni una probabilidad individual garantizada. Un grupo no observado
-recibe prior 0.5, soporte cero y revisión obligatoria.
-
-| Cohorte, calibrador final sobre desarrollo | Grupos correctos / total | Confianza | Límite inferior Wilson 95% |
+| Development-only calibration | Correct groups / total | Confidence | Wilson 95% lower precision bound |
 |---|---:|---:|---:|
-| Bloqueado | 40/87 | 46.1% | 35.9% |
-| Moderado | 29/42 | 68.2% | 54.0% |
-| Fuerte | 37/43 | 84.4% | 72.7% |
+| Blocked | 40/87 | 46.07% | 35.90% |
+| Moderate | 29/42 | 68.18% | 53.97% |
+| Strong | 37/43 | 84.44% | 72.74% |
 
-Para aceptar se requieren al menos 20 grupos de calibración y que el **límite
-inferior**, no solo la estimación central, supere el umbral. La utilidad esperada
-de aceptar es `4p−3`; la revisión puede valer hasta 0.15. Superar esa alternativa
-requiere `p>0.7875`. Elegimos 0.80 como mínimo conservador y comparamos 0.80,
-0.85, 0.90 y 0.95 sin buscar cortes específicos para consultas individuales.
+Across 233 cases: blocked 117, moderate 63, strong 53. Those 53 exceed confidence
+0.80; no cohort exceeds 0.80 in its precision lower bound.
 
-Para seleccionar una política además exigimos 20 grupos distintos aceptados en
-validación agrupada, precisión con límite inferior >=0.80, utilidad mayor que
-revisar todo y ningún fold con utilidad inferior a esa referencia. Empates
-favorecen menor automatización. Ningún umbral cumplió las condiciones.
+Thresholds were evaluated using four grouped calibration folds inside development,
+seed 17. Each group receives calibration without its own labels. Protected acceptance
+requires blockers to pass, at least 20 calibration groups, sufficient Wilson lower
+bound, at least 20 accepted groups, greater utility and no harmful fold. Protected
+0.80/0.85/0.90/0.95 all accept zero cases, with utility +0.110920.
 
-| Política protegida, validación agrupada de desarrollo (174) | Aceptados | Precisión auto | Revisión | Top-3 recall | Utilidad |
+We also measured point-confidence policies that omit Wilson while retaining other guards:
+
+| Diagnostic policy | Development accepts/errors | Precision | Development utility | Validation accepts/errors | Validation utility |
 |---|---:|---:|---:|---:|---:|
-| Review general, seleccionado | 0 | No estimable | 100% | 80.5% | +0.1109 |
-| Umbral 0.80, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
-| Umbral 0.85, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
-| Umbral 0.90, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
-| Umbral 0.95, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
-| Baseline original, review general | 0 | No estimable | 100% | 43.7% | +0.0374 |
+| Review all, selected | 0/0 | Undefined | +0.110920 | 0/0 | +0.109322 |
+| Point >=0.80 | 44/6 | 86.36% | **+0.191379** | 9/0 | **+0.238983** |
+| Point >=0.85 | 25/5 | 80.00% | +0.121552 | 0/0 | +0.109322 |
+| Point >=0.90 | 0/0 | Undefined | +0.110920 | 0/0 | +0.109322 |
+| Point >=0.95 | 0/0 | Undefined | +0.110920 | 0/0 | +0.109322 |
 
-También medimos referencias diagnósticas que conservan bloqueos y mínimo de
-soporte pero **ignoran el intervalo** y confían solo en la estimación central:
+Point 0.80 maximizes observed utility, but fails our predefined evidence requirements.
+Development gain +0.08046 has paired group bootstrap 95% interval
+[-0.02862,+0.17725], four-comparison-adjusted [-0.06264,+0.20029]. Both include losses.
+Nine validation successes have precision lower bound 70.08%. Fold-specific calibration
+varies, explaining why 0.85 accepts some OOF cases but none under the final calibrator.
 
-| Referencia diagnóstica, no desplegada | Aceptados / errores | Precisión auto | Revisión | Top-3 recall | Utilidad |
-|---|---:|---:|---:|---:|---:|
-| Confianza central >=0.80 | 44 / 6 | 86.4% | 74.7% | 80.5% | +0.1914 |
-| Confianza central >=0.85 | 25 / 5 | 80.0% | 85.6% | 80.5% | +0.1216 |
-| Confianza central >=0.90 | 0 / 0 | No estimable | 100% | 80.5% | +0.1109 |
-| Confianza central >=0.95 | 0 / 0 | No estimable | 100% | 80.5% | +0.1109 |
+Final error review: q0014/q0015 are trailers, q0093 a truck, q0134 a tractor truck
+(coarse segment OTHER), q0074/q0180 SUVs. **Four of six are commercial, two are
+SUVs; none triggers current conflict guards.** Three labels are Z0000M. Cascadia
+125 versus 116 is a textual discrepancy not captured by basic attributes; the SUV
+queries omit version details. We add no post-hoc segment exclusions or ID rules.
+We retain **review**, acknowledging the potential utility sacrificed.
 
-**No afirmamos que review maximice la utilidad observada sin restricciones.** La
-referencia 0.80 obtiene una media mayor, pero su precisión agrupada tiene límite
-inferior 72.7%, insuficiente frente al mínimo de negocio conservador. La de 0.85
-es inestable y su límite inferior cae a 60.9%. No se habilitó automatización para
-perseguir esos números con una muestra pequeña. Los seis errores de la primera
-referencia quedan en `evaluation/decision_diagnostic_errors.csv`; no son errores
-automáticos de la política desplegada, que conserva revisión.
+The economic reference `4p-3 > 0.15` gives p>0.7875 if review always includes the
+correct code. It does not establish that a point estimate safely exceeds that value.
+OOF evaluates calibration, not the entire development-informed ranking selection.
+The holdout was already inspected. Bootstrap does not refit calibrators or remove
+selection uncertainty; Wilson does not protect against distribution shift or systematic
+label errors. Overall figures are descriptive; the blind mix is more commercial.
 
-En los 59 casos previamente reservados, la política seleccionada mantiene utilidad
-+0.1093, top-3 79.7% y revisión 100%; el baseline obtiene +0.0347 y top-3 42.4%.
-El top-3 no cambia al cambiar decisiones: los candidatos son los mismos.
-
-Limitaciones: tres cohortes amplias no capturan diferencias por segmento; los
-límites Wilson suponen grupos aproximadamente independientes y no protegen ante
-cambio de distribución o errores sistemáticos de etiquetas. El ranking tuvo ajuste
-previo sobre desarrollo. La confianza final de desarrollo es interna a calibración;
-la evidencia para escoger el umbral es la evaluación fuera de fold. Hacen falta
-más etiquetas verificadas, especialmente comerciales, para habilitar aceptación.
-
-## 2. Registro de experimentos
-
-Todas las decisiones se tomaron con los **174 casos de desarrollo**, priorizando
-recall top-3 (equivalente a utilidad con revisión general), y top-1 como desempate.
-Cada experimento parte de la última configuración conservada. El registro exacto
-incluye pesos y métricas en `evaluation/ranking_selection.json`.
-
-| Experimento | Cambio | Top-1 | Top-3 | @50 | Decisión |
-|---|---|---:|---:|---:|---|
-| Baseline original | Descripción únicamente, solapamiento | 56 | 76 | 121* | Referencia |
-| E0 | Catálogo integrado, TF-IDF palabras | 60 | 100 | 145 | Conservar como inicio |
-| E1 | 35% caracteres + 65% palabras | 66 | 106 | 151 | Conservar |
-| E2 | Ranking con 30% RapidFuzz | 67 | 103 | 151 | Revertir: pierde tres top-3 |
-| E3 | Año +0.12 / −0.20 | 105 | 139 | 151 | Conservar |
-| E4 | Penalizaciones fuertes de marca/submodelo | 104 | 136 | 151 | Revertir: metadatos ruidosos |
-| E5 | Tipo +0.04 / −0.15 | 104 | 137 | 151 | Revertir: pierde dos top-3 |
-| E6 | Año incompatible −0.60 | 105 | 139 | 151 | Revertir: sin beneficio |
-| E7 | RapidFuzz reducido al 10% | 107 | 139 | 151 | Conservar: mejor top-1 |
-| E8 | Marca/submodelo con ajustes pequeños | 107 | 140 | 151 | Conservar: mejora top-3 |
-| E9 | Tipo reducido a +0.01 / −0.05 | 106 | 139 | 151 | Revertir: sigue perjudicando |
-
-La configuración final es E8. La mejora incremental de marca/submodelo es pequeña
-(un caso); no se interpreta como evidencia de una calibración sólida. Las
-configuraciones rechazadas siguen reproducibles en el evaluador, pero no están
-activas por defecto.
-
-Experimentos de decisión: D0, tres cohortes fijas y confianza suavizada; D1–D4,
-umbrales protegidos 0.80/0.85/0.90/0.95, sin evidencia para automatizar; D5–D8,
-referencias de estimación central sin Wilson, solo diagnósticas y rechazadas para
-producción. Se conserva review general. Los conteos y métricas exactos están en
-`evaluation/decision_thresholds.csv` y `evaluation/decision_metrics.json`.
-
-## 3. Diez fallos concretos de validación
-
-El campo `devuelto` muestra el top-1. La lista completa de tres candidatos,
-posición inicial de la etiqueta y señales están en `evaluation/ranking_details.csv`.
-Las causas siguientes son hipótesis fundamentadas en los textos, no nuevas
-etiquetas ni hechos confirmados por un experto.
-
-| query_id | Esperado | Devuelto | Diagnóstico y acción propuesta |
-|---|---|---|---|
-| q0005 | U0003D | P00000 | El correcto quedó segundo. Consulta FORD F700 de 28000 LBS; devolvimos la variante de 30000 LBS. La representación `28000` frente a `28,000` y la similitud general no protegen capacidad. Probar extracción contextual de capacidad y separadores de miles en una siguiente etapa de desarrollo. |
-| q0016 | Z0000M | S0008A | Recuperamos el esperado en posición 43, pero la consulta dice PLATAFORMA y el esperado CAJA CERRADA. La opción devuelta dice PLATAFORMA. Consultar si la etiqueta representa un código genérico de negocio; no forzar ese código sin explicación. |
-| q0024 | Q00046 | U0003Y | El esperado no apareció en 50. Consulta TANQUE A.INOX de 31000 LTS, año 2023; el devuelto coincide mucho con texto pero solo tiene años hasta 2022. El esperado es SEMIREMOLQUE TANQUE ELIPTICO y sí incluye 2023. Mantener conflicto de año visible y evaluar recuperación alternativa por categoría/atributos, sin excluir primero los candidatos. |
-| q0035 | Q0004P | R00034 | Esperado en segundo lugar. Consulta AUDI S3 SEDAN; devuelto S3 de 3 puertas, esperado A3 S3 de 4 puertas. Falta incorporar carrocería/puertas y reconocer el significado de SEDAN. Pedir datos adicionales o revisar hasta validar esa señal. |
-| q0050 | Z0000M | W0008G | Esperado recuperado en posición 34, fuera del top-3. Consulta CAJA REFRIGERADA; devuelto CAJA REFRIGERADORA CON EQUIPO, esperado CAJA CERRADA. Posible regla de clasificación genérica del dominio. Revisar con experto, sin convertir similitud textual en certeza. |
-| q0085 | Z0000M | J0007M | Fallo de recuperación. Consulta TOLVA / DALTO; devolvimos una tolva granelera, mientras la etiqueta es CAJA CERRADA. Hay insuficiencia de atributos y discrepancia semántica. Preguntar por reglas para fabricantes no reconocidos y etiquetas genéricas. |
-| q0094 | O0005H | R0002P | Correcto recuperado en posición 10, fuera del top-3. Consulta DODEGE RAM 400; el devuelto es ISUZU ELF 400 y la etiqueta es RAM 2500. La errata de marca no se reconoce con suficiente seguridad y el número 400 favorece otra familia. Marcar incompatibilidad de tipo, revisar marca y confirmar el modelo antes de introducir alias. |
-| q0095 | C0006Z | T000CA | Correcto quedó segundo. Descripción `35451`, marca DODGE y submodelo DURANGO: no especifica RT ni motor. Devuelto GT PLUS 3.6L; esperado RT 5.7L. El texto disponible no permite justificar una única versión; pedir versión/motor o mantener revisión. |
-| q0132 | T0001Y | Q0008J | Correcto quedó segundo. Consulta F150 con marca FORD (ROJA); opciones XL cabina regular 4X2 y 4X4 del mismo año. No hay tracción en la entrada. Mantener ambas opciones y solicitar 4X2/4X4; no resolver por un desempate arbitrario con aceptación automática. |
-| q0186 | X0001T | B0003G | Esperado recuperado en posición 28. Consulta MOD4400, 250, 4X2; devuelto 4400 250HP 6X2, esperado 4300 210HP 4X2. Hay señales cruzadas y discrepancias entre entrada/etiqueta. Evaluar contradicciones explícitas de tracción y consultar al experto por modelo/potencia. |
-
-### Reproducción y comprobaciones
+### Reproducibility
 
 ```bash
-python -m unittest discover -s tests -v
-python -m solution.evaluate --phase develop
-python -m solution.evaluate --phase validate
-python -m solution.evaluate_decision
-python score.py --predictions dev_predictions.csv --labels data/queries_labeled.csv
-python submission_check.py --predictions dev_predictions.csv --queries data/queries_labeled.csv
-```
-
-También se añadieron `make evaluate`, `make evaluate-decision` y `make test`. El baseline original se
-conserva intacto. Recuperación/ranking no usan APIs ni gasto de LLM.
-
-En la etapa de ranking pasaron 56 pruebas; con decisión fueron 79 y con integración
-hay 89 pruebas, todas aprobadas. Se reprodujo la fase de validación de ranking (incluyendo carga del
-catálogo, índices y evaluación de los 233 casos) en 24.73 segundos en esta máquina.
-Esto es tiempo de evaluación local, no una medición del futuro proceso ciego.
-Se verificó igualdad de las predicciones del baseline frente a su script original,
-y cobertura, códigos válidos, tres códigos distintos y top-1 en primera posición
-para las 233 predicciones. `submission_check.py` las acepta.
-
-### Integración ejecutable y medición final
-
-```bash
+make setup
+make predict
+make check
+make test
 python -m solution.predict --queries data/queries_labeled.csv --out dev_predictions.csv
 python score.py --predictions dev_predictions.csv --labels data/queries_labeled.csv
-python -m solution.predict --queries data/queries_blind.csv --out predictions.csv
-python submission_check.py --predictions predictions.csv --queries data/queries_blind.csv
 ```
 
-El pipeline carga un catálogo, construye una vez los índices de palabras y
-caracteres, reutiliza un ranker y carga la política guardada. Solo admite los
-campos observables para matching, conserva IDs como texto y normaliza con las
-reglas existentes. No lee etiquetas, resultados de evaluación, cachés o `.env`.
-El modelo se vincula a los pesos de ranking; se admite la equivalencia numérica
-de JSON entre `0` y `0.0`, sin cambiar pesos o reglas.
+`make evaluate` reproduces the development ledger. Frozen audits:
+`python -m solution.audit_evaluation` and `python -m solution.audit_confidence`.
+Stored LLM replay: `python -m experiments.llm_rerank`, without network.
+Final verification records live in evaluation/final, including tested versions,
+source hashes, 103 tests, official scoring and isolated execution. A previously
+verified isolated blind process took 19.60 seconds including startup, with zero
+fallbacks/API calls and byte-identical predictions. GNU Make was unavailable locally:
+equivalent Python commands were tested, not the Make binary. Official scripts are unchanged.
 
-Los fallos por consulta conservan la fila, devuelven tres códigos válidos y
-distintos, confianza cero y review. Se preservan candidatos útiles disponibles y
-se completan, si hace falta, con códigos deterministas del catálogo, sin atribuir
-certeza al fallback. Los fallbacks se reportan. Si falta o no corresponde el
-calibrador, se usa review sin respaldo empírico (prior 0.5) y se informa la condición.
-Un archivo sin IDs válidos/únicos o un catálogo sin tres códigos no puede cumplir
-el contrato y falla explícitamente, antes de escribir una salida engañosa.
+## 2. Real experiment ledger
 
-| Ejecución | Filas | Tiempo total del proceso | Procesamiento de consultas | Fallbacks |
-|---|---:|---:|---:|---:|
-| Etiquetadas | 233 | 21.02 s | 1.87 s | 0 |
-| Ciegas | 155 | 20.35 s | 1.25 s | 0 |
-| Ciegas, copia aislada | 155 | 21.05 s | Incluido en total | 0 |
+E0–E9 used 174 development cases, each starting from the last retained configuration.
+Selection prioritized top-3/review utility, then top-1. Exact settings and metrics:
+evaluation/ranking_selection.json. Development baseline: 56/76/121*.
 
-Los tiempos totales incluyen arranque de Python, integración del catálogo e
-índices; no son solo el bucle de matching. No hubo fallback de calibración ni
-llamadas de LLM: costo de API USD 0. El scoring end-to-end etiquetado conserva
-top-1 60.9%, top-3 80.3% y utilidad +0.1105. Las 155 consultas ciegas quedan en
-review conforme a la política seleccionada.
+| ID | Change | Development top-1 / top-3 / @50 | Decision |
+|---|---|---|---|
+| E0 | Integrated catalog, word TF-IDF | 60/100/145 | Starting reference |
+| E1 | 35% character TF-IDF | 66/106/151 | Keep |
+| E2 | RapidFuzz 30% | 67/103/151 | Revert: loses three top-3 |
+| E3 | Year +0.12/-0.20 | 105/139/151 | Keep |
+| E4 | Strong manufacturer/submodel penalties | 104/136/151 | Revert: noisy metadata |
+| E5 | Type +0.04/-0.15 | 104/137/151 | Revert: loses two top-3 |
+| E6 | Incompatible year -0.60 | 105/139/151 | Revert: no gain |
+| E7 | RapidFuzz 10% | 107/139/151 | Keep |
+| E8 | Small manufacturer/submodel adjustments | 107/140/151 | Keep; one-case gain is limited evidence |
+| E9 | Type +0.01/-0.05 | 106/139/151 | Revert: regression |
 
-El validador oficial reportó **SUBMISSION VALID** tanto para desarrollo como para
-la entrega ciega. Se comprobaron además códigos existentes, tres alternativas
-distintas, top-1 primero, orden/cobertura de IDs y confianza finita. El CSV ciego
-se reprodujo byte a byte en una copia sin `.env`, sin datos etiquetados y sin
-directorio `evaluation`; se utilizaron dependencias ya instaladas, sin repetir
-instalación en un entorno virtual nuevo. Registro: `evaluation/integration_metrics.json`.
+| ID | Change | Actual result | Decision |
+|---|---|---|---|
+| D0 | Three cohorts, grouped confidence | Strong 37/43; confidence 84.44%, lower bound 72.74% | Keep estimate |
+| D1 | Protected 0.80 | Zero accepts, utility +0.110920 | Review |
+| D2 | Protected 0.85 | Zero accepts, utility +0.110920 | Review |
+| D3 | Protected 0.90 | Zero accepts, utility +0.110920 | Review |
+| D4 | Protected 0.95 | Zero accepts, utility +0.110920 | Review |
+| D5 | Point 0.80 without Wilson | 44 accepts/6 errors, utility +0.191379 | Reject: uncertainty |
+| D6 | Point 0.85 without Wilson | 25 accepts/5 errors, utility +0.121552 | Reject |
+| D7 | Point 0.90 without Wilson | Zero accepts, utility +0.110920 | No gain |
+| D8 | Point 0.95 without Wilson | Zero accepts, utility +0.110920 | No gain |
+| R1 | Keep engine 2.0L as a single TF-IDF token | Overall 145 top-1, 187 top-3, 206 @50; utility +0.110515 | Reject: no utility/validation gain |
+| C1 | Paired threshold and six-error audit | 0.80 best observed mean; interval includes losses | Review, no new rules |
+| L1 | GPT-4.1 mini, ten candidates, 38 ambiguous validation cases | First request HTTP 429; zero valid responses | Inconclusive, excluded |
 
-Limitación de verificación local: GNU Make no está instalado en esta máquina.
-Se actualizó el target y se ejecutó exactamente su comando mediante Python, pero
-no se ejecutó el binario `make`. No se modificaron `score.py` ni
-`submission_check.py`, ni los componentes previos de matching en esta etapa.
+L1 used frozen snapshot gpt-4.1-mini-2025-04-14, one predeclared configuration.
+The user authorized minimal data sharing and credential reuse; no IDs, labels or
+blind data were sent. Local cap USD 1.90; planned reservation USD 0.141524. One
+attempt, no retries, USD 0.0039368 reserved because usage was absent; actual invoice
+cost was not measured. Its top-3 79.66% and utility +0.109322 describe the local
+fallback only, not LLM quality. The specific 429 cause was not inferred without an
+error code. Actual records are preserved under evaluation/decision_metrics.json,
+reassessment, confidence_audit and llm_rerank.
+
+## 3. Ten specific failures by query_id
+
+These are actual frozen top-1 failures, all from validation. Explanations are
+evidence-based hypotheses, not corrected labels. Source texts, years, top-3 and
+signals are preserved in evaluation/reassessment/ten_errors.csv.
+
+| query_id | Expected | Returned | Likely cause and action |
+|---|---|---|---|
+| q0005 | U0003D | P00000 | FORD F700 28000 versus 30000 LBS. Expected second. Capacity is not scored and 28,000 splits differently. Next step: contextual capacity extraction with regression measurement. |
+| q0016 | Z0000M | S0008A | Platform query versus closed-box label, expected retrieval rank 43. Ask an expert about generic classification; do not force a frequent code. |
+| q0024 | Q00046 | U0003Y | 2023 stainless tank, 31000 LTS; nearest text has years through 2022. Valid expected code is outside 50. Investigate attribute-aware retrieval later; keep year conflict visible. |
+| q0035 | Q0004P | R00034 | S3 sedan: selected three doors, expected four doors second. Body/doors are not extracted. Validate sedan evidence and request distinguishing attributes. |
+| q0050 | Z0000M | W0008G | Refrigerated-box query versus closed-box label, retrieval rank 34. Clarify generic business classification without invented aliases. |
+| q0085 | Z0000M | J0007M | Hopper query versus closed-box label absent from 50. Semantic disagreement; clarify commercial rules/manufacturers with an expert. |
+| q0094 | O0005H | R0002P | DODEGE RAM 400 typo and number favor ISUZU ELF 400; expected RAM 2500 at rank 10. Confirm model/label and resolve brand only with sufficient evidence. |
+| q0095 | C0006Z | T000CA | Numeric 35451 description and DODGE DURANGO omit trim/engine. Selected GT PLUS 3.6L; expected RT 5.7L second. Review and request missing attributes. |
+| q0132 | T0001Y | Q0008J | F150 lacks drivetrain; selected XL 4X4, expected XL 4X2 second. Do not infer absent attributes; show alternatives and request drivetrain. |
+| q0186 | X0001T | B0003G | Query 4400/250HP/4X2; returned 4400/250HP/6X2; expected 4300/210HP/4X2 at rank 28. Crossed evidence; investigate drivetrain and verify model/power with an expert. |

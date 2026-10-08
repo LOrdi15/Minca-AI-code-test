@@ -1,88 +1,72 @@
-# Decisiones de implementación
+# Engineering decisions
 
-Estado: pipeline integrado en `make predict`, 155 predicciones ciegas generadas
-y **SUBMISSION VALID**. Se priorizó una solución local, reproducible y explicable
-dentro de tres horas. La ejecución ciega tomó 20.35 segundos incluyendo arranque,
-catálogo e índices, con cero fallbacks y gasto de API USD 0. Una copia aislada
-reprodujo el CSV sin etiquetas, `.env` o reportes. GNU Make no está instalado aquí;
-se validó el comando del target con Python, no el binario Make.
+We ship a frozen, local, explainable pipeline: 155 valid blind predictions and no
+production API calls. On 233 labeled cases: top-1 60.94%, top-3 80.26%, recall@50
+87.55%, mean utility +0.110515 versus baseline +0.036695. These are descriptive
+results, not a guarantee of blind utility.
 
-## Qué conservamos y qué rechazamos
+## Architecture and rejected alternatives
 
-Conservamos todas las variantes de versiones, asociadas a sus propios atributos.
-Los años se agrupan por código sin completar huecos. Recuperamos 50 códigos con
-TF-IDF de palabras y caracteres; ordenamos con 90% TF-IDF, 10% RapidFuzz y ajustes
-de año, fabricante y submodelo. No inventamos alias ni corregimos etiquetas.
+We retain complete catalog variants and explicit years per code. Shared conservative
+normalization preserves vehicle details. Word/character TF-IDF retrieves 50 codes
+cheaply and handles spelling variation. Reranking uses 90% TF-IDF, 10% RapidFuzz
+and small manufacturer, submodel and year adjustments. Each variant is scored
+as a whole; metadata is never borrowed from another variant.
 
-RapidFuzz al 30%, penalizaciones fuertes de marca/submodelo y puntuar el tipo
-empeoraron desarrollo y se desactivaron. Los conflictos de tipo siguen visibles
-para revisión. Aumentar la penalización del año no dio beneficio. Los experimentos,
-incluidos los fallidos, están en `EVAL.md`.
+RapidFuzz at 30%, strong brand penalties and vehicle-type scoring reduced development
+top-3 recall. Stronger year penalties did not help. Keeping 2.0L as one TF-IDF token
+improved three top-1 cases but not utility or validation; we rejected it. We did
+not relabel data, add manual aliases or favor the frequent Z0000M label.
 
-No incorporamos un LLM. Probamos un reranker aislado con diez candidatos y 38
-consultas ambiguas de validación, tras autorizar el envío de datos. La primera
-llamada respondió HTTP 429; cero respuestas válidas. La prueba es inconclusa,
-no evidencia de igualdad de calidad. Se detuvo sin reintentos y se conservó el
-registro; no existe mejora medida que justifique dependencia de API en la entrega.
-Tampoco añadimos el código recurrente
-`Z0000M` como fallback para mejorar artificialmente el score; su uso requiere
-explicación de dominio.
+An authorized, isolated OpenAI trial used ten existing candidates. Its first
+request returned HTTP 429, with no usable responses. This is inconclusive, not
+evidence of equal model quality. OpenAI is excluded from production. The unknown
+billing usage retains a conservative USD 0.0039368 reservation.
 
-## Cómo elegimos la aceptación automática
+## Confidence and acceptance policy
 
-La utilidad esperada de aceptar es `4p−3`; revisar puede valer hasta 0.15, así que
-la aceptación necesita `p>0.7875`. La similitud no es esa probabilidad.
+Similarity is not correctness probability. Confidence is a Beta(1,1)-smoothed
+success rate in three fixed evidence cohorts, counting repeated description/year
+groups once per cohort. We compare 0.80/0.85/0.90/0.95 using four grouped folds
+within 174 development cases; each group receives calibration that did not see it.
 
-La confianza se estima con aciertos en tres cohortes fijas de evidencia: bloqueada,
-moderada y fuerte. Se utilizan score, margen frente al segundo, año y otros
-atributos confirmados. Agrupamos consultas equivalentes para que las repeticiones
-no inflen el soporte y suavizamos la tasa con Beta(1,1).
+Acceptance requires attribute guards, at least 20 calibration groups, sufficient
+Wilson lower precision bound, higher utility and no harmful fold. No protected
+threshold passes: we retain **review**, with auto-accept precision undefined.
 
-Comparamos umbrales 0.80, 0.85, 0.90 y 0.95 con cuatro folds agrupados de los 174
-casos de desarrollo. Cada caso recibe confianza de un calibrador que no vio su
-grupo. Exigimos soporte de al menos 20 grupos, límite inferior Wilson suficiente,
-mejor utilidad y ningún fold perjudicado. El ranking se mantuvo congelado.
+Point-confidence 0.80 maximizes observed utility: +0.191379, 44 accepts, six errors,
+86.36% precision, versus review +0.110920. However, the development utility-gain
+95% interval [-0.02862,+0.17725] includes losses and the precision lower bound is
+72.74%, below 80%. The inspected validation set has nine correct accepts, too few
+to establish safety. Four errors are commercial vehicles and two SUVs; none trips
+the current guards. We add no segment or query-specific exclusions after seeing
+these errors, and acknowledge the potential utility sacrificed by retaining review.
 
-Ningún umbral pasó: seleccionamos **review general**. La cohorte fuerte tiene
-37/43 grupos correctos, confianza 84.4% y límite inferior 72.7%. Ignorar el
-intervalo y usar solo confianza >=0.80 daría utilidad +0.1914, pero seis errores
-en 44 aceptaciones; ese resultado no respalda todavía automatización conservadora.
-Review obtiene +0.1109 en desarrollo agrupado y +0.1093 en los 59 casos reservados,
-frente a +0.0347 del baseline en estos últimos.
+Ranking was already selected on development. Out-of-fold validation covers the
+calibrator, not the entire selection process. The 59-case holdout was previously
+inspected; broad cohorts and Wilson bounds do not protect against distribution
+shift. Blind data contain a harder commercial mix.
 
-La auditoría adicional confirmó que central 0.80 maximiza utilidad observada y
-acierta 9/9 aceptaciones en validación, pero el intervalo de ganancia en desarrollo
-incluye pérdidas. Se conserva review reconociendo esa oportunidad sacrificada.
+## Underdetermined inputs
 
-La validación anterior ya fue inspeccionada. El fuera de fold valida calibración,
-no todo el proceso de selección del ranking. Las cohortes son amplias y Wilson
-no protege frente a cambio de distribución o errores sistemáticos de etiquetas.
-No afirmamos que la confianza sea una probabilidad individual bien calibrada.
+Return three valid, distinct codes and review. Recognized conflicts, ambiguous or
+incomplete catalog relations, empty descriptions, unconfirmed years and small
+margins block acceptance. Missing engine, drivetrain or trim should be requested;
+a deterministic tie-break provides no certainty. Fallbacks retain the query with
+zero confidence and review, with visible diagnostics.
 
-## Entradas que no determinan una respuesta
+## Two additional weeks
 
-Devolvemos tres códigos distintos y revisión. Contradicciones, catálogo ambiguo,
-relaciones incompletas, año no confirmado, descripción vacía o margen pequeño
-bloquean la aceptación. La falta de motor, tracción, puertas o versión requiere
-pedir información; un desempate determinista no aporta certeza.
+Clarify generic business codes and verify commercial labels first. Then extract
+capacity, engine, drivetrain, doors and transmission, measuring retrieval and utility
+regressions. Obtain new labels and independent evaluation by source/group. Refine
+calibration only with adequate support. Revisit LLMs only with measurable gains.
 
-## Qué haríamos con dos semanas adicionales
+## Four hours with a domain expert
 
-Primero verificar etiquetas y la semántica de códigos genéricos comerciales.
-Después extraer capacidad, tracción, motor, transmisión y carrocería, midiendo
-contradicciones y pérdidas de recuperación. Ampliar el conjunto etiquetado y
-reservar una evaluación nueva por grupos/origen; estudiar calibración por segmento
-y curvas de utilidad/cobertura con más soporte. Evaluar un LLM solo sobre errores
-concretos y compararlo contra el sistema local, incluyendo costo y tiempo.
+- 90 minutes: Z0000M semantics and commercial classification rules.
+- 60 minutes: resolve the ten failures and six simulated false accepts.
+- 60 minutes: minimum attributes distinguishing versions and when to abstain.
+- 30 minutes: accepted taxonomies and abbreviations with verified examples.
 
-## Cómo utilizaríamos cuatro horas de un experto
-
-- 90 minutos: revisar el significado de `Z0000M` y casos comerciales que explica.
-- 60 minutos: resolver contradicciones de los diez fallos y seis aceptaciones
-  simuladas; distinguir errores de etiqueta de reglas reales de cotización.
-- 60 minutos: definir qué atributos mínimos identifican una versión y cuáles
-  requieren abstención; verificar ejemplos difíciles adicionales.
-- 30 minutos: documentar taxonomías, abreviaturas y reglas aceptables, con ejemplos.
-
-Ese conocimiento resuelve ambigüedades que más ingeniería no puede inferir con
-seguridad y produce etiquetas útiles para medir automatización de forma honesta.
+This knowledge addresses ambiguities that the available text cannot resolve.

@@ -1,0 +1,16 @@
+{
+  "out": "dev_predictions.csv",
+  "rows": 233,
+  "decisions": {
+    "review": 233
+  },
+  "fallback_rows": 0,
+  "calibration_fallback": false,
+  "seconds": {
+    "catalog": 15.06629410000096,
+    "indexes_and_ranker": 1.362317200000689,
+    "inference": 1.9283303999982309,
+    "total": 18.37620280000192
+  },
+  "llm_calls": 0
+}

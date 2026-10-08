@@ -1,0 +1,262 @@
+{
+  "errors": [
+    {
+      "query_id": "q0014",
+      "segment": "REMOLQUE",
+      "description": "PLATAFORMA 2 EJES",
+      "year": "2006",
+      "marca": "",
+      "submarca": "",
+      "tipveh": "",
+      "expected_code": "Z0000M",
+      "returned_code": "S0008A",
+      "features": {
+        "score": 0.809103569984436,
+        "margin": 0.14942372274398796,
+        "tfidf_score": 0.66567063331604,
+        "conflicts": [],
+        "catalog_ambiguous": false,
+        "description_informative": true,
+        "candidate_count": 3,
+        "year_match": true,
+        "manufacturer_match": false,
+        "submodel_match": false,
+        "vehicle_type_match": true,
+        "catalog_relations_complete": true
+      },
+      "expected_descriptions": [
+        "RM CAJA CERRADA 2 EJES 40"
+      ],
+      "returned_descriptions": [
+        "RM PLATAFORMA 2 EJES 40"
+      ],
+      "returned_vehicle_types": [
+        "SEMIREMOLQUE"
+      ],
+      "catalog_vehicle_categories": [
+        "REMOLQUE"
+      ]
+    },
+    {
+      "query_id": "q0015",
+      "segment": "REMOLQUE",
+      "description": "PLATAFORMA 2 EJES",
+      "year": "2004",
+      "marca": "",
+      "submarca": "",
+      "tipveh": "",
+      "expected_code": "Z0000M",
+      "returned_code": "S0008A",
+      "features": {
+        "score": 0.809103569984436,
+        "margin": 0.14942372274398796,
+        "tfidf_score": 0.66567063331604,
+        "conflicts": [],
+        "catalog_ambiguous": false,
+        "description_informative": true,
+        "candidate_count": 3,
+        "year_match": true,
+        "manufacturer_match": false,
+        "submodel_match": false,
+        "vehicle_type_match": true,
+        "catalog_relations_complete": true
+      },
+      "expected_descriptions": [
+        "RM CAJA CERRADA 2 EJES 40"
+      ],
+      "returned_descriptions": [
+        "RM PLATAFORMA 2 EJES 40"
+      ],
+      "returned_vehicle_types": [
+        "SEMIREMOLQUE"
+      ],
+      "catalog_vehicle_categories": [
+        "REMOLQUE"
+      ]
+    },
+    {
+      "query_id": "q0074",
+      "segment": "OTHER",
+      "description": "JEEP WRANGLER SAHARA",
+      "year": "2015",
+      "marca": "CHRYSLER",
+      "submarca": "JEEP WRANGLER SAHARA",
+      "tipveh": "",
+      "expected_code": "G00001",
+      "returned_code": "I0007V",
+      "features": {
+        "score": 0.8231047527790071,
+        "margin": 0.10173484683036815,
+        "tfidf_score": 0.6417830586433411,
+        "conflicts": [],
+        "catalog_ambiguous": false,
+        "description_informative": true,
+        "candidate_count": 3,
+        "year_match": true,
+        "manufacturer_match": true,
+        "submodel_match": true,
+        "vehicle_type_match": false,
+        "catalog_relations_complete": true
+      },
+      "expected_descriptions": [
+        "WRANGLER UNLIMITED SAHARA 3.8L 205HP 4X4 V6 AUT 4P CA CE"
+      ],
+      "returned_descriptions": [
+        "WRANGLER SAHARA TOLDO DURO 4X4 V6 AUT 2P CA CE PIEL CD"
+      ],
+      "returned_vehicle_types": [
+        "AUTO"
+      ],
+      "catalog_vehicle_categories": [
+        "AUTO"
+      ]
+    },
+    {
+      "query_id": "q0093",
+      "segment": "CAMION",
+      "description": "VOLTEO",
+      "year": "1994",
+      "marca": "DINA",
+      "submarca": "",
+      "tipveh": "VOLTEO",
+      "expected_code": "Z0000M",
+      "returned_code": "W000CD",
+      "features": {
+        "score": 0.8313042151927948,
+        "margin": 0.23895489406585702,
+        "tfidf_score": 0.6681157946586609,
+        "conflicts": [],
+        "catalog_ambiguous": false,
+        "description_informative": true,
+        "candidate_count": 3,
+        "year_match": true,
+        "manufacturer_match": true,
+        "submodel_match": false,
+        "vehicle_type_match": true,
+        "catalog_relations_complete": true
+      },
+      "expected_descriptions": [
+        "RM CAJA CERRADA 2 EJES 40"
+      ],
+      "returned_descriptions": [
+        "DINA VOLTEO DE 14 TON."
+      ],
+      "returned_vehicle_types": [
+        "CAMION"
+      ],
+      "catalog_vehicle_categories": [
+        "CAMION"
+      ]
+    },
+    {
+      "query_id": "q0134",
+      "segment": "OTHER",
+      "description": "FREIGHTLINER DETROIT DIESEL DD13 CASCADIA CAS",
+      "year": "2025",
+      "marca": "FREIGHTLINER",
+      "submarca": "CASCADIA 125",
+      "tipveh": "-",
+      "expected_code": "N0001W",
+      "returned_code": "U0008Z",
+      "features": {
+        "score": 0.7786467215322679,
+        "margin": 0.10699052688698141,
+        "tfidf_score": 0.5988547801971436,
+        "conflicts": [],
+        "catalog_ambiguous": false,
+        "description_informative": true,
+        "candidate_count": 3,
+        "year_match": true,
+        "manufacturer_match": true,
+        "submodel_match": true,
+        "vehicle_type_match": false,
+        "catalog_relations_complete": true
+      },
+      "expected_descriptions": [
+        "FREIGHTLINER NEW CASCADIA  EURO V DD13 470HP FULLER 18VEL"
+      ],
+      "returned_descriptions": [
+        "FREIGHTLINER CASCADIA 116 DD13 470HP"
+      ],
+      "returned_vehicle_types": [
+        "TRACTO CAMION"
+      ],
+      "catalog_vehicle_categories": [
+        "TRACTO"
+      ]
+    },
+    {
+      "query_id": "q0180",
+      "segment": "AUTO",
+      "description": "QX56 TA AWD V8 5PTAS",
+      "year": "2012",
+      "marca": "INFINITI",
+      "submarca": "",
+      "tipveh": "AUTOS",
+      "expected_code": "G0003R",
+      "returned_code": "K000B7",
+      "features": {
+        "score": 0.7579179530143738,
+        "margin": 0.20445562005043028,
+        "tfidf_score": 0.5915755033493042,
+        "conflicts": [],
+        "catalog_ambiguous": false,
+        "description_informative": true,
+        "candidate_count": 3,
+        "year_match": true,
+        "manufacturer_match": true,
+        "submodel_match": false,
+        "vehicle_type_match": true,
+        "catalog_relations_complete": true
+      },
+      "expected_descriptions": [
+        "QX 56 AWD 5.6L V8 7SPEED AUT., 08 OCUP."
+      ],
+      "returned_descriptions": [
+        "INFINITI QX56 5.6L AWD V8 AUT CA CE PIEL CQ CB"
+      ],
+      "returned_vehicle_types": [
+        "AUTO"
+      ],
+      "catalog_vehicle_categories": [
+        "AUTO"
+      ]
+    }
+  ],
+  "accepted_by_segment": [
+    {
+      "segment": "AUTO",
+      "accepted": 14,
+      "correct": 13
+    },
+    {
+      "segment": "CAMION",
+      "accepted": 6,
+      "correct": 5
+    },
+    {
+      "segment": "OTHER",
+      "accepted": 13,
+      "correct": 11
+    },
+    {
+      "segment": "PICKUP",
+      "accepted": 3,
+      "correct": 3
+    },
+    {
+      "segment": "REMOLQUE",
+      "accepted": 4,
+      "correct": 2
+    },
+    {
+      "segment": "TRACTO",
+      "accepted": 4,
+      "correct": 4
+    }
+  ],
+  "accepted_rows": 44,
+  "accepted_errors": 6,
+  "decision": "Keep review; no threshold change, no label-derived commercial exclusion",
+  "reason": "0.80 point policy errors span commercial vehicles and SUVs; none is blocked by existing features; dev utility gain 95% interval includes losses; protected Wilson threshold 0.80 has zero supported acceptances."
+}

@@ -1,0 +1,97 @@
+{
+  "tests_passed": 103,
+  "tests_seconds": 36.356,
+  "make_available": false,
+  "production_files_match_frozen": true,
+  "threshold": null,
+  "llm_added": false,
+  "labeled_pipeline": {
+    "seconds": 20.19382190000033,
+    "returncode": 0,
+    "stdout": "{\n  \"out\": \"dev_predictions.csv\",\n  \"rows\": 233,\n  \"decisions\": {\n    \"review\": 233\n  },\n  \"fallback_rows\": 0,\n  \"calibration_fallback\": false,\n  \"seconds\": {\n    \"catalog\": 13.79860969999936,\n    \"indexes_and_ranker\": 1.4061360999985482,\n    \"inference\": 1.870976399997744,\n    \"total\": 17.091534199997113\n  },\n  \"llm_calls\": 0\n}\n",
+    "stderr": ""
+  },
+  "official_labeled_score": {
+    "seconds": 0.17377279999709572,
+    "returncode": 0,
+    "stdout": "OVERALL  (n=233)\n  mean utility per row     +0.1105   <- headline\n  top-1 accuracy            60.9%\n  top-3 recall              80.3%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   80.3%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -0.5622\n  if you reviewed every row        +0.1105\n",
+    "stderr": ""
+  },
+  "official_labeled_check": {
+    "seconds": 0.15619469999728608,
+    "returncode": 0,
+    "stdout": "SUBMISSION VALID\n  rows                  233\n  decisions             {'auto_accept': 0, 'review': 233}\n  distinct confidences  3\n",
+    "stderr": ""
+  },
+  "isolated_blind_pipeline": {
+    "seconds": 19.59925479999947,
+    "returncode": 0,
+    "stdout": "{\n  \"out\": \"predictions.csv\",\n  \"rows\": 155,\n  \"decisions\": {\n    \"review\": 155\n  },\n  \"fallback_rows\": 0,\n  \"calibration_fallback\": false,\n  \"seconds\": {\n    \"catalog\": 13.609082100003434,\n    \"indexes_and_ranker\": 1.3834974999990663,\n    \"inference\": 1.269979599997896,\n    \"total\": 16.288416399998823\n  },\n  \"llm_calls\": 0\n}\n",
+    "stderr": ""
+  },
+  "isolated_official_check": {
+    "seconds": 0.18197450000297977,
+    "returncode": 0,
+    "stdout": "SUBMISSION VALID\n  rows                  155\n  decisions             {'auto_accept': 0, 'review': 155}\n  distinct confidences  3\n",
+    "stderr": ""
+  },
+  "isolated_byte_identical": true,
+  "isolated_without_env_labels_evaluation": true,
+  "isolated_used_existing_dependencies": true,
+  "additional_output_checks": true,
+  "blind_rows": 155,
+  "blind_predictions_sha256": "304d5591fa54d22f5eda57e05a2da198ad3ccdaad286994d2815eaa5bb4e5bc9",
+  "fresh_environment_tests_passed": 103,
+  "fresh_environment_tests_seconds": 38.099,
+  "fresh_environment_installation": true,
+  "fresh_environment_pip_setup": true,
+  "fresh_environment_blind": {
+    "out": "predictions.csv",
+    "rows": 155,
+    "decisions": {
+      "review": 155
+    },
+    "fallback_rows": 0,
+    "calibration_fallback": false,
+    "seconds": {
+      "catalog": 15.33105340000111,
+      "indexes_and_ranker": 1.7264854000022751,
+      "inference": 1.6381991999987804,
+      "total": 18.730548499999713
+    },
+    "llm_calls": 0
+  },
+  "fresh_environment_labeled": {
+    "out": "dev_predictions.csv",
+    "rows": 233,
+    "decisions": {
+      "review": 233
+    },
+    "fallback_rows": 0,
+    "calibration_fallback": false,
+    "seconds": {
+      "catalog": 15.06629410000096,
+      "indexes_and_ranker": 1.362317200000689,
+      "inference": 1.9283303999982309,
+      "total": 18.37620280000192
+    },
+    "llm_calls": 0
+  },
+  "dependency_versions_pinned": true,
+  "docs_english": true,
+  "fresh_official_score": "OVERALL  (n=233)\n  mean utility per row     +0.1105   <- headline\n  top-1 accuracy            60.9%\n  top-3 recall              80.3%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   80.3%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -0.5622\n  if you reviewed every row        +0.1105\n",
+  "fresh_official_blind_check": "SUBMISSION VALID\n  rows                  155\n  decisions             {'auto_accept': 0, 'review': 155}\n  distinct confidences  3\n",
+  "ten_failure_ids": [
+    "q0005",
+    "q0016",
+    "q0024",
+    "q0035",
+    "q0050",
+    "q0085",
+    "q0094",
+    "q0095",
+    "q0132",
+    "q0186"
+  ],
+  "decisions_word_count": 552
+}

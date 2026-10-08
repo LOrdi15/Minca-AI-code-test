@@ -1,0 +1,42 @@
+{
+  "status": "frozen",
+  "policy": "review_all",
+  "threshold": null,
+  "threshold_decision": "Concluded within five minutes; no changes to retrieval, ranking or decision",
+  "production_llm_calls": 0,
+  "source_base_commit": "a5733205e455bde78efba365e8d3f21177b07883",
+  "files_sha256": {
+    "solution/catalog.py": "811da0ad3bd40831aeb8bb826148cede967069e3709712b725a8829d08dd377e",
+    "solution/normalization.py": "b105e723e5cb18a70f24d792d493297585b39bb5826156fa43f90793bfec30e8",
+    "solution/retrieval.py": "feb72dac4d8202cdb1ccbd51cbd85c89d7e71b47741c4c2b4d2949c0851d0bd3",
+    "solution/ranking.py": "0675ca990c149848ec62ea90a22b4a0ddc28a0ab162bd9b8d86c075fffc68d59",
+    "solution/decision.py": "b5f20263695e16c11e09d7e9a63a87cd3d0716bdc33effa6ca964f97192135ff",
+    "solution/decision_config.json": "19f6af3fcedc02a2af2ff587bf330ba509ae2a668d9df697f8d47c05308efe61",
+    "solution/predict.py": "9413b3ec7e51ba3ee788e7f944ddf7b88d7d3f040398b99fb21172611c353ba7",
+    "Makefile": "e52a30c4d6391cddf166fbe420b2a1e5b565a49a7ae04f9a7efa153af12d4fba",
+    "requirements.txt": "92557c8c726b7f5089da5ee9205f041b1f3e23199365457417946feacec208f8",
+    "score.py": "fa9cfaaf232720b21963543b3f40e150d96d2bca864574ec2a4d077909d89057",
+    "submission_check.py": "1e879cc73d0f37ed19653ea8d18e2ba3b010097405b78b1f92bfd5c1486130e4"
+  },
+  "blind_predictions_sha256": "304d5591fa54d22f5eda57e05a2da198ad3ccdaad286994d2815eaa5bb4e5bc9",
+  "environment": {
+    "python": "3.12.0",
+    "pandas": "2.2.3",
+    "numpy": "2.2.3",
+    "scikit-learn": "1.9.0",
+    "rapidfuzz": "3.14.6",
+    "openai": "3.26.0"
+  },
+  "validation_limitations": [
+    "development-informed ranking",
+    "previously inspected holdout",
+    "OOF calibrator only, not nested whole pipeline",
+    "blind mixture differs"
+  ],
+  "rejected_changes": [
+    "central-only 0.80 due uncertainty",
+    "label-derived commercial or ID exclusions",
+    "LLM integration due incomplete HTTP429 trial"
+  ],
+  "dependency_freeze": "Direct dependencies pinned to tested versions; model source and policy unchanged"
+}

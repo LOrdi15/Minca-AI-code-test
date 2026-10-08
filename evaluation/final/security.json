@@ -1,0 +1,16 @@
+{
+  "tracked_key_pattern_hits": 0,
+  "history_key_pattern_hits": 0,
+  "env_paths_in_history": false,
+  "original_data_unchanged": true,
+  "original_data_files": [
+    "data/manufacturers.csv",
+    "data/queries_blind.csv",
+    "data/queries_labeled.csv",
+    "data/submodels.csv",
+    "data/version_years.csv",
+    "data/versions.csv"
+  ],
+  "repository_visibility": "private, explicitly confirmed by user; not independently queried",
+  "no_public_publication": true
+}

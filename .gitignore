@@ -3,6 +3,8 @@ __pycache__/
 predictions.csv
 dev_predictions.csv
 .venv/
+.delivery-venv/
+.delivery-qa-*/
 .env
 .env.*
 !.env.example

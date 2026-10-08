@@ -1,3637 +1,1379 @@
-# Registro detallado de errores para la revisión final
+# Detailed failure register
 
-Este archivo documenta la configuración congelada de la etapa de recuperación y ranking (E8).
-No constituye un cambio de etiquetas ni una lista de correcciones confirmadas.
-Las métricas y los diez análisis específicos están en `EVAL.md`.
+All 91 frozen top-1 failures are retained. Source vehicle descriptions remain verbatim.
+29 retrieval misses, 17 recovered outside top-3, 45 expected codes in top-3 but not first.
+These are evidence and investigation hypotheses, not corrected labels. All production decisions are review.
+The six simulated false accepts are recorded separately in evaluation/confidence_audit and evaluation/final.
 
-Hay **91 fallos top-1** en 233 consultas: **29** sin respuesta en los 50 candidatos,
-**17** con respuesta recuperada pero fuera de los tres primeros, y
-**45** con respuesta entre los tres primeros pero no en primera posición.
-Primero aparecen los fallos de validación; después los de desarrollo.
+## q0005 — validation — CAMION
 
-Cada ficha conserva hechos observables y propone una investigación. No se afirma que
-una etiqueta sea incorrecta solo porque discrepe del texto. Todas las predicciones de
-esta etapa se enviaron a revisión; ninguno de estos errores se aceptó automáticamente.
+Source description: FORD F 700 GASOLINA 28000 LBS CHASIS CABIN
+Year: 2000; manufacturer: (missing); submodel: (missing); type: CAMIONES (HASTA 7.5 TONS.).
+Expected: U0003D; returned: P00000; ordered top-3: P00000|U0003D|B00052.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08539325842696631, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.7094414949417115, "vehicle_type": 0, "year": 0.12}
 
-La validación ya fue inspeccionada: cualquier mejora motivada por estas fichas necesita
-una nueva estrategia de evaluación antes de atribuirle generalización independiente.
+Expected catalog code: U0003D; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000.
+- Variant row 10346: FORD; F-700; CAMION; EQ FORD F-700 GASOLINA 28,000 LBS CHASIS CABINA
+Returned catalog code: P00000; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000.
+- Variant row 7667: FORD; F-700; CAMION; EQ FORD F-700 GASOLINA 30,000 LBS CHASIS CABINA
 
-## Fichas de errores
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### Seguimiento especial: errores de aceptación automática simulada
+## q0016 — validation — REMOLQUE
 
-En la etapa de confianza se comparó, solo como diagnóstico, aceptar con estimación
-central >=0.80 sin comprobar el intervalo Wilson. En validación agrupada de los
-174 casos de desarrollo aceptaría 44 filas y cometería estos seis errores.
-**La política seleccionada mantiene revisión: ninguno se acepta automáticamente.**
-Los detalles numéricos están en `evaluation/decision_diagnostic_errors.csv` y las
-fichas originales por query_id permanecen abajo, sin sobrescribirlas.
+Source description: PLATAFORMA 2 EJES REVUELTA
+Year: 2006; manufacturer: (missing); submodel: (missing); type: (missing).
+Expected: Z0000M; returned: S0008A; ordered top-3: S0008A|U0007I|D0006V.
+Expected retrieval rank: 43.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5317389249801636, "vehicle_type": 0, "year": 0.12}
 
-| Consulta | Esperado | Devuelto | Qué debemos investigar al cierre |
-|---|---|---|---|
-| q0014 | Z0000M | S0008A | PLATAFORMA de dos ejes frente a etiqueta CAJA CERRADA. Confirmar si existe una regla genérica de negocio; año y tipo compatibles no resuelven la semántica de la etiqueta. |
-| q0015 | Z0000M | S0008A | Mismo patrón de plataforma/caja, con otro año. No contar el parecido de casos como prueba de que la confianza individual sea fiable. |
-| q0074 | G00001 | I0007V | WRANGLER SAHARA: esperado UNLIMITED, cuatro puertas; devuelto toldo duro, dos puertas. La entrada no identifica esas diferencias con suficiente claridad. |
-| q0093 | Z0000M | W000CD | VOLTEO DINA: el candidato es un camión de volteo y la etiqueta describe caja cerrada. Preguntar por reglas de catálogo genérico o discrepancias de etiquetado. |
-| q0134 | N0001W | U0008Z | CASCADIA con DD13: esperado NEW CASCADIA EURO V FULLER 18VEL, devuelto CASCADIA 116. Investigar configuración y el dato CASCADIA 125 de la submarca; la coincidencia de marca no distingue la variante. |
-| q0180 | G0003R | K000B7 | QX56 AWD: opciones muy similares; esperado especifica siete velocidades y ocho ocupantes. Pedir atributos de versión y verificar qué diferencia los códigos de catálogo. |
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: S0008A; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 9501: SEMIRREMOLQUES; PLATAFORMA ALTA; SEMIREMOLQUE; RM PLATAFORMA 2 EJES 40
 
-El grupo fuerte del calibrador tiene confianza suavizada 84.4%, pero límite
-inferior 72.7%. Este contraste, y los seis casos anteriores, son evidencia para
-conservar review mientras no haya soporte suficiente. No afirmar que review
-maximiza la utilidad observada: es la opción elegida bajo los requisitos de
-incertidumbre y respaldo definidos. Revisar primero estos casos en la sesión final.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0005 — validation — CAMION
+## q0024 — validation — REMOLQUE
 
-**Consulta original:** FORD F 700 GASOLINA 28000 LBS CHASIS CABIN
+Source description: TANQUE A.INOX ANILLADO 2 EJES 31,000 LTS MEDIA. AUT.
+Year: 2023; manufacturer: -; submodel: (missing); type: REMOLQUE.
+Expected: Q00046; returned: U0003Y; ordered top-3: U0003Y|W0008B|Z0005M.
+Expected retrieval rank: (not retrieved). Recognized conflicts: year.
+Score contributions: {"fuzzy": 0.08444444444444445, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.76396404504776, "vehicle_type": 0, "year": -0.2}
 
-- Año recibido: 2000.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMIONES (HASTA 7.5 TONS.).
-- Top-3 devuelto, en orden: `P00000|U0003D|B00052`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7667.
+Expected catalog code: Q00046; explicit years: 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 8332: SEMIRREMOLQUES; TANQUE; SEMIREMOLQUE; SEMIREMOLQUE TANQUE ELIPTICO
+Returned catalog code: U0003Y; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+- Variant row 10367: SEMIRREMOLQUES; TANQUE; SEMIREMOLQUE; RM TANQUE A.INOX ANILLADO 2 EJES 31,000 LTS
 
-**Respuesta esperada según la etiqueta: `U0003D`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: EQ FORD F-700 GASOLINA 28,000 LBS CHASIS CABINA
-  Fabricante: FORD; submodelo: F-700; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
+## q0035 — validation — AUTO
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000.
+Source description: AUDI S3 SEDAN
+Year: 2016; manufacturer: AUDI; submodel: (missing); type: AUTOS.
+Expected: Q0004P; returned: R00034; ordered top-3: R00034|Q0004P|J000B5.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3962739586830139, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `P00000`**
+Expected catalog code: Q0004P; explicit years: 2016, 2017, 2018, 2019.
+- Variant row 8351: AUDI; A3; AUTO; AUDI A3 S3, 2.0T, 4 PUERTAS, S TRONIC
+Returned catalog code: R00034; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018.
+- Variant row 8802: AUDI; S3; AUTO; S3 2.0L STRONIC QUATTRO L4 FSI AUT 3P CA CE PIEL CQ CB
 
-- Variante 1: EQ FORD F-700 GASOLINA 30,000 LBS CHASIS CABINA
-  Fabricante: FORD; submodelo: F-700; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000.
+## q0050 — validation — REMOLQUE
 
-**Contribuciones al score del top-1:**
+Source description: CAJA REFRIGERADA
+Year: 2015; manufacturer: CAJA; submodel: (missing); type: REMOLQUES.
+Expected: Z0000M; returned: W0008G; ordered top-3: W0008G|I00083|M0009R.
+Expected retrieval rank: 34.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5754315733909607, "vehicle_type": 0, "year": 0.12}
 
-`{"fuzzy": 0.08539325842696631, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.7094414949417115, "vehicle_type": 0, "year": 0.12}`
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: W0008G; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 11556: SEMIRREMOLQUES; CAJA REFRIGERADA; SEMIREMOLQUE; CAJA REFRIGERADORA CON EQUIPO
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0085 — validation — REMOLQUE
 
-### q0016 — validation — REMOLQUE
+Source description: TOLVA
+Year: 2022; manufacturer: DALTO; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: J0007M; ordered top-3: J0007M|Q0001C|Z0005P.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3192595839500427, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** PLATAFORMA 2 EJES REVUELTA
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: J0007M; explicit years: 2020, 2021, 2022, 2023.
+- Variant row 4883: SEMIRREMOLQUES; TOLVA GRANELERA; SEMIREMOLQUE; RM TOLVA GRANELERA 2 EJES NAC
 
-- Año recibido: 2006.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `S0008A|U0007I|D0006V`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 43.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9501.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+## q0086 — validation — REMOLQUE
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: TOLVA
+Year: 2024; manufacturer: DALTO; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: K000DZ; ordered top-3: K000DZ|Z0005P|L0008A.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.2844096958637238, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: K000DZ; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024.
+- Variant row 5626: SEMIRREMOLQUES; TOLVA (ALIMENTOS, QUIMICOS); SEMIREMOLQUE; RM TOLVA PRESURIZADA 28MTS^3 2EJES
 
-**Primera respuesta devuelta: `S0008A`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: RM PLATAFORMA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: PLATAFORMA ALTA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+## q0094 — validation — PICKUP
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Source description: DODEGE RAM 400
+Year: 2019; manufacturer: DODEGE; submodel: (missing); type: PICKUP´S.
+Expected: O0005H; returned: R0002P; ordered top-3: R0002P|S0008D|U0004P.
+Expected retrieval rank: 10.0. Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.19616316854953766, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: O0005H; explicit years: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 7353: CHRYSLER; RAM 2500; PICK UP; DODGE RAM 2500 R/T 5.7L 4X4 AUT CA
+Returned catalog code: R0002P; explicit years: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2025, 2026.
+- Variant row 8787: ISUZU; ELF 400; CAMION; EQ ISUZU ELF 400 CHASIS CABINA "F"
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5317389249801636, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
+## q0095 — validation — OTHER
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Source description: 35451
+Year: 2024; manufacturer: DODGE; submodel: DURANGO; type: (missing).
+Expected: C0006Z; returned: T000CA; ordered top-3: T000CA|C0006Z|M0005H.
+Expected retrieval rank: 7.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.38974422812461856, "vehicle_type": 0.0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: C0006Z; explicit years: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 1274: CHRYSLER; DURANGO; AUTO; DURANGO RT 5.7L V8 AUT 5P ABS CA CE PIEL CD CQ CB
+Returned catalog code: T000CA; explicit years: 2022, 2023, 2024, 2025.
+- Variant row 10157: CHRYSLER; DURANGO; AUTO; DURANGO GT PLUS V6 3.6L 5 PTS AUT
 
-### q0024 — validation — REMOLQUE
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** TANQUE A.INOX ANILLADO 2 EJES 31,000 LTS MEDIA. AUT.
+## q0115 — validation — REMOLQUE
 
-- Año recibido: 2023.
-- Marca recibida: -.
-- Submarca recibida: vacía.
-- Tipo recibido: REMOLQUE.
-- Top-3 devuelto, en orden: `U0003Y|W0008B|Z0005M`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: year.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 10367.
+Source description: FERBEL
+Year: 2019; manufacturer: FERBEL; submodel: (missing); type: REMOLQUE.
+Expected: Z0000M; returned: T0002L; ordered top-3: T0002L|J0008Z|G000AP.
+Expected retrieval rank: (not retrieved). Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.04275, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.01953243277966976, "vehicle_type": 0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `Q00046`**
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: T0002L; explicit years: 2019.
+- Variant row 9805: HYUNDAI; SANTA FE; AUTO; SANTA FE GLS 2.0T 5 PUERTAS AUTOMATICA
 
-- Variante 1: SEMIREMOLQUE TANQUE ELIPTICO
-  Fabricante: SEMIRREMOLQUES; submodelo: TANQUE; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+## q0130 — validation — CAMION
 
-**Primera respuesta devuelta: `U0003Y`**
+Source description: VOLTEO
+Year: 1992; manufacturer: FORD; submodel: VOLTEO; type: VOLTEO.
+Expected: Z0000M; returned: R0002M; ordered top-3: R0002M|U0001V|Y0004T.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4996009111404419, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: RM TANQUE A.INOX ANILLADO 2 EJES 31,000 LTS
-  Fabricante: SEMIRREMOLQUES; submodelo: TANQUE; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: R0002M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
+- Variant row 8784: FORD; F-600 VOLTEO; CAMION; FORD F-600 VOLTEO HASTA 12 TON.
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0131 — validation — CAMION
 
-`{"fuzzy": 0.08444444444444445, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.76396404504776, "vehicle_type": 0, "year": -0.2}`
+Source description: VOLTEO
+Year: 1992; manufacturer: FORD; submodel: VOLTEO; type: (missing).
+Expected: Z0000M; returned: R0002M; ordered top-3: R0002M|U0001V|Y0004T.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4996009111404419, "vehicle_type": 0, "year": 0.12}
 
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: R0002M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
+- Variant row 8784: FORD; F-600 VOLTEO; CAMION; FORD F-600 VOLTEO HASTA 12 TON.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0035 — validation — AUTO
+## q0132 — validation — OTHER
 
-**Consulta original:** AUDI S3 SEDAN
+Source description: F150
+Year: 2013; manufacturer: FORD  (ROJA); submodel: F150; type: REGULAR CA XL.
+Expected: T0001Y; returned: Q0008J; ordered top-3: Q0008J|T0001Y|E00096.
+Expected retrieval rank: 9.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.08016005605459213, "vehicle_type": 0.0, "year": 0.12}
 
-- Año recibido: 2016.
-- Marca recibida: AUDI.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOS.
-- Top-3 devuelto, en orden: `R00034|Q0004P|J000B5`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8802.
+Expected catalog code: T0001Y; explicit years: 2013, 2014, 2016, 2017.
+- Variant row 9782: FORD; F-150 PICK UP; PICK UP; FORD F-150 XL CABINA REGULAR 4X2 V8 5.0L AUT
+Returned catalog code: Q0008J; explicit years: 2013, 2014, 2015, 2016, 2017.
+- Variant row 8490: FORD; F-150 PICK UP; PICK UP; FORD F-150 XL CABINA REGULAR 4X4 V8 5.0L AUT
 
-**Respuesta esperada según la etiqueta: `Q0004P`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: AUDI A3 S3, 2.0T, 4 PUERTAS, S TRONIC
-  Fabricante: AUDI; submodelo: A3; tipo: AUTO; segmento: LUJO.
+## q0162 — validation — CAMION
 
-Años registrados por código: 2016, 2017, 2018, 2019.
+Source description: CHASIS CABINA
+Year: 2024; manufacturer: HINO; submodel: (missing); type: (missing).
+Expected: M0001V; returned: D0006W; ordered top-3: D0006W|B000D5|N0004N.
+Expected retrieval rank: 21.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.45343301296234134, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `R00034`**
+Expected catalog code: M0001V; explicit years: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 6207: HINO; 300 CHASIS; CAMION; HINO 300 514 CHASIS CABINA 4.0L 3.48M L4 136HP DIS STD D/T
+- Variant row 6208: HINO; 300 CHASIS; PICK UP; HINO 300 514 CHASIS CABINA 4.0L 3.48M L4 136HP DIS STD D/T
+Returned catalog code: D0006W; explicit years: 2022, 2023, 2024.
+- Variant row 1781: HINO; 500; CAMION; HINO SERIE 500 2628 6X2 CHASIS CABINA
 
-- Variante 1: S3 2.0L STRONIC QUATTRO L4 FSI AUT 3P CA CE PIEL CQ CB
-  Fabricante: AUDI; submodelo: S3; tipo: AUTO; segmento: DEPORTIVO.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018.
+## q0186 — validation — OTHER
 
-**Contribuciones al score del top-1:**
+Source description: CISTERNA CHASSIS CABINA  MOD 4400 250 4X2
+Year: 2003; manufacturer: INTERNACIONAL; submodel: (missing); type: (missing).
+Expected: X0001T; returned: B0003G; ordered top-3: B0003G|H00002|U000DT.
+Expected retrieval rank: 28.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.07223140495867768, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.329634690284729, "vehicle_type": 0.0, "year": 0.12}
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3962739586830139, "vehicle_type": 0, "year": 0.12}`
+Expected catalog code: X0001T; explicit years: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 11827: INTERNATIONAL; 4300 MAS DE 14 TON; CAMION; INTERNACIONAL 4300 CHASIS CABINA MODULAR N G 4 X 2 210HP 15.8 TON
+Returned catalog code: B0003G; explicit years: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 636: INTERNATIONAL; 4400; CAMION; INTERNACIONAL 4400 CHASIS CABINA 6 X 2 250HP 23.5 TON
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0204 — validation — CAMION
 
-### q0050 — validation — REMOLQUE
+Source description: JAC FRISON T8 L4 STD
+Year: 2024; manufacturer: JAC; submodel: (missing); type: CAMIONES (HASTA 1.5 TONS.).
+Expected: J0005B; returned: B000CS; ordered top-3: B000CS|J0005B|N000CN.
+Expected retrieval rank: 4.0. Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5242019712924958, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** CAJA REFRIGERADA
+Expected catalog code: J0005B; explicit years: 2022, 2023, 2024, 2025, 2026.
+- Variant row 4798: JAC; T8; PICK UP; T8 FRISON L4 2.0L 139 CP 4 PUERTAS STD BA AA 4X4
+Returned catalog code: B000CS; explicit years: 2024, 2025.
+- Variant row 974: JAC; T8; PICK UP; T8 FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
 
-- Año recibido: 2015.
-- Marca recibida: CAJA.
-- Submarca recibida: vacía.
-- Tipo recibido: REMOLQUES.
-- Top-3 devuelto, en orden: `W0008G|I00083|M0009R`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 34.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 11556.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+## q0206 — validation — PICKUP
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: PICK UP JACK FRISON T6
+Year: 2024; manufacturer: JACK; submodel: (missing); type: (missing).
+Expected: Z0008D; returned: N000CN; ordered top-3: N000CN|Z0008D|G000CP.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.38269154727458954, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: Z0008D; explicit years: 2024, 2025.
+- Variant row 13094: JAC; T6; PICK UP; T6 FLEX FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
+Returned catalog code: N000CN; explicit years: 2020, 2021, 2022, 2023, 2024.
+- Variant row 7106: JAC; T6; PICK UP; T6 FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
 
-**Primera respuesta devuelta: `W0008G`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: CAJA REFRIGERADORA CON EQUIPO
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA REFRIGERADA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+## q0221 — validation — TRACTO
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+Source description: T800
+Year: 2017; manufacturer: KENWORTH; submodel: (missing); type: TRACTO.
+Expected: F0000H; returned: X0003K; ordered top-3: X0003K|F0000H|Z0003D.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4618758022785187, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: F0000H; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+- Variant row 2571: KENWORTH; T800; TRACTO CAMION; TR KENWORTH T 800 B 42"
+Returned catalog code: X0003K; explicit years: 2017.
+- Variant row 11891: KENWORTH; T800; TRACTO CAMION; TR KENWORTH T-800 B 42
 
-`{"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5754315733909607, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
+## q0315 — validation — REMOLQUE
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Source description: REMOLQUE
+Year: 2021; manufacturer: REMOLQUES; submodel: REMOLQUE; type: (missing).
+Expected: Z0000M; returned: Q00046; ordered top-3: Q00046|O0008Q|P0008I.
+Expected retrieval rank: 43.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.06333333333333334, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.14798598736524582, "vehicle_type": 0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Q00046; explicit years: 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 8332: SEMIRREMOLQUES; TANQUE; SEMIREMOLQUE; SEMIREMOLQUE TANQUE ELIPTICO
 
-### q0085 — validation — REMOLQUE
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** TOLVA
+## q0323 — validation — REMOLQUE
 
-- Año recibido: 2022.
-- Marca recibida: DALTO.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `J0007M|Q0001C|Z0005P`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4883.
+Source description: PLATAFORMA TANDEM 2 EJES
+Year: 2016; manufacturer: RM SEMIREMOLQUE; submodel: (missing); type: CHASIS.
+Expected: T00076; returned: S0008A; ordered top-3: S0008A|U0002I|T00076.
+Expected retrieval rank: 5.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0755421686746988, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3930980354547501, "vehicle_type": 0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+Expected catalog code: T00076; explicit years: 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 9972: SEMIRREMOLQUES; PLATAFORMA ALTA; SEMIREMOLQUE; RM PLATAFORMA PLANA 2 EJES 48
+Returned catalog code: S0008A; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 9501: SEMIRREMOLQUES; PLATAFORMA ALTA; SEMIREMOLQUE; RM PLATAFORMA 2 EJES 40
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+## q0349 — validation — AUTO
 
-**Primera respuesta devuelta: `J0007M`**
+Source description: AUTOMOVIL YARIS CORE H/B MT AC
+Year: 2014; manufacturer: TOYOTA YARIS; submodel: (missing); type: (missing).
+Expected: Y0004U; returned: D0009T; ordered top-3: D0009T|L0004M|Y0004U.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.059814814814814814, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5168550252914429, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: RM TOLVA GRANELERA 2 EJES NAC
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA GRANELERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Expected catalog code: Y0004U; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022.
+- Variant row 12453: TOYOTA; YARIS; AUTO; YARIS CORE HB 1.5L 106HP L4 STD 5P CA SE CD CB
+Returned catalog code: D0009T; explicit years: 2014.
+- Variant row 1886: TOYOTA; YARIS; AUTO; YARIS CORE 1.5L L4 AUT 4P D/T CA CE TELA CD SQ CB
 
-Años registrados por código: 2020, 2021, 2022, 2023.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0351 — validation — AUTO
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3192595839500427, "vehicle_type": 0, "year": 0.12}`
+Source description: AUTOMOVIL YARIS CORE H/B MT A/A
+Year: 2014; manufacturer: TOYOYA YARIS; submodel: (missing); type: (missing).
+Expected: Y0004U; returned: D0009T; ordered top-3: D0009T|L0004M|Y0004U.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.05915094339622641, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.4379332780838013, "vehicle_type": 0, "year": 0.12}
 
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
+Expected catalog code: Y0004U; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022.
+- Variant row 12453: TOYOTA; YARIS; AUTO; YARIS CORE HB 1.5L 106HP L4 STD 5P CA SE CD CB
+Returned catalog code: D0009T; explicit years: 2014.
+- Variant row 1886: TOYOTA; YARIS; AUTO; YARIS CORE 1.5L L4 AUT 4P D/T CA CE TELA CD SQ CB
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0360 — validation — PICKUP
 
-### q0086 — validation — REMOLQUE
+Source description: V.W. SAVEIRO  ROJO
+Year: 2012; manufacturer: V; submodel: (missing); type: PICKUP´S.
+Expected: B000B1; returned: M000DT; ordered top-3: M000DT|R0004R|B000B1.
+Expected retrieval rank: 8.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.41259557604789737, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** TOLVA
+Expected catalog code: B000B1; explicit years: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 911: VOLKSWAGEN; SAVEIRO; PICK UP; VOLKSWAGEN SAVEIRO STARTLINE 1.6L STD CA DH
+Returned catalog code: M000DT; explicit years: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 6640: VOLKSWAGEN; SAVEIRO; PICK UP; VOLKSWAGEN SAVEIRO STARTLINE 1.6L STD
 
-- Año recibido: 2024.
-- Marca recibida: DALTO.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `K000DZ|Z0005P|L0008A`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 5626.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+## q0383 — validation — OTHER
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: CARRO UTILITARIO
+Year: 2023; manufacturer: VW VIRTUS COMFORTLINE; submodel: (missing); type: (missing).
+Expected: Q000C7; returned: R000CA; ordered top-3: R000CA|Q000C7|U0006C.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.4543520987033844, "vehicle_type": 0.0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: Q000C7; explicit years: 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 8623: VOLKSWAGEN; VIRTUS; AUTO; VIRTUS COMFORTLINE, L4, 1.6L, 110 CP, 4 PUERTAS, STD
+Returned catalog code: R000CA; explicit years: 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 9137: VOLKSWAGEN; VIRTUS; AUTO; VIRTUS COMFORTLINE, L4, 1.6L, 110 CP, 4 PUERTAS, AUT
 
-**Primera respuesta devuelta: `K000DZ`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: RM TOLVA PRESURIZADA 28MTS^3 2EJES
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA (ALIMENTOS, QUIMICOS); tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+## q0008 — development — OTHER
 
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2024.
+Source description: HINO 816 LONG SERIE 300
+Year: 2019; manufacturer: (missing); submodel: (missing); type: (missing).
+Expected: I000AJ; returned: N00083; ordered top-3: N00083|W0008K|I000AJ.
+Expected retrieval rank: 9.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.35409375429153445, "vehicle_type": 0.0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: I000AJ; explicit years: 2019.
+- Variant row 4477: HINO; 300 CHASIS; CAMION; 300 816 LARGO, 4.0T, 2 PUERTAS, MANUAL, HIBRIDO
+Returned catalog code: N00083; explicit years: 2018, 2019, 2022, 2023, 2024, 2025.
+- Variant row 6942: HINO; 300 CHASIS; CAMION; HINO 300 816 SUPER LARGO 4.0T 2P STD
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.2844096958637238, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
+## q0012 — development — OTHER
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Source description: NISSAN NP300 ESTACAS PAQ SEG DH AC STD
+Year: 2018; manufacturer: (missing); submodel: (missing); type: (missing).
+Expected: V00023; returned: P000AO; ordered top-3: P000AO|V00023|P000AN.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5382496654987335, "vehicle_type": 0.0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: V00023; explicit years: 2017, 2018, 2019, 2020.
+- Variant row 10812: NISSAN; ESTACAS; PICK UP; PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
+- Variant row 10813: NISSAN; ESTACAS; PICK UP; NP300 PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
+Returned catalog code: P000AO; explicit years: 2015, 2017, 2018.
+- Variant row 8059: NISSAN; PICK UP; PICK UP; NP300 ESTACAS 2.4L 2 PUERTAS MANUAL DH PAQ SEG
 
-### q0094 — validation — PICKUP
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** DODEGE RAM 400
+## q0014 — development — REMOLQUE
 
-- Año recibido: 2019.
-- Marca recibida: DODEGE.
-- Submarca recibida: vacía.
-- Tipo recibido: PICKUP´S.
-- Top-3 devuelto, en orden: `R0002P|S0008D|U0004P`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 10.0.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8787.
+Source description: PLATAFORMA 2 EJES
+Year: 2006; manufacturer: (missing); submodel: (missing); type: (missing).
+Expected: Z0000M; returned: S0008A; ordered top-3: S0008A|U0007I|D0006V.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.599103569984436, "vehicle_type": 0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `O0005H`**
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: S0008A; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 9501: SEMIRREMOLQUES; PLATAFORMA ALTA; SEMIREMOLQUE; RM PLATAFORMA 2 EJES 40
 
-- Variante 1: DODGE RAM 2500 R/T 5.7L 4X4 AUT CA
-  Fabricante: CHRYSLER; submodelo: RAM 2500; tipo: PICK UP; segmento: PICK UP.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+## q0015 — development — REMOLQUE
 
-**Primera respuesta devuelta: `R0002P`**
+Source description: PLATAFORMA 2 EJES
+Year: 2004; manufacturer: (missing); submodel: (missing); type: (missing).
+Expected: Z0000M; returned: S0008A; ordered top-3: S0008A|U0007I|D0006V.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.599103569984436, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: EQ ISUZU ELF 400 CHASIS CABINA "F"
-  Fabricante: ISUZU; submodelo: ELF 400; tipo: CAMION; segmento: CAMION DE 2.2 HASTA 4.5 TONELADAS.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: S0008A; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 9501: SEMIRREMOLQUES; PLATAFORMA ALTA; SEMIREMOLQUE; RM PLATAFORMA 2 EJES 40
 
-Años registrados por código: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2025, 2026.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0018 — development — REMOLQUE
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.19616316854953766, "vehicle_type": 0, "year": 0.12}`
+Source description: REMOLQUES
+Year: 2025; manufacturer: (missing); submodel: (missing); type: (missing).
+Expected: Z0000M; returned: G000CT; ordered top-3: G000CT|D0004U|U0001V.
+Expected retrieval rank: 26.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.11544596403837204, "vehicle_type": 0, "year": 0.12}
 
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: G000CT; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018, 2019, 2023, 2025.
+- Variant row 3535: SEMIRREMOLQUES; JAULA; SEMIREMOLQUE; RM JAULA 2 EJES 35
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0095 — validation — OTHER
+## q0019 — development — REMOLQUE
 
-**Consulta original:** 35451
+Source description: RM SEMIREMOLQUE
+Year: 2019; manufacturer: (missing); submodel: (missing); type: CHASIS.
+Expected: Z0000M; returned: Q00046; ordered top-3: Q00046|G000CT|Z0000M.
+Expected retrieval rank: 10.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40149444937705997, "vehicle_type": 0, "year": 0.12}
 
-- Año recibido: 2024.
-- Marca recibida: DODGE.
-- Submarca recibida: DURANGO.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `T000CA|C0006Z|M0005H`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 7.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 10157.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Q00046; explicit years: 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 8332: SEMIRREMOLQUES; TANQUE; SEMIREMOLQUE; SEMIREMOLQUE TANQUE ELIPTICO
 
-**Respuesta esperada según la etiqueta: `C0006Z`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: DURANGO RT 5.7L V8 AUT 5P ABS CA CE PIEL CD CQ CB
-  Fabricante: CHRYSLER; submodelo: DURANGO; tipo: AUTO; segmento: SUV.
+## q0047 — development — AUTO
 
-Años registrados por código: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+Source description: ESCALADE ESV PAQ B 2021
+Year: 2021; manufacturer: CADILLAC; submodel: ESCALADE ESV PAQ B; type: AUTO.
+Expected: E0002F; returned: I000A6; ordered top-3: I000A6|E0002F|S00067.
+Expected retrieval rank: 7.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08333333333333333, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.5294214963912964, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `T000CA`**
+Expected catalog code: E0002F; explicit years: 2021, 2022, 2023, 2025, 2026.
+- Variant row 2128: CADILLAC; ESCALADE; AUTO; ESCALADE ESV PREMIUM LUXURY V8 6.2L 5 PTS AUT
+Returned catalog code: I000A6; explicit years: 2015, 2016, 2020, 2021.
+- Variant row 4463: CADILLAC; ESCALADE; AUTO; ESCALADE ESV PREMIUM V8 6.2L AUT 5P ABS CA CE PIEL CQ CB
+- Variant row 4464: CADILLAC; ESCALADE; AUTO; ESCALADE ESV PREMIUM 6.2L 5 PUERTAS AUTOMATICA PAQ E
 
-- Variante 1: DURANGO GT PLUS V6 3.6L 5 PTS AUT
-  Fabricante: CHRYSLER; submodelo: DURANGO; tipo: AUTO; segmento: SUV.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2022, 2023, 2024, 2025.
+## q0053 — development — REMOLQUE
 
-**Contribuciones al score del top-1:**
+Source description: TOLVA
+Year: 2019; manufacturer: CARMEX; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|Z0003K|R0002X.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.2525744497776032, "vehicle_type": 0, "year": 0.12}
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.38974422812461856, "vehicle_type": 0.0, "year": 0.12}`
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0054 — development — REMOLQUE
 
-### q0115 — validation — REMOLQUE
+Source description: PLATAFORMA
+Year: 2008; manufacturer: CATAMEX; submodel: PLATAFORMA; type: (missing).
+Expected: Z0000M; returned: L0001A; ordered top-3: L0001A|D0006V|E0001Q.
+Expected retrieval rank: (not retrieved). Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.4611872792243958, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** FERBEL
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: L0001A; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008.
+- Variant row 5675: INTERNATIONAL; PLATAFORMA; CAMION; CAMION INTERNACIONAL PLATAFORMA .
 
-- Año recibido: 2019.
-- Marca recibida: FERBEL.
-- Submarca recibida: vacía.
-- Tipo recibido: REMOLQUE.
-- Top-3 devuelto, en orden: `T0002L|J0008Z|G000AP`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9805.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+## q0055 — development — AUTO
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: ALSVIN TM
+Year: 2024; manufacturer: CHANGAN; submodel: (missing); type: AUTOS.
+Expected: P00056; returned: P0007H; ordered top-3: P0007H|P00056|Y00051.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5840484380722046, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: P00056; explicit years: 2022, 2023, 2024, 2025, 2026.
+- Variant row 7859: CHANGAN; ALSVIN; AUTO; CHANGAN ALSVIN BASE L4 4 PTS STD
+Returned catalog code: P0007H; explicit years: 2022, 2023, 2024, 2025, 2026.
+- Variant row 7942: CHANGAN; ALSVIN; AUTO; CHANGAN ALSVIN BASE L4 4 PTS AUT
 
-**Primera respuesta devuelta: `T0002L`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: SANTA FE GLS 2.0T 5 PUERTAS AUTOMATICA
-  Fabricante: HYUNDAI; submodelo: SANTA FE; tipo: AUTO; segmento: SUV.
+## q0068 — development — OTHER
 
-Años registrados por código: 2019.
+Source description: TIGGO 8 PRO PREMIUM E HEV L4 HDS AUT 5 ABS CA CE PIEL SM CQ C
+Year: 2025; manufacturer: CHIREY; submodel: (missing); type: (missing).
+Expected: S0002Y; returned: C000C5; ordered top-3: C000C5|S0002Y|S0004C.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08539325842696631, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.605037260055542, "vehicle_type": 0.0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: S0002Y; explicit years: 2025.
+- Variant row 9307: CHIREY; TIGGO 8; AUTO; CHIREY TIGGO 8 PRO E+ PREMIUM
+Returned catalog code: C000C5; explicit years: 2024, 2025.
+- Variant row 1461: CHIREY; TIGGO 8; AUTO; CHIREY TIGGO 8 PRO PREMIUM L4 1.6T 5 PTS AUT PIEL
 
-`{"fuzzy": 0.04275, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.01953243277966976, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
+## q0074 — development — OTHER
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Source description: JEEP WRANGLER SAHARA
+Year: 2015; manufacturer: CHRYSLER; submodel: JEEP WRANGLER SAHARA; type: (missing).
+Expected: G00001; returned: I0007V; ordered top-3: I0007V|G00001|M0004C.
+Expected retrieval rank: 17.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.577604752779007, "vehicle_type": 0.0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: G00001; explicit years: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 3070: CHRYSLER; JEEP WRANGLER; AUTO; WRANGLER UNLIMITED SAHARA 3.8L 205HP 4X4 V6 AUT 4P CA CE
+Returned catalog code: I0007V; explicit years: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 4380: CHRYSLER; JEEP WRANGLER; AUTO; WRANGLER SAHARA TOLDO DURO 4X4 V6 AUT 2P CA CE PIEL CD
 
-### q0130 — validation — CAMION
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** VOLTEO
+## q0082 — development — REMOLQUE
 
-- Año recibido: 1992.
-- Marca recibida: FORD.
-- Submarca recibida: VOLTEO.
-- Tipo recibido: VOLTEO.
-- Top-3 devuelto, en orden: `R0002M|U0001V|Y0004T`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8784.
+Source description: TOLVA
+Year: 2023; manufacturer: DALTO; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: J0007M; ordered top-3: J0007M|Z0005P|L0008A.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3192595839500427, "vehicle_type": 0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: J0007M; explicit years: 2020, 2021, 2022, 2023.
+- Variant row 4883: SEMIRREMOLQUES; TOLVA GRANELERA; SEMIREMOLQUE; RM TOLVA GRANELERA 2 EJES NAC
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+## q0083 — development — REMOLQUE
 
-**Primera respuesta devuelta: `R0002M`**
+Source description: TOLVA
+Year: 2020; manufacturer: DALTO; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|J0007M|R0002X.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40361698865890505, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: FORD F-600 VOLTEO HASTA 12 TON.
-  Fabricante: FORD; submodelo: F-600 VOLTEO; tipo: CAMION; segmento: CAMION DE 9.5 HASTA 12.5 TONELADAS.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0084 — development — REMOLQUE
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4996009111404419, "vehicle_type": 0, "year": 0.12}`
+Source description: TOLVA
+Year: 2021; manufacturer: DALTO; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: J0007M; ordered top-3: J0007M|R0002X|K000DZ.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3192595839500427, "vehicle_type": 0, "year": 0.12}
 
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: J0007M; explicit years: 2020, 2021, 2022, 2023.
+- Variant row 4883: SEMIRREMOLQUES; TOLVA GRANELERA; SEMIREMOLQUE; RM TOLVA GRANELERA 2 EJES NAC
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0089 — development — REMOLQUE
 
-### q0131 — validation — CAMION
+Source description: PLATAFORMA
+Year: 2003; manufacturer: DEL NORTE; submodel: PLATAFORMA; type: (missing).
+Expected: Z0000M; returned: L0001A; ordered top-3: L0001A|D0006V|P000C6.
+Expected retrieval rank: (not retrieved). Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.40458899438381196, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** VOLTEO
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: L0001A; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008.
+- Variant row 5675: INTERNATIONAL; PLATAFORMA; CAMION; CAMION INTERNACIONAL PLATAFORMA .
 
-- Año recibido: 1992.
-- Marca recibida: FORD.
-- Submarca recibida: VOLTEO.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `R0002M|U0001V|Y0004T`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8784.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+## q0093 — development — CAMION
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: VOLTEO
+Year: 1994; manufacturer: DINA; submodel: (missing); type: VOLTEO.
+Expected: Z0000M; returned: W000CD; ordered top-3: W000CD|B0001Z|Y000DW.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.09000000000000001, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.6013042151927949, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: W000CD; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004.
+- Variant row 11700: DINA; 661-K VOLTEO; CAMION; DINA VOLTEO DE 14 TON.
 
-**Primera respuesta devuelta: `R0002M`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: FORD F-600 VOLTEO HASTA 12 TON.
-  Fabricante: FORD; submodelo: F-600 VOLTEO; tipo: CAMION; segmento: CAMION DE 9.5 HASTA 12.5 TONELADAS.
+## q0100 — development — CAMION
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
+Source description: CHASIS CABINA
+Year: 2009; manufacturer: DODGE H100; submodel: CHASIS CABINA; type: (missing).
+Expected: U00085; returned: H0002P; ordered top-3: H0002P|U00085|K0009D.
+Expected retrieval rank: 2.0. Recognized conflicts: submodel|vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": -0.05, "tfidf": 0.5092259645462036, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: U00085; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+- Variant row 10519: CHRYSLER; H100 ESTACAS; PICK UP; DODGE H 100 CHASIS CABINA DH L4 CA
+Returned catalog code: H0002P; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 2006, 2007, 2008, 2009.
+- Variant row 3681: CHRYSLER; H100 ESTACAS; PICK UP; H100 CHASIS CABINA DIESEL STD., 02 OCUP.
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4996009111404419, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
+## q0104 — development — REMOLQUE
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Source description: EL AGUILA *
+Year: 2023; manufacturer: EL AGUILA; submodel: (missing); type: SEMIREMOLQUE.
+Expected: Z0000M; returned: X0001I; ordered top-3: X0001I|W0005C|X00036.
+Expected retrieval rank: (not retrieved). Recognized conflicts: vehicle_type|year.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.16423431336879732, "vehicle_type": 0, "year": -0.2}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: X0001I; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998.
+- Variant row 11816: VOLKSWAGEN; JETTA A3; AUTO; EL NUEVO JETTA GL AUT., 05 OCUP.
 
-### q0132 — validation — OTHER
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** F150
+## q0111 — development — OTHER
 
-- Año recibido: 2013.
-- Marca recibida: FORD  (ROJA).
-- Submarca recibida: F150.
-- Tipo recibido: REGULAR CA XL.
-- Top-3 devuelto, en orden: `Q0008J|T0001Y|E00096`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 9.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8490.
+Source description: ESTACAS DH NP300 ESTACAS STD AA 158HP 2.5L 4CIL 2P 3OCUP 2019
+Year: 2019; manufacturer: ESTACAS DH NP300 ESTACAS STD AA 158HP 2.5L 4CIL 2P 3OCUP; submodel: (missing); type: (missing).
+Expected: H000BN; returned: V00023; ordered top-3: V00023|N0006O|W0009H.
+Expected retrieval rank: 22.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.30323477983474734, "vehicle_type": 0.0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `T0001Y`**
+Expected catalog code: H000BN; explicit years: 2017, 2018, 2019, 2020.
+- Variant row 4004: NISSAN; CHASIS CABINA; PICK UP; NP300 CHASIS CABINA 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
+Returned catalog code: V00023; explicit years: 2017, 2018, 2019, 2020.
+- Variant row 10812: NISSAN; ESTACAS; PICK UP; PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
+- Variant row 10813: NISSAN; ESTACAS; PICK UP; NP300 PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
 
-- Variante 1: FORD F-150 XL CABINA REGULAR 4X2 V8 5.0L AUT
-  Fabricante: FORD; submodelo: F-150 PICK UP; tipo: PICK UP; segmento: PICK UP.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2013, 2014, 2016, 2017.
+## q0123 — development — CAMION
 
-**Primera respuesta devuelta: `Q0008J`**
+Source description: FOIRD XL REG CHASIS F550
+Year: 2024; manufacturer: FOIRD; submodel: (missing); type: CAMIONES.
+Expected: Q00084; returned: C000BM; ordered top-3: C000BM|N00001|R00091.
+Expected retrieval rank: (not retrieved). Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.30231362879276275, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: FORD F-150 XL CABINA REGULAR 4X4 V8 5.0L AUT
-  Fabricante: FORD; submodelo: F-150 PICK UP; tipo: PICK UP; segmento: PICK UP.
+Expected catalog code: Q00084; explicit years: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 8475: FORD; F-550; PICK UP; F-550 KTP XL CH 2P V8 6.7L TDI AUT 2 OCUP
+Returned catalog code: C000BM; explicit years: 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 1441: FORD; F-150 PICK UP; PICK UP; F-150 XL REG CAB 3.5L 2 PUERTAS AUTOMATICA 4X2
 
-Años registrados por código: 2013, 2014, 2015, 2016, 2017.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0127 — development — OTHER
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.08016005605459213, "vehicle_type": 0.0, "year": 0.12}`
+Source description: F450
+Year: 2023; manufacturer: FORD; submodel: F450; type: (missing).
+Expected: U00024; returned: H0004G; ordered top-3: H0004G|V000AP|U0009M.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.1829436331987381, "vehicle_type": 0.0, "year": 0.12}
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Expected catalog code: U00024; explicit years: 2001, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 10301: FORD; F-450; PICK UP; F-450 XL KTP 6.7L 2 PUERTAS AUTOMATICA DIESEL
+Returned catalog code: H0004G; explicit years: 2022, 2023.
+- Variant row 3745: FORD; F-150 PICK UP; PICK UP; FORD F-150 XL CREW CAB V6 3.3L 4 PTS AUT
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0162 — validation — CAMION
+## q0134 — development — OTHER
 
-**Consulta original:** CHASIS CABINA
+Source description: FREIGHTLINER DETROIT DIESEL DD13 CASCADIA CAS
+Year: 2025; manufacturer: FREIGHTLINER; submodel: CASCADIA 125; type: -.
+Expected: N0001W; returned: U0008Z; ordered top-3: U0008Z|N0001W|H0001S.
+Expected retrieval rank: 15.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.07967741935483871, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.5389693021774292, "vehicle_type": 0.0, "year": 0.12}
 
-- Año recibido: 2024.
-- Marca recibida: HINO.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `D0006W|B000D5|N0004N`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 21.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 1781.
+Expected catalog code: N0001W; explicit years: 2020, 2021, 2022, 2023, 2024, 2025, 2026.
+- Variant row 6716: FREIGHTLINER; CASCADIA; TRACTO CAMION; FREIGHTLINER NEW CASCADIA  EURO V DD13 470HP FULLER 18VEL
+Returned catalog code: U0008Z; explicit years: 2024, 2025.
+- Variant row 10549: FREIGHTLINER; CASCADIA; TRACTO CAMION; FREIGHTLINER CASCADIA 116 DD13 470HP
 
-**Respuesta esperada según la etiqueta: `M0001V`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: HINO 300 514 CHASIS CABINA 4.0L 3.48M L4 136HP DIS STD D/T
-  Fabricante: HINO; submodelo: 300 CHASIS; tipo: CAMION; segmento: CAMION DE 4.5 HASTA 6.5 TONELADAS.
-- Variante 2: HINO 300 514 CHASIS CABINA 4.0L 3.48M L4 136HP DIS STD D/T
-  Fabricante: HINO; submodelo: 300 CHASIS; tipo: PICK UP; segmento: PICK UP 3.5TOM.
+## q0137 — development — CAMION
 
-Años registrados por código: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+Source description: VOLTEO
+Year: 2010; manufacturer: FREIGHTLINER; submodel: (missing); type: VOLTEO.
+Expected: Z0000M; returned: G0004P; ordered top-3: G0004P|B00045|Y0000B.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4302010595798493, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `D0006W`**
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: G0004P; explicit years: 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+- Variant row 3241: FREIGHTLINER; M2 33K; CAMION; FREIGHTLINER M2 33K VOLTEO 190HP
 
-- Variante 1: HINO SERIE 500 2628 6X2 CHASIS CABINA
-  Fabricante: HINO; submodelo: 500; tipo: CAMION; segmento: CAMION DE 9.5 HASTA 12.5 TONELADAS.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2022, 2023, 2024.
+## q0144 — development — OTHER
 
-**Contribuciones al score del top-1:**
+Source description: CHEVROLET SILVERADO 1500 CAB. REG. D STD
+Year: 2012; manufacturer: GENERAL MOTORS; submodel: (missing); type: (missing).
+Expected: W0008P; returned: R000AP; ordered top-3: R000AP|W0008P|L0008K.
+Expected retrieval rank: 11.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08510416666666666, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.47731465101242065, "vehicle_type": 0.0, "year": 0.12}
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.45343301296234134, "vehicle_type": 0, "year": 0.12}`
+Expected catalog code: W0008P; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 11565: GENERAL MOTORS; SILVERADO 1500; PICK UP; CHEVROLET SILVERADO 1500 CABINA REGULAR 4.3L 195HP V6 STD CA BA
+Returned catalog code: R000AP; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+- Variant row 9079: GENERAL MOTORS; SILVERADO 1500; PICK UP; CHEVROLET C-1500 PICK UP SILVERADO STD V6
 
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0151 — development — CAMION
 
-### q0186 — validation — OTHER
+Source description: GIANT MOTORS JAC FRISON T6 2.0L 4CL 190 HP 213 BLP 6 VEL  CHASIS CABINA  X200
+Year: 2024; manufacturer: GIANT MOTORS; submodel: (missing); type: PICKUP.
+Expected: Z0008D; returned: N000CN; ordered top-3: N000CN|Z0008D|H0006S.
+Expected retrieval rank: 12.0. Recognized conflicts: manufacturer.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": -0.1, "submodel": 0.0, "tfidf": 0.2693126142024994, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** CISTERNA CHASSIS CABINA  MOD 4400 250 4X2
+Expected catalog code: Z0008D; explicit years: 2024, 2025.
+- Variant row 13094: JAC; T6; PICK UP; T6 FLEX FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
+Returned catalog code: N000CN; explicit years: 2020, 2021, 2022, 2023, 2024.
+- Variant row 7106: JAC; T6; PICK UP; T6 FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
 
-- Año recibido: 2003.
-- Marca recibida: INTERNACIONAL.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `B0003G|H00002|U000DT`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 28.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 636.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `X0001T`**
+## q0163 — development — CAMION
 
-- Variante 1: INTERNACIONAL 4300 CHASIS CABINA MODULAR N G 4 X 2 210HP 15.8 TON
-  Fabricante: INTERNATIONAL; submodelo: 4300 MAS DE 14 TON; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
+Source description: HINO 1018 G EURO
+Year: 2024; manufacturer: HINO; submodel: (missing); type: CAMIONES.
+Expected: N0004N; returned: B000D5; ordered top-3: B000D5|N0004N|K0004M.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.503111493587494, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+Expected catalog code: N0004N; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2023, 2024, 2025.
+- Variant row 6817: HINO; 1018; CAMION; EQ HINO MOTORS 1018G CHASIS CABINA
+Returned catalog code: B000D5; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 987: HINO; 1018; CAMION; EQ HINO MOTORS 1018J CHASIS CABINA
 
-**Primera respuesta devuelta: `B0003G`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: INTERNACIONAL 4400 CHASIS CABINA 6 X 2 250HP 23.5 TON
-  Fabricante: INTERNATIONAL; submodelo: 4400; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
+## q0175 — development — AUTO
 
-Años registrados por código: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+Source description: HYUNDAI GRANDi10
+Year: 2022; manufacturer: HYUNDAI; submodel: (missing); type: AUTO.
+Expected: L000BP; returned: J000B7; ordered top-3: J000B7|Q000B9|R0005L.
+Expected retrieval rank: 43.0. Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.39230584502220156, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: L000BP; explicit years: 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
+- Variant row 6055: HYUNDAI; Grand i; AUTO; GRAND i10 GL MID 1.25L L4 AUT 4P TELA
+Returned catalog code: J000B7; explicit years: 2022, 2023.
+- Variant row 5015: HYUNDAI; HD72; CAMION; HYUNDAI EX8 CHASIS CABINA 4X2
 
-`{"fuzzy": 0.07223140495867768, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.329634690284729, "vehicle_type": 0.0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
+## q0180 — development — AUTO
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Source description: QX56 TA AWD V8 5PTAS
+Year: 2012; manufacturer: INFINITI; submodel: (missing); type: AUTOS.
+Expected: G0003R; returned: K000B7; ordered top-3: K000B7|G0003R|F0003D.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5324179530143738, "vehicle_type": 0, "year": 0.12}
 
-### q0204 — validation — CAMION
+Expected catalog code: G0003R; explicit years: 2012, 2013, 2014.
+- Variant row 3207: INFINITI; QX56; AUTO; QX 56 AWD 5.6L V8 7SPEED AUT., 08 OCUP.
+Returned catalog code: K000B7; explicit years: 2006, 2012, 2013, 2014.
+- Variant row 5525: INFINITI; QX56; AUTO; INFINITI QX56 5.6L AWD V8 AUT CA CE PIEL CQ CB
 
-**Consulta original:** JAC FRISON T8 L4 STD
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Año recibido: 2024.
-- Marca recibida: JAC.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMIONES (HASTA 1.5 TONS.).
-- Top-3 devuelto, en orden: `B000CS|J0005B|N000CN`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 974.
+## q0188 — development — CAMION
 
-**Respuesta esperada según la etiqueta: `J0005B`**
+Source description: VOLTEO
+Year: 2008; manufacturer: INTERNACIONAL; submodel: (missing); type: VOLTEO.
+Expected: Z0000M; returned: E000BZ; ordered top-3: E000BZ|F0002G|L0001A.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3676578998565674, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: T8 FRISON L4 2.0L 139 CP 4 PUERTAS STD BA AA 4X4
-  Fabricante: JAC; submodelo: T8; tipo: PICK UP; segmento: PICK UP.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: E000BZ; explicit years: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 2477: INTERNATIONAL; 4300 MAS DE 14 TON; CAMION; INTERNACIONAL 4300 4X2 VOLTEO 195HP 15 TON
 
-Años registrados por código: 2022, 2023, 2024, 2025, 2026.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Primera respuesta devuelta: `B000CS`**
+## q0195 — development — CAMION
 
-- Variante 1: T8 FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
-  Fabricante: JAC; submodelo: T8; tipo: PICK UP; segmento: PICK UP.
+Source description: VOLTEO 4300
+Year: 2002; manufacturer: INTERNATIONAL; submodel: (missing); type: (missing).
+Expected: Z0000M; returned: E000BZ; ordered top-3: E000BZ|Y000DN|A000B2.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.474579656124115, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 2024, 2025.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: E000BZ; explicit years: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 2477: INTERNATIONAL; 4300 MAS DE 14 TON; CAMION; INTERNACIONAL 4300 4X2 VOLTEO 195HP 15 TON
 
-**Contribuciones al score del top-1:**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5242019712924958, "vehicle_type": 0, "year": 0.12}`
+## q0200 — development — CAMION
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Source description: ISUZU ELF600 CHASIS CABINA
+Year: 2018; manufacturer: ISUZU; submodel: (missing); type: CAMIONES.
+Expected: P0002U; returned: S00079; ordered top-3: S00079|P0002U|K000CV.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08022222222222222, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4903830707073212, "vehicle_type": 0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: P0002U; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 7770: ISUZU; ELF 600; CAMION; EQ ISUZU ELF 600 CHASIS CABINA "H"
+Returned catalog code: S00079; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025, 2026.
+- Variant row 9464: ISUZU; ELF 600; CAMION; EQ ISUZU ELF 600 CHASIS CABINA "M"
 
-### q0206 — validation — PICKUP
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** PICK UP JACK FRISON T6
+## q0205 — development — OTHER
 
-- Año recibido: 2024.
-- Marca recibida: JACK.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `N000CN|Z0008D|G000CP`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7106.
+Source description: SUNRAY PASS SMART
+Year: 2025; manufacturer: JAC; submodel: SUNRAY PASS SMART; type: (missing).
+Expected: E0001N; returned: C000BV; ordered top-3: C000BV|E0001N|B000BM.
+Expected retrieval rank: 5.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.061290322580645165, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.42449820041656494, "vehicle_type": 0.0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `Z0008D`**
+Expected catalog code: E0001N; explicit years: 2018, 2022, 2023, 2024, 2025, 2026.
+- Variant row 2100: JAC; SUNRAY; AUTO; SUNRAY PASAJE L4 2.8T 150 CP 5 PTS STD
+Returned catalog code: C000BV; explicit years: 2021, 2022, 2023, 2024, 2025, 2026, 2027.
+- Variant row 1450: JAC; HFC; PICK UP; SUNRAY CARGO L4 2.8T 150 CP 5 PTS STD
+- Variant row 1451: JAC; SUNRAY; PICK UP; SUNRAY CARGO L4 2.8T 150 CP 5 PTS STD
 
-- Variante 1: T6 FLEX FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
-  Fabricante: JAC; submodelo: T6; tipo: PICK UP; segmento: PICK UP.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2024, 2025.
+## q0210 — development — OTHER
 
-**Primera respuesta devuelta: `N000CN`**
+Source description: SAHARA
+Year: 2020; manufacturer: JEEP UNLIMITED; submodel: SAHARA; type: (missing).
+Expected: K0004F; returned: X000A6; ordered top-3: X000A6|U0008O|B00015.
+Expected retrieval rank: 35.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.41441068053245544, "vehicle_type": 0.0, "year": 0.12}
 
-- Variante 1: T6 FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
-  Fabricante: JAC; submodelo: T6; tipo: PICK UP; segmento: PICK UP.
+Expected catalog code: K0004F; explicit years: 2018, 2019, 2020.
+- Variant row 5278: CHRYSLER; JEEP WRANGLER; AUTO; WRANGLER JL UNLIMITED RUBICON 3.6L 5 PUERTAS AUTOMATICA
+Returned catalog code: X000A6; explicit years: 2020, 2021.
+- Variant row 12134: CHRYSLER; JEEP WRANGLER; AUTO; WRANGLER UNLIMITED SAHARA L4 2.0L 270 CP 5 PUERTAS AUT MILD HYBRID
+- Variant row 12135: CHRYSLER; JEEP WRANGLER; AUTO; WRANGLER UNLIMITED SAHARA L4 2.0L 270 CP 5P AUT MILD HYBRID
 
-Años registrados por código: 2020, 2021, 2022, 2023, 2024.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0211 — development — OTHER
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.38269154727458954, "vehicle_type": 0, "year": 0.12}`
+Source description: JETTA
+Year: 2024; manufacturer: JETTA; submodel: (missing); type: (missing).
+Expected: S0003P; returned: M0006V; ordered top-3: M0006V|I000D3|K000AO.
+Expected retrieval rank: (not retrieved). Recognized conflicts: year.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.47157740592956543, "vehicle_type": 0.0, "year": -0.2}
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Expected catalog code: S0003P; explicit years: 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
+- Variant row 9335: VOLKSWAGEN; JETTA A7; AUTO; JETTA A7 COMFORTLINE 1.4T 4 PUERTAS AUTOMATICA
+Returned catalog code: M0006V; explicit years: 1989, 1990, 1991, 1992.
+- Variant row 6390: VOLKSWAGEN; JETTA A2; AUTO; JETTA GL AUT.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0221 — validation — TRACTO
+## q0216 — development — CAMION
 
-**Consulta original:** T800
+Source description: T-880 DORMITORIO 52 PULG
+Year: 2019; manufacturer: KENWORTH; submodel: (missing); type: CAMION.
+Expected: G0008A; returned: T0003N; ordered top-3: T0003N|G0008A|T0008K.
+Expected retrieval rank: 2.0. Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.45688576698303224, "vehicle_type": 0, "year": 0.12}
 
-- Año recibido: 2017.
-- Marca recibida: KENWORTH.
-- Submarca recibida: vacía.
-- Tipo recibido: TRACTO.
-- Top-3 devuelto, en orden: `X0003K|F0000H|Z0003D`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 11891.
+Expected catalog code: G0008A; explicit years: 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 3370: KENWORTH; T800; TRACTO CAMION; TR KENWORTH T-880 PACCAR MX 13 500HP DORM 52 18V
+Returned catalog code: T0003N; explicit years: 2015, 2016, 2017, 2018, 2019, 2020, 2021.
+- Variant row 9844: KENWORTH; T680; TRACTO CAMION; KENWORTH T 880 52 in CUMMINS ISX 450 HP
 
-**Respuesta esperada según la etiqueta: `F0000H`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: TR KENWORTH T 800 B 42"
-  Fabricante: KENWORTH; submodelo: T800; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
+## q0226 — development — AUTO
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+Source description: RIO SEDAN SD LX
+Year: 2020; manufacturer: KIA; submodel: RIO SEDAN SD LX; type: (missing).
+Expected: S0002L; returned: D0003G; ordered top-3: D0003G|I00058|S0002L.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.06551724137931034, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.515907508134842, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `X0003K`**
+Expected catalog code: S0002L; explicit years: 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+- Variant row 9294: KIA; RIO; AUTO; RIO LX 1.6L 4 PUERTAS MANUAL
+Returned catalog code: D0003G; explicit years: 2018, 2019, 2020, 2021, 2022, 2023.
+- Variant row 1656: KIA; RIO; AUTO; RIO LX 1.6L 4P AUT
 
-- Variante 1: TR KENWORTH T-800 B 42
-  Fabricante: KENWORTH; submodelo: T800; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2017.
+## q0237 — development — AUTO
 
-**Contribuciones al score del top-1:**
+Source description: LX700h LUXURY
+Year: 2026; manufacturer: LEXUS; submodel: (missing); type: AUTOS.
+Expected: H0006M; returned: J000BA; ordered top-3: J000BA|H0006M|R000BM.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4618657171726227, "vehicle_type": 0, "year": 0.12}
 
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4618758022785187, "vehicle_type": 0, "year": 0.12}`
+Expected catalog code: H0006M; explicit years: 2025, 2026.
+- Variant row 3823: LEXUS; LEXUS; AUTO; LEXUS LX 700H LUXURY, V6, 3.5T, 457 CP, 5 PUERTAS, AUT, BA, AA, QC, HEV
+Returned catalog code: J000BA; explicit years: 2023, 2025, 2026.
+- Variant row 5018: LEXUS; LEXUS; AUTO; LEXUS NX 350H LUXURY L4 2.5L 5 PTS AUT BA AA HEV
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0242 — development — OTHER
 
-### q0315 — validation — REMOLQUE
+Source description: CARRO ESCALA 106 PIES
+Year: 1985; manufacturer: LTI; submodel: (missing); type: (missing).
+Expected: B0008E; returned: I00003; ordered top-3: I00003|R00092|B0008E.
+Expected retrieval rank: 7.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.1618940055370331, "vehicle_type": 0.0, "year": 0.12}
 
-**Consulta original:** REMOLQUE
+Expected catalog code: B0008E; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004.
+- Variant row 816: FREIGHTLINER; FL-106; CAMION; EQ FREIGHTLINER FL-106 52K 6X4 CHASIS CABINA
+Returned catalog code: I00003; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
+- Variant row 4094: CHRYSLER; D-600 TANQUE; CAMION; DODGE D-600 CARRO TANQUE
 
-- Año recibido: 2021.
-- Marca recibida: REMOLQUES.
-- Submarca recibida: REMOLQUE.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `Q00046|O0008Q|P0008I`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 43.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8332.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+## q0243 — development — OTHER
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: MARCH ACTIVE HB STD AA CD BA 106HP ABS 1.6L 4CIL 5P 5OCUP 2020
+Year: 2020; manufacturer: MARCH ACTIVE HB STD AA CD BA 106HP ABS 1.6L 4CIL 5P 5OCUP; submodel: (missing); type: (missing).
+Expected: Z0003Z; returned: Z0006S; ordered top-3: Z0006S|Z0003Z|T00051.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3857463151216507, "vehicle_type": 0.0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: Z0003Z; explicit years: 2016, 2017, 2018, 2019, 2020.
+- Variant row 12934: NISSAN; MARCH; AUTO; NISSAN MARCH ACTIVE, 1.6L, 5 PUERTAS, MANUAL, AC, ABS
+Returned catalog code: Z0006S; explicit years: 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 13036: NISSAN; MARCH; AUTO; MARCH ACTIVE 1.6L 5 PUERTAS MANUAL AC
 
-**Primera respuesta devuelta: `Q00046`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: SEMIREMOLQUE TANQUE ELIPTICO
-  Fabricante: SEMIRREMOLQUES; submodelo: TANQUE; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+## q0247 — development — AUTO
 
-Años registrados por código: 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+Source description: MAZDA 3I SPORT L4 2.5 SEDAN AUT
+Year: 2021; manufacturer: MAZDA; submodel: (missing); type: AUTOMOVIL.
+Expected: A00091; returned: J0006X; ordered top-3: J0006X|J000BG|K0002W.
+Expected retrieval rank: 47.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3158358782529831, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: A00091; explicit years: 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
+- Variant row 329: MAZDA; 3; AUTO; 3 I SPORT 2.5L 4 PUERTAS AUTOMATICA
+Returned catalog code: J0006X; explicit years: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 4858: MAZDA; CX5; AUTO; MAZDA CX-5 I SPORT 2.0L L4 AUT 5P ABS CA CE TELA CD CB
 
-`{"fuzzy": 0.06333333333333334, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.14798598736524582, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
+## q0248 — development — AUTO
 
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
+Source description: MAZDA 3i AUT 4 PTAS C/A.AC
+Year: 2010; manufacturer: MAZDA; submodel: (missing); type: AUTOMOVIL.
+Expected: Z00061; returned: W0004G; ordered top-3: W0004G|W000AJ|E0000K.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.302870911359787, "vehicle_type": 0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: Z00061; explicit years: 2010, 2011, 2012, 2013, 2014, 2015.
+- Variant row 13009: MAZDA; 3; AUTO; 3 SEDAN SPORT 4P AUT., 05 OCUP
+Returned catalog code: W0004G; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 11410: MAZDA; 3; AUTO; MAZDA 3 I 2.0L L4 AUT 4P D/V CA SE TELA CD SQ CB
 
-### q0323 — validation — REMOLQUE
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** PLATAFORMA TANDEM 2 EJES
+## q0250 — development — AUTO
 
-- Año recibido: 2016.
-- Marca recibida: RM SEMIREMOLQUE.
-- Submarca recibida: vacía.
-- Tipo recibido: CHASIS.
-- Top-3 devuelto, en orden: `S0008A|U0002I|T00076`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 5.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9501.
+Source description: CLASE C 300 SPORT AUT
+Year: 2020; manufacturer: MBENZ; submodel: (missing); type: AUTOMOVIL.
+Expected: G00080; returned: P0002D; ordered top-3: P0002D|J000BQ|Z000DY.
+Expected retrieval rank: 24.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.36737685799598696, "vehicle_type": 0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `T00076`**
+Expected catalog code: G00080; explicit years: 2020.
+- Variant row 3360: MERCEDES BENZ; CLASE C; AUTO; CGI SPORT 2.0T 4 PUERTAS AUTOMATICA
+Returned catalog code: P0002D; explicit years: 2019, 2020, 2021.
+- Variant row 7752: MERCEDES BENZ; CLASE C; AUTO; CLASE C 300 CGI COUPE 2.0T 2 PUERTAS AUTOMATICA
 
-- Variante 1: RM PLATAFORMA PLANA 2 EJES 48
-  Fabricante: SEMIRREMOLQUES; submodelo: PLATAFORMA ALTA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+## q0264 — development — OTHER
 
-**Primera respuesta devuelta: `S0008A`**
+Source description: COOPER S HOT CHILI
+Year: 2007; manufacturer: MINI; submodel: COOPER S HOT CHILI; type: (missing).
+Expected: Z000DZ; returned: Q0004F; ordered top-3: Q0004F|K00011|Z000DZ.
+Expected retrieval rank: 10.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.6758727908134461, "vehicle_type": 0.0, "year": 0.12}
 
-- Variante 1: RM PLATAFORMA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: PLATAFORMA ALTA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Expected catalog code: Z000DZ; explicit years: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+- Variant row 13298: BMW; MINI COOPER; AUTO; MINI COOPER S HOT CHILI 1.6L 163HP L4 STD 2P PIEL CA CE
+Returned catalog code: Q0004F; explicit years: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
+- Variant row 8341: BMW; MINI COOPER; AUTO; MINI COOPER S HOT CHILI L4 AUT 2P CA CE PIEL CD CQ CB
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0267 — development — REMOLQUE
 
-`{"fuzzy": 0.0755421686746988, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3930980354547501, "vehicle_type": 0, "year": 0.12}`
+Source description: TOLVA
+Year: 2016; manufacturer: MIRELES; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|L0008A|U0007D.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.39190560579299927, "vehicle_type": 0, "year": 0.12}
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0349 — validation — AUTO
+## q0268 — development — CAMION
 
-**Consulta original:** AUTOMOVIL YARIS CORE H/B MT AC
+Source description: HILUX DOBLE CABINA BASE STD 4P 4CIL
+Year: 2023; manufacturer: MITSUBICHI; submodel: (missing); type: CAMION.
+Expected: Z000BV; returned: Z0004B; ordered top-3: Z0004B|F0008T|Z000BV.
+Expected retrieval rank: 7.0. Recognized conflicts: manufacturer|vehicle_type.
+Score contributions: {"fuzzy": 0.06690140845070423, "manufacturer": -0.1, "submodel": 0.0, "tfidf": 0.3762846350669861, "vehicle_type": 0, "year": 0.12}
 
-- Año recibido: 2014.
-- Marca recibida: TOYOTA YARIS.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `D0009T|L0004M|Y0004U`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 1886.
+Expected catalog code: Z000BV; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 13221: TOYOTA; HILUX PICK UP; PICK UP; HILUX CABINA DOBLE 2.7L L4 STD 4P CA CE CB
+Returned catalog code: Z0004B; explicit years: 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
+- Variant row 12946: TOYOTA; HILUX PICK UP; PICK UP; HILUX DOBLE CABINA DIESEL 2.8L 4P STD
 
-**Respuesta esperada según la etiqueta: `Y0004U`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: YARIS CORE HB 1.5L 106HP L4 STD 5P CA SE CD CB
-  Fabricante: TOYOTA; submodelo: YARIS; tipo: AUTO; segmento: SUBCOMPACTO.
+## q0269 — development — CAMION
 
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022.
+Source description: L200 GLX DIESEL STD 4P 4CIL 2.4L 4WD
+Year: 2023; manufacturer: MITSUBICHI; submodel: (missing); type: CAMION.
+Expected: S0002A; returned: T0001C; ordered top-3: T0001C|L0006M|S0002A.
+Expected retrieval rank: 6.0. Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.06627906976744186, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.336882421374321, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `D0009T`**
+Expected catalog code: S0002A; explicit years: 2022, 2023, 2024, 2025.
+- Variant row 9283: MITSUBISHI; L200; PICK UP; MITSUBISHI L200 GLX L4 178 CP DSL 4 PTS STD
+Returned catalog code: T0001C; explicit years: 2022, 2023, 2024, 2025, 2026.
+- Variant row 9760: MITSUBISHI; L200; PICK UP; MITSUBISHI L200 GLX L4 126 CP 4 PTS STD
 
-- Variante 1: YARIS CORE 1.5L L4 AUT 4P D/T CA CE TELA CD SQ CB
-  Fabricante: TOYOTA; submodelo: YARIS; tipo: AUTO; segmento: SUBCOMPACTO.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2014.
+## q0270 — development — CAMION
 
-**Contribuciones al score del top-1:**
+Source description: L200 GLX DIESEL STD 4P 4CIL 2.4L 4WD
+Year: 2024; manufacturer: MITSUBICHI; submodel: (missing); type: CAMION.
+Expected: S0002A; returned: T0001C; ordered top-3: T0001C|L0006M|S0002A.
+Expected retrieval rank: 6.0. Recognized conflicts: vehicle_type.
+Score contributions: {"fuzzy": 0.06627906976744186, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.336882421374321, "vehicle_type": 0, "year": 0.12}
 
-`{"fuzzy": 0.059814814814814814, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5168550252914429, "vehicle_type": 0, "year": 0.12}`
+Expected catalog code: S0002A; explicit years: 2022, 2023, 2024, 2025.
+- Variant row 9283: MITSUBISHI; L200; PICK UP; MITSUBISHI L200 GLX L4 178 CP DSL 4 PTS STD
+Returned catalog code: T0001C; explicit years: 2022, 2023, 2024, 2025, 2026.
+- Variant row 9760: MITSUBISHI; L200; PICK UP; MITSUBISHI L200 GLX L4 126 CP 4 PTS STD
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0273 — development — AUTO
 
-### q0351 — validation — AUTO
+Source description: MITSUBISHI MIRAGE GLX L3 1.2 AUT
+Year: 2017; manufacturer: MITSUBISHI; submodel: (missing); type: AUTOMOVIL.
+Expected: V00022; returned: W000DT; ordered top-3: W000DT|V00022|F000BX.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08142857142857142, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5564435184001922, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** AUTOMOVIL YARIS CORE H/B MT A/A
+Expected catalog code: V00022; explicit years: 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 10810: MITSUBISHI; MIRAGE; AUTO; MIRAGE GLX 1.2L 5 PUERTAS CVT
+- Variant row 10811: MITSUBISHI; MIRAGE; AUTO; MIRAGE GLX 1.2L L3 AUT CVT 5P CA CE CB
+Returned catalog code: W000DT; explicit years: 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 11752: MITSUBISHI; MIRAGE; AUTO; MIRAGE GLX 1.2L 5 PUERTAS MANUAL
+- Variant row 11753: MITSUBISHI; MIRAGE; AUTO; MIRAGE GLX 1.2L L3 STD 5P CA CE CB
 
-- Año recibido: 2014.
-- Marca recibida: TOYOYA YARIS.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `D0009T|L0004M|Y0004U`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 1886.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `Y0004U`**
+## q0274 — development — PICKUP
 
-- Variante 1: YARIS CORE HB 1.5L 106HP L4 STD 5P CA SE CD CB
-  Fabricante: TOYOTA; submodelo: YARIS; tipo: AUTO; segmento: SUBCOMPACTO.
+Source description: PICK UP L200 GLX DOBLE CAB 4WD L4 TDI STD 4 ABS CA CE TELA SM
+Year: 2023; manufacturer: MITSUBISHI; submodel: PICK UP L200 GLX DOBLE CAB 4WD STD; type: (missing).
+Expected: S0002A; returned: T0001C; ordered top-3: T0001C|S0002A|L0006M.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.3924002319574356, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022.
+Expected catalog code: S0002A; explicit years: 2022, 2023, 2024, 2025.
+- Variant row 9283: MITSUBISHI; L200; PICK UP; MITSUBISHI L200 GLX L4 178 CP DSL 4 PTS STD
+Returned catalog code: T0001C; explicit years: 2022, 2023, 2024, 2025, 2026.
+- Variant row 9760: MITSUBISHI; L200; PICK UP; MITSUBISHI L200 GLX L4 126 CP 4 PTS STD
 
-**Primera respuesta devuelta: `D0009T`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: YARIS CORE 1.5L L4 AUT 4P D/T CA CE TELA CD SQ CB
-  Fabricante: TOYOTA; submodelo: YARIS; tipo: AUTO; segmento: SUBCOMPACTO.
+## q0277 — development — CAMION
 
-Años registrados por código: 2014.
+Source description: INTERNATIONAL 4700 COMPACTADOR INTERNACIONAL
+Year: 2002; manufacturer: NAV INT CORP; submodel: COMPACTADOR INTERNACIONAL; type: CAMION.
+Expected: K000A4; returned: P0006M; ordered top-3: P0006M|K000A4|P0005X.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.06831460674157303, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3265778303146362, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: K000A4; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014.
+- Variant row 5486: INTERNATIONAL; 4700 MAS DE 14 TON; CAMION; INTERNACIONAL 4700 CHASIS CABINA 4 X 2 NAVISTAR DT 466 E 190HP 15.4 TON
+Returned catalog code: P0006M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005.
+- Variant row 7911: INTERNATIONAL; 4700 MAS DE 14 TON; CAMION; INTERNACIONAL 4700 CHASIS CABINA 4 X 2 DT 466 E 175HP 15.4 TON
 
-`{"fuzzy": 0.05915094339622641, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.4379332780838013, "vehicle_type": 0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+## q0290 — development — OTHER
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Source description: COCHE GRIS OXFORD SEDAM ADVANCE MT
+Year: 2013; manufacturer: NISSAN SEDAN; submodel: (missing); type: (missing).
+Expected: Q0007J; returned: Z000AH; ordered top-3: Z000AH|Q0007J|V0001D.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.05659574468085107, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.16150036454200745, "vehicle_type": 0.0, "year": 0.12}
 
-### q0360 — validation — PICKUP
+Expected catalog code: Q0007J; explicit years: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
+- Variant row 8454: NISSAN; SENTRA; AUTO; SENTRA ADVANCE 1.8L L4 STD 4P CA CE TELA CD CB
+Returned catalog code: Z000AH; explicit years: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
+- Variant row 13171: NISSAN; MARCH; AUTO; MARCH ADVANCE L4 STD 5P CA CE TELA CD CB
 
-**Consulta original:** V.W. SAVEIRO  ROJO
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Año recibido: 2012.
-- Marca recibida: V.
-- Submarca recibida: vacía.
-- Tipo recibido: PICKUP´S.
-- Top-3 devuelto, en orden: `M000DT|R0004R|B000B1`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 8.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 6640.
+## q0295 — development — PICKUP
 
-**Respuesta esperada según la etiqueta: `B000B1`**
+Source description: PEUGEOT PARTNER MAXI PACK STD DIESEL
+Year: 2025; manufacturer: PEUGEOT; submodel: (missing); type: PICKUP CARGA.
+Expected: B000AH; returned: U0005Y; ordered top-3: U0005Y|B000AH|E0006Y.
+Expected retrieval rank: 3.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0778688524590164, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.629653126001358, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: VOLKSWAGEN SAVEIRO STARTLINE 1.6L STD CA DH
-  Fabricante: VOLKSWAGEN; submodelo: SAVEIRO; tipo: PICK UP; segmento: PICK UP.
+Expected catalog code: B000AH; explicit years: 2025.
+- Variant row 891: PEUGEOT; PARTNER MAXI; PICK UP; PARTNER MAXI PACK L4 1.6T 90 CP 5 PUERTAS STD BA AA FL DIESEL
+Returned catalog code: U0005Y; explicit years: 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027.
+- Variant row 10439: PEUGEOT; PARTNER MAXI; PICK UP; PARTNER MAXI PACK 1.6T 5 PUERTAS MANUAL
 
-Años registrados por código: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Primera respuesta devuelta: `M000DT`**
+## q0316 — development — REMOLQUE
 
-- Variante 1: VOLKSWAGEN SAVEIRO STARTLINE 1.6L STD
-  Fabricante: VOLKSWAGEN; submodelo: SAVEIRO; tipo: PICK UP; segmento: PICK UP.
+Source description: REMOLQUE
+Year: 1991; manufacturer: REMOLQUES; submodel: REMOLQUE; type: (missing).
+Expected: Z0000M; returned: G00060; ordered top-3: G00060|E0009F|H000D3.
+Expected retrieval rank: 43.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.35425066351890566, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: G00060; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 3288: SEMIRREMOLQUES; TANQUE; SEMIREMOLQUE; REMOLQUE TIPO TANQUE 30000 LTS.
 
-**Contribuciones al score del top-1:**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.41259557604789737, "vehicle_type": 0, "year": 0.12}`
+## q0318 — development — PICKUP
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Source description: RENAULT RENAULT KANGOO EXPRESS CON AA CD BA STD VAN 4 CIL 4P
+Year: 2015; manufacturer: RENAULT; submodel: (missing); type: PICKUP CARGA.
+Expected: M0001Y; returned: U0007N; ordered top-3: U0007N|M0001Y|Z000DX.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.07841269841269843, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5286436557769776, "vehicle_type": 0, "year": 0.12}
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Expected catalog code: M0001Y; explicit years: 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
+- Variant row 6211: RENAULT; KANGOO VAN; PICK UP; KANGOO EXPRESS 1.6L C/A AC STD., 02 OCUP.
+Returned catalog code: U0007N; explicit years: 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2017.
+- Variant row 10500: RENAULT; KANGOO VAN; PICK UP; RENAULT KANGOO EXPRESS. L4 D/H C/B
 
-### q0383 — validation — OTHER
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Consulta original:** CARRO UTILITARIO
+## q0324 — development — REMOLQUE
 
-- Año recibido: 2023.
-- Marca recibida: VW VIRTUS COMFORTLINE.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `R000CA|Q000C7|U0006C`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9137.
+Source description: REMOLQUE
+Year: 2000; manufacturer: S/M; submodel: REMOLQUE; type: (missing).
+Expected: Z0000M; returned: G00060; ordered top-3: G00060|E0009F|H000D3.
+Expected retrieval rank: 50.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3303191900253296, "vehicle_type": 0, "year": 0.12}
 
-**Respuesta esperada según la etiqueta: `Q000C7`**
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: G00060; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 3288: SEMIRREMOLQUES; TANQUE; SEMIREMOLQUE; REMOLQUE TIPO TANQUE 30000 LTS.
 
-- Variante 1: VIRTUS COMFORTLINE, L4, 1.6L, 110 CP, 4 PUERTAS, STD
-  Fabricante: VOLKSWAGEN; submodelo: VIRTUS; tipo: AUTO; segmento: COMPACTO.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2020, 2021, 2022, 2023, 2024, 2025.
+## q0340 — development — AUTO
 
-**Primera respuesta devuelta: `R000CA`**
+Source description: SUZUKI SWIFT SPORT GLE 1.4 AUT
+Year: 2022; manufacturer: SUZUKI; submodel: (missing); type: AUTOMOVIL.
+Expected: S0001Y; returned: H0000H; ordered top-3: H0000H|M0000Q|T00074.
+Expected retrieval rank: 13.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08015625, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.564158570766449, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: VIRTUS COMFORTLINE, L4, 1.6L, 110 CP, 4 PUERTAS, AUT
-  Fabricante: VOLKSWAGEN; submodelo: VIRTUS; tipo: AUTO; segmento: COMPACTO.
+Expected catalog code: S0001Y; explicit years: 2022.
+- Variant row 9271: SUZUKI; SWIFT; AUTO; SWIFT GLE SPORT BOOSTERJET L4 1.4L 5 PTS AUT
+Returned catalog code: H0000H; explicit years: 2022.
+- Variant row 3600: SUZUKI; SWIFT; AUTO; SUZUKI SWIFT GLE L4 1.2L 5 PTS AUT
 
-Años registrados por código: 2020, 2021, 2022, 2023, 2024, 2025.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Contribuciones al score del top-1:**
+## q0341 — development — AUTO
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.4543520987033844, "vehicle_type": 0.0, "year": 0.12}`
+Source description: SWIFT HB GLS 5P L4 1.2T ABS BA AC R16 STD.
+Year: 2021; manufacturer: SUZUKI; submodel: (missing); type: AUTOMOVIL.
+Expected: F0004U; returned: G000A3; ordered top-3: G000A3|T00074|F0004U.
+Expected retrieval rank: 4.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.07307692307692307, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3261412471532822, "vehicle_type": 0, "year": 0.12}
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Expected catalog code: F0004U; explicit years: 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 2732: SUZUKI; SWIFT; AUTO; SWIFT GLS 1.2L 5 PUERTAS MANUAL
+Returned catalog code: G000A3; explicit years: 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 3436: SUZUKI; ERTIGA; AUTO; ERTIGA GLS 5P L4 1.5T ABS BA AC STD 07 OCUP
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-### q0008 — development — OTHER
+## q0350 — development — PICKUP
 
-**Consulta original:** HINO 816 LONG SERIE 300
+Source description: HILUX DOBLE CABINA
+Year: 2024; manufacturer: TOYOYA; submodel: (missing); type: (missing).
+Expected: Z000BV; returned: F0008T; ordered top-3: F0008T|Z0004B|H000C0.
+Expected retrieval rank: 7.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5719518899917603, "vehicle_type": 0, "year": 0.12}
 
-- Año recibido: 2019.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `N00083|W0008K|I000AJ`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 9.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 6942.
+Expected catalog code: Z000BV; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 13221: TOYOTA; HILUX PICK UP; PICK UP; HILUX CABINA DOBLE 2.7L L4 STD 4P CA CE CB
+Returned catalog code: F0008T; explicit years: 2018, 2019, 2020, 2021, 2022, 2023, 2024.
+- Variant row 2876: TOYOTA; HILUX PICK UP; PICK UP; HILUX DOBLE CABINA DIESEL 2.8L 4P AUT
 
-**Respuesta esperada según la etiqueta: `I000AJ`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: 300 816 LARGO, 4.0T, 2 PUERTAS, MANUAL, HIBRIDO
-  Fabricante: HINO; submodelo: 300 CHASIS; tipo: CAMION; segmento: CAMION DE 4.5 HASTA 6.5 TONELADAS.
+## q0352 — development — TRACTO
 
-Años registrados por código: 2019.
+Source description: TR CAMION LEGALIZADO TIPO TRACTOCAMION. STD
+Year: 2010; manufacturer: TRACTO; submodel: (missing); type: TRACTO.
+Expected: E0005R; returned: O0003Q; ordered top-3: O0003Q|C000DF|E0006A.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.07862068965517242, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.24313146471977234, "vehicle_type": 0, "year": 0.12}
 
-**Primera respuesta devuelta: `N00083`**
+Expected catalog code: E0005R; explicit years: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 2249: MAN; TGS TRACTOCAMION; TRACTO CAMION; TR MAN TGS 39S 41.440 8X4
+Returned catalog code: O0003Q; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 7290: MACK; MACK TRACTOCAMION; TRACTO CAMION; TRACTOCAMION MACK
 
-- Variante 1: HINO 300 816 SUPER LARGO 4.0T 2P STD
-  Fabricante: HINO; submodelo: 300 CHASIS; tipo: CAMION; segmento: CAMION DE 4.5 HASTA 6.5 TONELADAS.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-Años registrados por código: 2018, 2019, 2022, 2023, 2024, 2025.
+## q0354 — development — TRACTO
 
-**Contribuciones al score del top-1:**
+Source description: KENWORTH T 680
+Year: 2025; manufacturer: TRACTO CAMION; submodel: (missing); type: TRACTO.
+Expected: K0009L; returned: Y000AG; ordered top-3: Y000AG|J0004N|K0009L.
+Expected retrieval rank: 33.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.08666666666666667, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.4228265404701233, "vehicle_type": 0, "year": 0.12}
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.35409375429153445, "vehicle_type": 0.0, "year": 0.12}`
+Expected catalog code: K0009L; explicit years: 2025.
+- Variant row 5467: KENWORTH; T680; TRACTO CAMION; KENWORTH T680 TRACTOCAMION KENWORTH NUEVA GENERACION
+Returned catalog code: Y000AG; explicit years: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027.
+- Variant row 12659: KENWORTH; T680; TRACTO CAMION; TRACTOCAMION KENWORTH T 680 52 in CUMMINS ISX 450 HP
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+## q0355 — development — TRACTO
 
-### q0012 — development — OTHER
+Source description: TR CAMION LEGALIZADO TIPO TRACTOCAMION. STD.
+Year: 2010; manufacturer: TRACTO CAMION; submodel: (missing); type: TRACTO.
+Expected: T0004H; returned: O0003Q; ordered top-3: O0003Q|C000DF|E0006A.
+Expected retrieval rank: 50.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.07862068965517242, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.23458364009857177, "vehicle_type": 0, "year": 0.12}
 
-**Consulta original:** NISSAN NP300 ESTACAS PAQ SEG DH AC STD
+Expected catalog code: T0004H; explicit years: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
+- Variant row 9874: MAN; TGA TRACTOCAMION; TRACTO CAMION; TR MAN TGA 26.430
+Returned catalog code: O0003Q; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+- Variant row 7290: MACK; MACK TRACTOCAMION; TRACTO CAMION; TRACTOCAMION MACK
 
-- Año recibido: 2018.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `P000AO|V00023|P000AN`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8059.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Respuesta esperada según la etiqueta: `V00023`**
+## q0358 — development — REMOLQUE
 
-- Variante 1: PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
-  Fabricante: NISSAN; submodelo: ESTACAS; tipo: PICK UP; segmento: PICK UP.
-- Variante 2: NP300 PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
-  Fabricante: NISSAN; submodelo: ESTACAS; tipo: PICK UP; segmento: PICK UP.
+Source description: TOLVA
+Year: 2018; manufacturer: TYRSOL; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|Z0003K|R0002X.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40210620760917665, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 2017, 2018, 2019, 2020.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-**Primera respuesta devuelta: `P000AO`**
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Variante 1: NP300 ESTACAS 2.4L 2 PUERTAS MANUAL DH PAQ SEG
-  Fabricante: NISSAN; submodelo: PICK UP; tipo: PICK UP; segmento: PICK UP.
+## q0359 — development — REMOLQUE
 
-Años registrados por código: 2015, 2017, 2018.
+Source description: TOLVA
+Year: 2017; manufacturer: TYRSOL; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|Y0001Z|Z0003K.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40210620760917665, "vehicle_type": 0, "year": 0.12}
 
-**Contribuciones al score del top-1:**
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5382496654987335, "vehicle_type": 0.0, "year": 0.12}`
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
+## q0361 — development — OTHER
 
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Source description: VENTURE EXT
+Year: 1998; manufacturer: VENTURE; submodel: VENTURE EXT; type: (missing).
+Expected: U0001I; returned: M0000S; ordered top-3: M0000S|U0001I|J00063.
+Expected retrieval rank: 2.0. Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.5289071023464204, "vehicle_type": 0.0, "year": 0.12}
 
-### q0014 — development — REMOLQUE
+Expected catalog code: U0001I; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
+- Variant row 10279: GENERAL MOTORS; VENTURE; AUTO; VENTURE VAN LT V6 AUT 5P CA CE PIEL CD CB
+Returned catalog code: M0000S; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005.
+- Variant row 6168: GENERAL MOTORS; VENTURE; AUTO; VENTURE LS V6 AUT 5P ABS CA CE TELA CD SQ CB
 
-**Consulta original:** PLATAFORMA 2 EJES
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-- Año recibido: 2006.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `S0008A|U0007I|D0006V`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9501.
+## q0369 — development — REMOLQUE
 
-**Respuesta esperada según la etiqueta: `Z0000M`**
+Source description: TOLVA
+Year: 2015; manufacturer: VISUSA; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|L0008A|U0007D.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3996225893497467, "vehicle_type": 0, "year": 0.12}
 
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
 
-**Primera respuesta devuelta: `S0008A`**
+## q0370 — development — REMOLQUE
 
-- Variante 1: RM PLATAFORMA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: PLATAFORMA ALTA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
+Source description: TOLVA
+Year: 2013; manufacturer: VISUSA; submodel: (missing); type: TOLVA.
+Expected: Z0000M; returned: Z0005P; ordered top-3: Z0005P|L0008A|U0007D.
+Expected retrieval rank: (not retrieved). Recognized conflicts: (none recognized).
+Score contributions: {"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3996225893497467, "vehicle_type": 0, "year": 0.12}
 
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+Expected catalog code: Z0000M; explicit years: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+- Variant row 12812: SEMIRREMOLQUES; CAJA SECA; SEMIREMOLQUE; RM CAJA CERRADA 2 EJES 40
+Returned catalog code: Z0005P; explicit years: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+- Variant row 12996: SEMIRREMOLQUES; TOLVA CEMENTERA; SEMIREMOLQUE; TOLVA CEMENTERA.
 
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.599103569984436, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0015 — development — REMOLQUE
-
-**Consulta original:** PLATAFORMA 2 EJES
-
-- Año recibido: 2004.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `S0008A|U0007I|D0006V`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9501.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `S0008A`**
-
-- Variante 1: RM PLATAFORMA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: PLATAFORMA ALTA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.599103569984436, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0018 — development — REMOLQUE
-
-**Consulta original:** REMOLQUES
-
-- Año recibido: 2025.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `G000CT|D0004U|U0001V`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 26.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3535.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `G000CT`**
-
-- Variante 1: RM JAULA 2 EJES 35
-  Fabricante: SEMIRREMOLQUES; submodelo: JAULA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018, 2019, 2023, 2025.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.09000000000000001, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.11544596403837204, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0019 — development — REMOLQUE
-
-**Consulta original:** RM SEMIREMOLQUE
-
-- Año recibido: 2019.
-- Marca recibida: vacía.
-- Submarca recibida: vacía.
-- Tipo recibido: CHASIS.
-- Top-3 devuelto, en orden: `Q00046|G000CT|Z0000M`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 10.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8332.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Q00046`**
-
-- Variante 1: SEMIREMOLQUE TANQUE ELIPTICO
-  Fabricante: SEMIRREMOLQUES; submodelo: TANQUE; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40149444937705997, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0047 — development — AUTO
-
-**Consulta original:** ESCALADE ESV PAQ B 2021
-
-- Año recibido: 2021.
-- Marca recibida: CADILLAC.
-- Submarca recibida: ESCALADE ESV PAQ B.
-- Tipo recibido: AUTO.
-- Top-3 devuelto, en orden: `I000A6|E0002F|S00067`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 7.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4464.
-
-**Respuesta esperada según la etiqueta: `E0002F`**
-
-- Variante 1: ESCALADE ESV PREMIUM LUXURY V8 6.2L 5 PTS AUT
-  Fabricante: CADILLAC; submodelo: ESCALADE; tipo: AUTO; segmento: SUV LUJO.
-
-Años registrados por código: 2021, 2022, 2023, 2025, 2026.
-
-**Primera respuesta devuelta: `I000A6`**
-
-- Variante 1: ESCALADE ESV PREMIUM V8 6.2L AUT 5P ABS CA CE PIEL CQ CB
-  Fabricante: CADILLAC; submodelo: ESCALADE; tipo: AUTO; segmento: SUV LUJO.
-- Variante 2: ESCALADE ESV PREMIUM 6.2L 5 PUERTAS AUTOMATICA PAQ E
-  Fabricante: CADILLAC; submodelo: ESCALADE; tipo: AUTO; segmento: SUV LUJO.
-
-Años registrados por código: 2015, 2016, 2020, 2021.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08333333333333333, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.5294214963912964, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0053 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2019.
-- Marca recibida: CARMEX.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|Z0003K|R0002X`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.2525744497776032, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0054 — development — REMOLQUE
-
-**Consulta original:** PLATAFORMA
-
-- Año recibido: 2008.
-- Marca recibida: CATAMEX.
-- Submarca recibida: PLATAFORMA.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `L0001A|D0006V|E0001Q`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 5675.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `L0001A`**
-
-- Variante 1: CAMION INTERNACIONAL PLATAFORMA .
-  Fabricante: INTERNATIONAL; submodelo: PLATAFORMA; tipo: CAMION; segmento: CAMION DE 9.5 HASTA 12.5 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.4611872792243958, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0055 — development — AUTO
-
-**Consulta original:** ALSVIN TM
-
-- Año recibido: 2024.
-- Marca recibida: CHANGAN.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOS.
-- Top-3 devuelto, en orden: `P0007H|P00056|Y00051`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7942.
-
-**Respuesta esperada según la etiqueta: `P00056`**
-
-- Variante 1: CHANGAN ALSVIN BASE L4 4 PTS STD
-  Fabricante: CHANGAN; submodelo: ALSVIN; tipo: AUTO; segmento: SEDAN.
-
-Años registrados por código: 2022, 2023, 2024, 2025, 2026.
-
-**Primera respuesta devuelta: `P0007H`**
-
-- Variante 1: CHANGAN ALSVIN BASE L4 4 PTS AUT
-  Fabricante: CHANGAN; submodelo: ALSVIN; tipo: AUTO; segmento: SEDAN.
-
-Años registrados por código: 2022, 2023, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5840484380722046, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0068 — development — OTHER
-
-**Consulta original:** TIGGO 8 PRO PREMIUM E HEV L4 HDS AUT 5 ABS CA CE PIEL SM CQ C
-
-- Año recibido: 2025.
-- Marca recibida: CHIREY.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `C000C5|S0002Y|S0004C`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 1461.
-
-**Respuesta esperada según la etiqueta: `S0002Y`**
-
-- Variante 1: CHIREY TIGGO 8 PRO E+ PREMIUM
-  Fabricante: CHIREY; submodelo: TIGGO 8; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2025.
-
-**Primera respuesta devuelta: `C000C5`**
-
-- Variante 1: CHIREY TIGGO 8 PRO PREMIUM L4 1.6T 5 PTS AUT PIEL
-  Fabricante: CHIREY; submodelo: TIGGO 8; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2024, 2025.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08539325842696631, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.605037260055542, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0074 — development — OTHER
-
-**Consulta original:** JEEP WRANGLER SAHARA
-
-- Año recibido: 2015.
-- Marca recibida: CHRYSLER.
-- Submarca recibida: JEEP WRANGLER SAHARA.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `I0007V|G00001|M0004C`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 17.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4380.
-
-**Respuesta esperada según la etiqueta: `G00001`**
-
-- Variante 1: WRANGLER UNLIMITED SAHARA 3.8L 205HP 4X4 V6 AUT 4P CA CE
-  Fabricante: CHRYSLER; submodelo: JEEP WRANGLER; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Primera respuesta devuelta: `I0007V`**
-
-- Variante 1: WRANGLER SAHARA TOLDO DURO 4X4 V6 AUT 2P CA CE PIEL CD
-  Fabricante: CHRYSLER; submodelo: JEEP WRANGLER; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.577604752779007, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0082 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2023.
-- Marca recibida: DALTO.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `J0007M|Z0005P|L0008A`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4883.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `J0007M`**
-
-- Variante 1: RM TOLVA GRANELERA 2 EJES NAC
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA GRANELERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 2020, 2021, 2022, 2023.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3192595839500427, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0083 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2020.
-- Marca recibida: DALTO.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|J0007M|R0002X`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40361698865890505, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0084 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2021.
-- Marca recibida: DALTO.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `J0007M|R0002X|K000DZ`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4883.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `J0007M`**
-
-- Variante 1: RM TOLVA GRANELERA 2 EJES NAC
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA GRANELERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 2020, 2021, 2022, 2023.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3192595839500427, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0089 — development — REMOLQUE
-
-**Consulta original:** PLATAFORMA
-
-- Año recibido: 2003.
-- Marca recibida: DEL NORTE.
-- Submarca recibida: PLATAFORMA.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `L0001A|D0006V|P000C6`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 5675.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `L0001A`**
-
-- Variante 1: CAMION INTERNACIONAL PLATAFORMA .
-  Fabricante: INTERNATIONAL; submodelo: PLATAFORMA; tipo: CAMION; segmento: CAMION DE 9.5 HASTA 12.5 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.40458899438381196, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0093 — development — CAMION
-
-**Consulta original:** VOLTEO
-
-- Año recibido: 1994.
-- Marca recibida: DINA.
-- Submarca recibida: vacía.
-- Tipo recibido: VOLTEO.
-- Top-3 devuelto, en orden: `W000CD|B0001Z|Y000DW`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 11700.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `W000CD`**
-
-- Variante 1: DINA VOLTEO DE 14 TON.
-  Fabricante: DINA; submodelo: 661-K VOLTEO; tipo: CAMION; segmento: CAMION DE 12.5 HASTA 14 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.09000000000000001, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.6013042151927949, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0100 — development — CAMION
-
-**Consulta original:** CHASIS CABINA
-
-- Año recibido: 2009.
-- Marca recibida: DODGE H100.
-- Submarca recibida: CHASIS CABINA.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `H0002P|U00085|K0009D`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: submodel|vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3681.
-
-**Respuesta esperada según la etiqueta: `U00085`**
-
-- Variante 1: DODGE H 100 CHASIS CABINA DH L4 CA
-  Fabricante: CHRYSLER; submodelo: H100 ESTACAS; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
-
-**Primera respuesta devuelta: `H0002P`**
-
-- Variante 1: H100 CHASIS CABINA DIESEL STD., 02 OCUP.
-  Fabricante: CHRYSLER; submodelo: H100 ESTACAS; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 2006, 2007, 2008, 2009.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": -0.05, "tfidf": 0.5092259645462036, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0104 — development — REMOLQUE
-
-**Consulta original:** EL AGUILA *
-
-- Año recibido: 2023.
-- Marca recibida: EL AGUILA.
-- Submarca recibida: vacía.
-- Tipo recibido: SEMIREMOLQUE.
-- Top-3 devuelto, en orden: `X0001I|W0005C|X00036`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: vehicle_type|year.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 11816.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `X0001I`**
-
-- Variante 1: EL NUEVO JETTA GL AUT., 05 OCUP.
-  Fabricante: VOLKSWAGEN; submodelo: JETTA A3; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.16423431336879732, "vehicle_type": 0, "year": -0.2}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0111 — development — OTHER
-
-**Consulta original:** ESTACAS DH NP300 ESTACAS STD AA 158HP 2.5L 4CIL 2P 3OCUP 2019
-
-- Año recibido: 2019.
-- Marca recibida: ESTACAS DH NP300 ESTACAS STD AA 158HP 2.5L 4CIL 2P 3OCUP.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `V00023|N0006O|W0009H`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 22.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 10813.
-
-**Respuesta esperada según la etiqueta: `H000BN`**
-
-- Variante 1: NP300 CHASIS CABINA 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
-  Fabricante: NISSAN; submodelo: CHASIS CABINA; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2017, 2018, 2019, 2020.
-
-**Primera respuesta devuelta: `V00023`**
-
-- Variante 1: PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
-  Fabricante: NISSAN; submodelo: ESTACAS; tipo: PICK UP; segmento: PICK UP.
-- Variante 2: NP300 PICK UP 2.5L 2 PUERTAS MANUAL DH AA PAQ SEG
-  Fabricante: NISSAN; submodelo: ESTACAS; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.30323477983474734, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0123 — development — CAMION
-
-**Consulta original:** FOIRD XL REG CHASIS F550
-
-- Año recibido: 2024.
-- Marca recibida: FOIRD.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMIONES.
-- Top-3 devuelto, en orden: `C000BM|N00001|R00091`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 1441.
-
-**Respuesta esperada según la etiqueta: `Q00084`**
-
-- Variante 1: F-550 KTP XL CH 2P V8 6.7L TDI AUT 2 OCUP
-  Fabricante: FORD; submodelo: F-550; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Primera respuesta devuelta: `C000BM`**
-
-- Variante 1: F-150 XL REG CAB 3.5L 2 PUERTAS AUTOMATICA 4X2
-  Fabricante: FORD; submodelo: F-150 PICK UP; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.30231362879276275, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0127 — development — OTHER
-
-**Consulta original:** F450
-
-- Año recibido: 2023.
-- Marca recibida: FORD.
-- Submarca recibida: F450.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `H0004G|V000AP|U0009M`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3745.
-
-**Respuesta esperada según la etiqueta: `U00024`**
-
-- Variante 1: F-450 XL KTP 6.7L 2 PUERTAS AUTOMATICA DIESEL
-  Fabricante: FORD; submodelo: F-450; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2001, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Primera respuesta devuelta: `H0004G`**
-
-- Variante 1: FORD F-150 XL CREW CAB V6 3.3L 4 PTS AUT
-  Fabricante: FORD; submodelo: F-150 PICK UP; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2022, 2023.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.1829436331987381, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0134 — development — OTHER
-
-**Consulta original:** FREIGHTLINER DETROIT DIESEL DD13 CASCADIA CAS
-
-- Año recibido: 2025.
-- Marca recibida: FREIGHTLINER.
-- Submarca recibida: CASCADIA 125.
-- Tipo recibido: -.
-- Top-3 devuelto, en orden: `U0008Z|N0001W|H0001S`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 15.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 10549.
-
-**Respuesta esperada según la etiqueta: `N0001W`**
-
-- Variante 1: FREIGHTLINER NEW CASCADIA  EURO V DD13 470HP FULLER 18VEL
-  Fabricante: FREIGHTLINER; submodelo: CASCADIA; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2020, 2021, 2022, 2023, 2024, 2025, 2026.
-
-**Primera respuesta devuelta: `U0008Z`**
-
-- Variante 1: FREIGHTLINER CASCADIA 116 DD13 470HP
-  Fabricante: FREIGHTLINER; submodelo: CASCADIA; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2024, 2025.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.07967741935483871, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.5389693021774292, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0137 — development — CAMION
-
-**Consulta original:** VOLTEO
-
-- Año recibido: 2010.
-- Marca recibida: FREIGHTLINER.
-- Submarca recibida: vacía.
-- Tipo recibido: VOLTEO.
-- Top-3 devuelto, en orden: `G0004P|B00045|Y0000B`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3241.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `G0004P`**
-
-- Variante 1: FREIGHTLINER M2 33K VOLTEO 190HP
-  Fabricante: FREIGHTLINER; submodelo: M2 33K; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
-
-Años registrados por código: 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4302010595798493, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0144 — development — OTHER
-
-**Consulta original:** CHEVROLET SILVERADO 1500 CAB. REG. D STD
-
-- Año recibido: 2012.
-- Marca recibida: GENERAL MOTORS.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `R000AP|W0008P|L0008K`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 11.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9079.
-
-**Respuesta esperada según la etiqueta: `W0008P`**
-
-- Variante 1: CHEVROLET SILVERADO 1500 CABINA REGULAR 4.3L 195HP V6 STD CA BA
-  Fabricante: GENERAL MOTORS; submodelo: SILVERADO 1500; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Primera respuesta devuelta: `R000AP`**
-
-- Variante 1: CHEVROLET C-1500 PICK UP SILVERADO STD V6
-  Fabricante: GENERAL MOTORS; submodelo: SILVERADO 1500; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08510416666666666, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.47731465101242065, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0151 — development — CAMION
-
-**Consulta original:** GIANT MOTORS JAC FRISON T6 2.0L 4CL 190 HP 213 BLP 6 VEL  CHASIS CABINA  X200
-
-- Año recibido: 2024.
-- Marca recibida: GIANT MOTORS.
-- Submarca recibida: vacía.
-- Tipo recibido: PICKUP.
-- Top-3 devuelto, en orden: `N000CN|Z0008D|H0006S`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 12.0.
-- Conflictos detectados en top-1: manufacturer.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7106.
-
-**Respuesta esperada según la etiqueta: `Z0008D`**
-
-- Variante 1: T6 FLEX FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
-  Fabricante: JAC; submodelo: T6; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2024, 2025.
-
-**Primera respuesta devuelta: `N000CN`**
-
-- Variante 1: T6 FRISON L4 2.0T 190 CP 4 PUERTAS STD  BA AA
-  Fabricante: JAC; submodelo: T6; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2020, 2021, 2022, 2023, 2024.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": -0.1, "submodel": 0.0, "tfidf": 0.2693126142024994, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0163 — development — CAMION
-
-**Consulta original:** HINO 1018 G EURO
-
-- Año recibido: 2024.
-- Marca recibida: HINO.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMIONES.
-- Top-3 devuelto, en orden: `B000D5|N0004N|K0004M`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 987.
-
-**Respuesta esperada según la etiqueta: `N0004N`**
-
-- Variante 1: EQ HINO MOTORS 1018G CHASIS CABINA
-  Fabricante: HINO; submodelo: 1018; tipo: CAMION; segmento: CAMION DE 6.5 HASTA 7.5 TONELADAS.
-
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `B000D5`**
-
-- Variante 1: EQ HINO MOTORS 1018J CHASIS CABINA
-  Fabricante: HINO; submodelo: 1018; tipo: CAMION; segmento: CAMION DE 6.5 HASTA 7.5 TONELADAS.
-
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.503111493587494, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0175 — development — AUTO
-
-**Consulta original:** HYUNDAI GRANDi10
-
-- Año recibido: 2022.
-- Marca recibida: HYUNDAI.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTO.
-- Top-3 devuelto, en orden: `J000B7|Q000B9|R0005L`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 43.0.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 5015.
-
-**Respuesta esperada según la etiqueta: `L000BP`**
-
-- Variante 1: GRAND i10 GL MID 1.25L L4 AUT 4P TELA
-  Fabricante: HYUNDAI; submodelo: Grand i; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
-
-**Primera respuesta devuelta: `J000B7`**
-
-- Variante 1: HYUNDAI EX8 CHASIS CABINA 4X2
-  Fabricante: HYUNDAI; submodelo: HD72; tipo: CAMION; segmento: CAMION DE 4.5 HASTA 6.5 TONELADAS.
-
-Años registrados por código: 2022, 2023.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.39230584502220156, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0180 — development — AUTO
-
-**Consulta original:** QX56 TA AWD V8 5PTAS
-
-- Año recibido: 2012.
-- Marca recibida: INFINITI.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOS.
-- Top-3 devuelto, en orden: `K000B7|G0003R|F0003D`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 5525.
-
-**Respuesta esperada según la etiqueta: `G0003R`**
-
-- Variante 1: QX 56 AWD 5.6L V8 7SPEED AUT., 08 OCUP.
-  Fabricante: INFINITI; submodelo: QX56; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2012, 2013, 2014.
-
-**Primera respuesta devuelta: `K000B7`**
-
-- Variante 1: INFINITI QX56 5.6L AWD V8 AUT CA CE PIEL CQ CB
-  Fabricante: INFINITI; submodelo: QX56; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2006, 2012, 2013, 2014.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5324179530143738, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0188 — development — CAMION
-
-**Consulta original:** VOLTEO
-
-- Año recibido: 2008.
-- Marca recibida: INTERNACIONAL.
-- Submarca recibida: vacía.
-- Tipo recibido: VOLTEO.
-- Top-3 devuelto, en orden: `E000BZ|F0002G|L0001A`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 2477.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `E000BZ`**
-
-- Variante 1: INTERNACIONAL 4300 4X2 VOLTEO 195HP 15 TON
-  Fabricante: INTERNATIONAL; submodelo: 4300 MAS DE 14 TON; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
-
-Años registrados por código: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3676578998565674, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0195 — development — CAMION
-
-**Consulta original:** VOLTEO 4300
-
-- Año recibido: 2002.
-- Marca recibida: INTERNATIONAL.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `E000BZ|Y000DN|A000B2`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 2477.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `E000BZ`**
-
-- Variante 1: INTERNACIONAL 4300 4X2 VOLTEO 195HP 15 TON
-  Fabricante: INTERNATIONAL; submodelo: 4300 MAS DE 14 TON; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
-
-Años registrados por código: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.474579656124115, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0200 — development — CAMION
-
-**Consulta original:** ISUZU ELF600 CHASIS CABINA
-
-- Año recibido: 2018.
-- Marca recibida: ISUZU.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMIONES.
-- Top-3 devuelto, en orden: `S00079|P0002U|K000CV`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9464.
-
-**Respuesta esperada según la etiqueta: `P0002U`**
-
-- Variante 1: EQ ISUZU ELF 600 CHASIS CABINA "H"
-  Fabricante: ISUZU; submodelo: ELF 600; tipo: CAMION; segmento: CAMION DE 4.5 HASTA 6.5 TONELADAS.
-
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
-
-**Primera respuesta devuelta: `S00079`**
-
-- Variante 1: EQ ISUZU ELF 600 CHASIS CABINA "M"
-  Fabricante: ISUZU; submodelo: ELF 600; tipo: CAMION; segmento: CAMION DE 4.5 HASTA 6.5 TONELADAS.
-
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08022222222222222, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4903830707073212, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0205 — development — OTHER
-
-**Consulta original:** SUNRAY PASS SMART
-
-- Año recibido: 2025.
-- Marca recibida: JAC.
-- Submarca recibida: SUNRAY PASS SMART.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `C000BV|E0001N|B000BM`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 5.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: sí.
-- Registro del catálogo usado por el top-1: 1451.
-
-**Respuesta esperada según la etiqueta: `E0001N`**
-
-- Variante 1: SUNRAY PASAJE L4 2.8T 150 CP 5 PTS STD
-  Fabricante: JAC; submodelo: SUNRAY; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2018, 2022, 2023, 2024, 2025, 2026.
-
-**Primera respuesta devuelta: `C000BV`**
-
-- Variante 1: SUNRAY CARGO L4 2.8T 150 CP 5 PTS STD
-  Fabricante: JAC; submodelo: HFC; tipo: PICK UP; segmento: VAN CARGA 3.5TON.
-- Variante 2: SUNRAY CARGO L4 2.8T 150 CP 5 PTS STD
-  Fabricante: JAC; submodelo: SUNRAY; tipo: PICK UP; segmento: VAN CARGA 3.5TON.
-
-Años registrados por código: 2021, 2022, 2023, 2024, 2025, 2026, 2027.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.061290322580645165, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.42449820041656494, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0210 — development — OTHER
-
-**Consulta original:** SAHARA
-
-- Año recibido: 2020.
-- Marca recibida: JEEP UNLIMITED.
-- Submarca recibida: SAHARA.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `X000A6|U0008O|B00015`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 35.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12134.
-
-**Respuesta esperada según la etiqueta: `K0004F`**
-
-- Variante 1: WRANGLER JL UNLIMITED RUBICON 3.6L 5 PUERTAS AUTOMATICA
-  Fabricante: CHRYSLER; submodelo: JEEP WRANGLER; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2018, 2019, 2020.
-
-**Primera respuesta devuelta: `X000A6`**
-
-- Variante 1: WRANGLER UNLIMITED SAHARA L4 2.0L 270 CP 5 PUERTAS AUT MILD HYBRID
-  Fabricante: CHRYSLER; submodelo: JEEP WRANGLER; tipo: AUTO; segmento: SUV.
-- Variante 2: WRANGLER UNLIMITED SAHARA L4 2.0L 270 CP 5P AUT MILD HYBRID
-  Fabricante: CHRYSLER; submodelo: JEEP WRANGLER; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2020, 2021.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.41441068053245544, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0211 — development — OTHER
-
-**Consulta original:** JETTA
-
-- Año recibido: 2024.
-- Marca recibida: JETTA.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `M0006V|I000D3|K000AO`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: year.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 6390.
-
-**Respuesta esperada según la etiqueta: `S0003P`**
-
-- Variante 1: JETTA A7 COMFORTLINE 1.4T 4 PUERTAS AUTOMATICA
-  Fabricante: VOLKSWAGEN; submodelo: JETTA A7; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
-
-**Primera respuesta devuelta: `M0006V`**
-
-- Variante 1: JETTA GL AUT.
-  Fabricante: VOLKSWAGEN; submodelo: JETTA A2; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 1989, 1990, 1991, 1992.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.47157740592956543, "vehicle_type": 0.0, "year": -0.2}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0216 — development — CAMION
-
-**Consulta original:** T-880 DORMITORIO 52 PULG
-
-- Año recibido: 2019.
-- Marca recibida: KENWORTH.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMION.
-- Top-3 devuelto, en orden: `T0003N|G0008A|T0008K`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9844.
-
-**Respuesta esperada según la etiqueta: `G0008A`**
-
-- Variante 1: TR KENWORTH T-880 PACCAR MX 13 500HP DORM 52 18V
-  Fabricante: KENWORTH; submodelo: T800; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Primera respuesta devuelta: `T0003N`**
-
-- Variante 1: KENWORTH T 880 52 in CUMMINS ISX 450 HP
-  Fabricante: KENWORTH; submodelo: T680; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2015, 2016, 2017, 2018, 2019, 2020, 2021.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.45688576698303224, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0226 — development — AUTO
-
-**Consulta original:** RIO SEDAN SD LX
-
-- Año recibido: 2020.
-- Marca recibida: KIA.
-- Submarca recibida: RIO SEDAN SD LX.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `D0003G|I00058|S0002L`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 1656.
-
-**Respuesta esperada según la etiqueta: `S0002L`**
-
-- Variante 1: RIO LX 1.6L 4 PUERTAS MANUAL
-  Fabricante: KIA; submodelo: RIO; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
-
-**Primera respuesta devuelta: `D0003G`**
-
-- Variante 1: RIO LX 1.6L 4P AUT
-  Fabricante: KIA; submodelo: RIO; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2018, 2019, 2020, 2021, 2022, 2023.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.06551724137931034, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.515907508134842, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0237 — development — AUTO
-
-**Consulta original:** LX700h LUXURY
-
-- Año recibido: 2026.
-- Marca recibida: LEXUS.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOS.
-- Top-3 devuelto, en orden: `J000BA|H0006M|R000BM`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 5018.
-
-**Respuesta esperada según la etiqueta: `H0006M`**
-
-- Variante 1: LEXUS LX 700H LUXURY, V6, 3.5T, 457 CP, 5 PUERTAS, AUT, BA, AA, QC, HEV
-  Fabricante: LEXUS; submodelo: LEXUS; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2025, 2026.
-
-**Primera respuesta devuelta: `J000BA`**
-
-- Variante 1: LEXUS NX 350H LUXURY L4 2.5L 5 PTS AUT BA AA HEV
-  Fabricante: LEXUS; submodelo: LEXUS; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2023, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.4618657171726227, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0242 — development — OTHER
-
-**Consulta original:** CARRO ESCALA 106 PIES
-
-- Año recibido: 1985.
-- Marca recibida: LTI.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `I00003|R00092|B0008E`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 7.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4094.
-
-**Respuesta esperada según la etiqueta: `B0008E`**
-
-- Variante 1: EQ FREIGHTLINER FL-106 52K 6X4 CHASIS CABINA
-  Fabricante: FREIGHTLINER; submodelo: FL-106; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004.
-
-**Primera respuesta devuelta: `I00003`**
-
-- Variante 1: DODGE D-600 CARRO TANQUE
-  Fabricante: CHRYSLER; submodelo: D-600 TANQUE; tipo: CAMION; segmento: CAMION DE 9.5 HASTA 12.5 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.1618940055370331, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0243 — development — OTHER
-
-**Consulta original:** MARCH ACTIVE HB STD AA CD BA 106HP ABS 1.6L 4CIL 5P 5OCUP 2020
-
-- Año recibido: 2020.
-- Marca recibida: MARCH ACTIVE HB STD AA CD BA 106HP ABS 1.6L 4CIL 5P 5OCUP.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `Z0006S|Z0003Z|T00051`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 13036.
-
-**Respuesta esperada según la etiqueta: `Z0003Z`**
-
-- Variante 1: NISSAN MARCH ACTIVE, 1.6L, 5 PUERTAS, MANUAL, AC, ABS
-  Fabricante: NISSAN; submodelo: MARCH; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2016, 2017, 2018, 2019, 2020.
-
-**Primera respuesta devuelta: `Z0006S`**
-
-- Variante 1: MARCH ACTIVE 1.6L 5 PUERTAS MANUAL AC
-  Fabricante: NISSAN; submodelo: MARCH; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3857463151216507, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0247 — development — AUTO
-
-**Consulta original:** MAZDA 3I SPORT L4 2.5 SEDAN AUT
-
-- Año recibido: 2021.
-- Marca recibida: MAZDA.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOMOVIL.
-- Top-3 devuelto, en orden: `J0006X|J000BG|K0002W`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 47.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 4858.
-
-**Respuesta esperada según la etiqueta: `A00091`**
-
-- Variante 1: 3 I SPORT 2.5L 4 PUERTAS AUTOMATICA
-  Fabricante: MAZDA; submodelo: 3; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
-
-**Primera respuesta devuelta: `J0006X`**
-
-- Variante 1: MAZDA CX-5 I SPORT 2.0L L4 AUT 5P ABS CA CE TELA CD CB
-  Fabricante: MAZDA; submodelo: CX5; tipo: AUTO; segmento: SUV.
-
-Años registrados por código: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3158358782529831, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0248 — development — AUTO
-
-**Consulta original:** MAZDA 3i AUT 4 PTAS C/A.AC
-
-- Año recibido: 2010.
-- Marca recibida: MAZDA.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOMOVIL.
-- Top-3 devuelto, en orden: `W0004G|W000AJ|E0000K`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 11410.
-
-**Respuesta esperada según la etiqueta: `Z00061`**
-
-- Variante 1: 3 SEDAN SPORT 4P AUT., 05 OCUP
-  Fabricante: MAZDA; submodelo: 3; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2010, 2011, 2012, 2013, 2014, 2015.
-
-**Primera respuesta devuelta: `W0004G`**
-
-- Variante 1: MAZDA 3 I 2.0L L4 AUT 4P D/V CA SE TELA CD SQ CB
-  Fabricante: MAZDA; submodelo: 3; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.302870911359787, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0250 — development — AUTO
-
-**Consulta original:** CLASE C 300 SPORT AUT
-
-- Año recibido: 2020.
-- Marca recibida: MBENZ.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOMOVIL.
-- Top-3 devuelto, en orden: `P0002D|J000BQ|Z000DY`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 24.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7752.
-
-**Respuesta esperada según la etiqueta: `G00080`**
-
-- Variante 1: CGI SPORT 2.0T 4 PUERTAS AUTOMATICA
-  Fabricante: MERCEDES BENZ; submodelo: CLASE C; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2020.
-
-**Primera respuesta devuelta: `P0002D`**
-
-- Variante 1: CLASE C 300 CGI COUPE 2.0T 2 PUERTAS AUTOMATICA
-  Fabricante: MERCEDES BENZ; submodelo: CLASE C; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2019, 2020, 2021.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.36737685799598696, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0264 — development — OTHER
-
-**Consulta original:** COOPER S HOT CHILI
-
-- Año recibido: 2007.
-- Marca recibida: MINI.
-- Submarca recibida: COOPER S HOT CHILI.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `Q0004F|K00011|Z000DZ`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 10.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 8341.
-
-**Respuesta esperada según la etiqueta: `Z000DZ`**
-
-- Variante 1: MINI COOPER S HOT CHILI 1.6L 163HP L4 STD 2P PIEL CA CE
-  Fabricante: BMW; submodelo: MINI COOPER; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
-
-**Primera respuesta devuelta: `Q0004F`**
-
-- Variante 1: MINI COOPER S HOT CHILI L4 AUT 2P CA CE PIEL CD CQ CB
-  Fabricante: BMW; submodelo: MINI COOPER; tipo: AUTO; segmento: LUJO.
-
-Años registrados por código: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.6758727908134461, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0267 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2016.
-- Marca recibida: MIRELES.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|L0008A|U0007D`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.39190560579299927, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0268 — development — CAMION
-
-**Consulta original:** HILUX DOBLE CABINA BASE STD 4P 4CIL
-
-- Año recibido: 2023.
-- Marca recibida: MITSUBICHI.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMION.
-- Top-3 devuelto, en orden: `Z0004B|F0008T|Z000BV`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 7.0.
-- Conflictos detectados en top-1: manufacturer|vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12946.
-
-**Respuesta esperada según la etiqueta: `Z000BV`**
-
-- Variante 1: HILUX CABINA DOBLE 2.7L L4 STD 4P CA CE CB
-  Fabricante: TOYOTA; submodelo: HILUX PICK UP; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Primera respuesta devuelta: `Z0004B`**
-
-- Variante 1: HILUX DOBLE CABINA DIESEL 2.8L 4P STD
-  Fabricante: TOYOTA; submodelo: HILUX PICK UP; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.06690140845070423, "manufacturer": -0.1, "submodel": 0.0, "tfidf": 0.3762846350669861, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0269 — development — CAMION
-
-**Consulta original:** L200 GLX DIESEL STD 4P 4CIL 2.4L 4WD
-
-- Año recibido: 2023.
-- Marca recibida: MITSUBICHI.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMION.
-- Top-3 devuelto, en orden: `T0001C|L0006M|S0002A`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 6.0.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9760.
-
-**Respuesta esperada según la etiqueta: `S0002A`**
-
-- Variante 1: MITSUBISHI L200 GLX L4 178 CP DSL 4 PTS STD
-  Fabricante: MITSUBISHI; submodelo: L200; tipo: PICK UP; segmento: PICK UP LUJO.
-
-Años registrados por código: 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `T0001C`**
-
-- Variante 1: MITSUBISHI L200 GLX L4 126 CP 4 PTS STD
-  Fabricante: MITSUBISHI; submodelo: L200; tipo: PICK UP; segmento: PICK UP LUJO.
-
-Años registrados por código: 2022, 2023, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.06627906976744186, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.336882421374321, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0270 — development — CAMION
-
-**Consulta original:** L200 GLX DIESEL STD 4P 4CIL 2.4L 4WD
-
-- Año recibido: 2024.
-- Marca recibida: MITSUBICHI.
-- Submarca recibida: vacía.
-- Tipo recibido: CAMION.
-- Top-3 devuelto, en orden: `T0001C|L0006M|S0002A`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 6.0.
-- Conflictos detectados en top-1: vehicle_type.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9760.
-
-**Respuesta esperada según la etiqueta: `S0002A`**
-
-- Variante 1: MITSUBISHI L200 GLX L4 178 CP DSL 4 PTS STD
-  Fabricante: MITSUBISHI; submodelo: L200; tipo: PICK UP; segmento: PICK UP LUJO.
-
-Años registrados por código: 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `T0001C`**
-
-- Variante 1: MITSUBISHI L200 GLX L4 126 CP 4 PTS STD
-  Fabricante: MITSUBISHI; submodelo: L200; tipo: PICK UP; segmento: PICK UP LUJO.
-
-Años registrados por código: 2022, 2023, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.06627906976744186, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.336882421374321, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0273 — development — AUTO
-
-**Consulta original:** MITSUBISHI MIRAGE GLX L3 1.2 AUT
-
-- Año recibido: 2017.
-- Marca recibida: MITSUBISHI.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOMOVIL.
-- Top-3 devuelto, en orden: `W000DT|V00022|F000BX`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 11753.
-
-**Respuesta esperada según la etiqueta: `V00022`**
-
-- Variante 1: MIRAGE GLX 1.2L 5 PUERTAS CVT
-  Fabricante: MITSUBISHI; submodelo: MIRAGE; tipo: AUTO; segmento: SUBCOMPACTO.
-- Variante 2: MIRAGE GLX 1.2L L3 AUT CVT 5P CA CE CB
-  Fabricante: MITSUBISHI; submodelo: MIRAGE; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Primera respuesta devuelta: `W000DT`**
-
-- Variante 1: MIRAGE GLX 1.2L 5 PUERTAS MANUAL
-  Fabricante: MITSUBISHI; submodelo: MIRAGE; tipo: AUTO; segmento: SUBCOMPACTO.
-- Variante 2: MIRAGE GLX 1.2L L3 STD 5P CA CE CB
-  Fabricante: MITSUBISHI; submodelo: MIRAGE; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08142857142857142, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5564435184001922, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0274 — development — PICKUP
-
-**Consulta original:** PICK UP L200 GLX DOBLE CAB 4WD L4 TDI STD 4 ABS CA CE TELA SM
-
-- Año recibido: 2023.
-- Marca recibida: MITSUBISHI.
-- Submarca recibida: PICK UP L200 GLX DOBLE CAB 4WD STD.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `T0001C|S0002A|L0006M`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 9760.
-
-**Respuesta esperada según la etiqueta: `S0002A`**
-
-- Variante 1: MITSUBISHI L200 GLX L4 178 CP DSL 4 PTS STD
-  Fabricante: MITSUBISHI; submodelo: L200; tipo: PICK UP; segmento: PICK UP LUJO.
-
-Años registrados por código: 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `T0001C`**
-
-- Variante 1: MITSUBISHI L200 GLX L4 126 CP 4 PTS STD
-  Fabricante: MITSUBISHI; submodelo: L200; tipo: PICK UP; segmento: PICK UP LUJO.
-
-Años registrados por código: 2022, 2023, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.02, "submodel": 0.02, "tfidf": 0.3924002319574356, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0277 — development — CAMION
-
-**Consulta original:** INTERNATIONAL 4700 COMPACTADOR INTERNACIONAL
-
-- Año recibido: 2002.
-- Marca recibida: NAV INT CORP.
-- Submarca recibida: COMPACTADOR INTERNACIONAL.
-- Tipo recibido: CAMION.
-- Top-3 devuelto, en orden: `P0006M|K000A4|P0005X`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7911.
-
-**Respuesta esperada según la etiqueta: `K000A4`**
-
-- Variante 1: INTERNACIONAL 4700 CHASIS CABINA 4 X 2 NAVISTAR DT 466 E 190HP 15.4 TON
-  Fabricante: INTERNATIONAL; submodelo: 4700 MAS DE 14 TON; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014.
-
-**Primera respuesta devuelta: `P0006M`**
-
-- Variante 1: INTERNACIONAL 4700 CHASIS CABINA 4 X 2 DT 466 E 175HP 15.4 TON
-  Fabricante: INTERNATIONAL; submodelo: 4700 MAS DE 14 TON; tipo: CAMION; segmento: CAMION HASTA 14 TONELADAS.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.06831460674157303, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3265778303146362, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0290 — development — OTHER
-
-**Consulta original:** COCHE GRIS OXFORD SEDAM ADVANCE MT
-
-- Año recibido: 2013.
-- Marca recibida: NISSAN SEDAN.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `Z000AH|Q0007J|V0001D`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 13171.
-
-**Respuesta esperada según la etiqueta: `Q0007J`**
-
-- Variante 1: SENTRA ADVANCE 1.8L L4 STD 4P CA CE TELA CD CB
-  Fabricante: NISSAN; submodelo: SENTRA; tipo: AUTO; segmento: COMPACTO.
-
-Años registrados por código: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
-
-**Primera respuesta devuelta: `Z000AH`**
-
-- Variante 1: MARCH ADVANCE L4 STD 5P CA CE TELA CD CB
-  Fabricante: NISSAN; submodelo: MARCH; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.05659574468085107, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.16150036454200745, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0295 — development — PICKUP
-
-**Consulta original:** PEUGEOT PARTNER MAXI PACK STD DIESEL
-
-- Año recibido: 2025.
-- Marca recibida: PEUGEOT.
-- Submarca recibida: vacía.
-- Tipo recibido: PICKUP CARGA.
-- Top-3 devuelto, en orden: `U0005Y|B000AH|E0006Y`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 3.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 10439.
-
-**Respuesta esperada según la etiqueta: `B000AH`**
-
-- Variante 1: PARTNER MAXI PACK L4 1.6T 90 CP 5 PUERTAS STD BA AA FL DIESEL
-  Fabricante: PEUGEOT; submodelo: PARTNER MAXI; tipo: PICK UP; segmento: VAN CARGA.
-
-Años registrados por código: 2025.
-
-**Primera respuesta devuelta: `U0005Y`**
-
-- Variante 1: PARTNER MAXI PACK 1.6T 5 PUERTAS MANUAL
-  Fabricante: PEUGEOT; submodelo: PARTNER MAXI; tipo: PICK UP; segmento: VAN CARGA.
-
-Años registrados por código: 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0778688524590164, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.629653126001358, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0316 — development — REMOLQUE
-
-**Consulta original:** REMOLQUE
-
-- Año recibido: 1991.
-- Marca recibida: REMOLQUES.
-- Submarca recibida: REMOLQUE.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `G00060|E0009F|H000D3`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 43.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3288.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `G00060`**
-
-- Variante 1: REMOLQUE TIPO TANQUE 30000 LTS.
-  Fabricante: SEMIRREMOLQUES; submodelo: TANQUE; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.35425066351890566, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0318 — development — PICKUP
-
-**Consulta original:** RENAULT RENAULT KANGOO EXPRESS CON AA CD BA STD VAN 4 CIL 4P
-
-- Año recibido: 2015.
-- Marca recibida: RENAULT.
-- Submarca recibida: vacía.
-- Tipo recibido: PICKUP CARGA.
-- Top-3 devuelto, en orden: `U0007N|M0001Y|Z000DX`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 10500.
-
-**Respuesta esperada según la etiqueta: `M0001Y`**
-
-- Variante 1: KANGOO EXPRESS 1.6L C/A AC STD., 02 OCUP.
-  Fabricante: RENAULT; submodelo: KANGOO VAN; tipo: PICK UP; segmento: VAN CARGA.
-
-Años registrados por código: 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
-
-**Primera respuesta devuelta: `U0007N`**
-
-- Variante 1: RENAULT KANGOO EXPRESS. L4 D/H C/B
-  Fabricante: RENAULT; submodelo: KANGOO VAN; tipo: PICK UP; segmento: VAN CARGA.
-
-Años registrados por código: 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2017.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.07841269841269843, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.5286436557769776, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0324 — development — REMOLQUE
-
-**Consulta original:** REMOLQUE
-
-- Año recibido: 2000.
-- Marca recibida: S/M.
-- Submarca recibida: REMOLQUE.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `G00060|E0009F|H000D3`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 50.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3288.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `G00060`**
-
-- Variante 1: REMOLQUE TIPO TANQUE 30000 LTS.
-  Fabricante: SEMIRREMOLQUES; submodelo: TANQUE; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3303191900253296, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0340 — development — AUTO
-
-**Consulta original:** SUZUKI SWIFT SPORT GLE 1.4 AUT
-
-- Año recibido: 2022.
-- Marca recibida: SUZUKI.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOMOVIL.
-- Top-3 devuelto, en orden: `H0000H|M0000Q|T00074`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 13.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3600.
-
-**Respuesta esperada según la etiqueta: `S0001Y`**
-
-- Variante 1: SWIFT GLE SPORT BOOSTERJET L4 1.4L 5 PTS AUT
-  Fabricante: SUZUKI; submodelo: SWIFT; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2022.
-
-**Primera respuesta devuelta: `H0000H`**
-
-- Variante 1: SUZUKI SWIFT GLE L4 1.2L 5 PTS AUT
-  Fabricante: SUZUKI; submodelo: SWIFT; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2022.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08015625, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.564158570766449, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0341 — development — AUTO
-
-**Consulta original:** SWIFT HB GLS 5P L4 1.2T ABS BA AC R16 STD.
-
-- Año recibido: 2021.
-- Marca recibida: SUZUKI.
-- Submarca recibida: vacía.
-- Tipo recibido: AUTOMOVIL.
-- Top-3 devuelto, en orden: `G000A3|T00074|F0004U`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 4.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 3436.
-
-**Respuesta esperada según la etiqueta: `F0004U`**
-
-- Variante 1: SWIFT GLS 1.2L 5 PUERTAS MANUAL
-  Fabricante: SUZUKI; submodelo: SWIFT; tipo: AUTO; segmento: SUBCOMPACTO.
-
-Años registrados por código: 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Primera respuesta devuelta: `G000A3`**
-
-- Variante 1: ERTIGA GLS 5P L4 1.5T ABS BA AC STD 07 OCUP
-  Fabricante: SUZUKI; submodelo: ERTIGA; tipo: AUTO; segmento: VAN/MINIVAN.
-
-Años registrados por código: 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.07307692307692307, "manufacturer": 0.02, "submodel": 0.0, "tfidf": 0.3261412471532822, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0350 — development — PICKUP
-
-**Consulta original:** HILUX DOBLE CABINA
-
-- Año recibido: 2024.
-- Marca recibida: TOYOYA.
-- Submarca recibida: vacía.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `F0008T|Z0004B|H000C0`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 7.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 2876.
-
-**Respuesta esperada según la etiqueta: `Z000BV`**
-
-- Variante 1: HILUX CABINA DOBLE 2.7L L4 STD 4P CA CE CB
-  Fabricante: TOYOTA; submodelo: HILUX PICK UP; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Primera respuesta devuelta: `F0008T`**
-
-- Variante 1: HILUX DOBLE CABINA DIESEL 2.8L 4P AUT
-  Fabricante: TOYOTA; submodelo: HILUX PICK UP; tipo: PICK UP; segmento: PICK UP.
-
-Años registrados por código: 2018, 2019, 2020, 2021, 2022, 2023, 2024.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.5719518899917603, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0352 — development — TRACTO
-
-**Consulta original:** TR CAMION LEGALIZADO TIPO TRACTOCAMION. STD
-
-- Año recibido: 2010.
-- Marca recibida: TRACTO.
-- Submarca recibida: vacía.
-- Tipo recibido: TRACTO.
-- Top-3 devuelto, en orden: `O0003Q|C000DF|E0006A`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7290.
-
-**Respuesta esperada según la etiqueta: `E0005R`**
-
-- Variante 1: TR MAN TGS 39S 41.440 8X4
-  Fabricante: MAN; submodelo: TGS TRACTOCAMION; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Primera respuesta devuelta: `O0003Q`**
-
-- Variante 1: TRACTOCAMION MACK
-  Fabricante: MACK; submodelo: MACK TRACTOCAMION; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.07862068965517242, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.24313146471977234, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0354 — development — TRACTO
-
-**Consulta original:** KENWORTH T 680
-
-- Año recibido: 2025.
-- Marca recibida: TRACTO CAMION.
-- Submarca recibida: vacía.
-- Tipo recibido: TRACTO.
-- Top-3 devuelto, en orden: `Y000AG|J0004N|K0009L`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 33.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12659.
-
-**Respuesta esperada según la etiqueta: `K0009L`**
-
-- Variante 1: KENWORTH T680 TRACTOCAMION KENWORTH NUEVA GENERACION
-  Fabricante: KENWORTH; submodelo: T680; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2025.
-
-**Primera respuesta devuelta: `Y000AG`**
-
-- Variante 1: TRACTOCAMION KENWORTH T 680 52 in CUMMINS ISX 450 HP
-  Fabricante: KENWORTH; submodelo: T680; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.08666666666666667, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.4228265404701233, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0355 — development — TRACTO
-
-**Consulta original:** TR CAMION LEGALIZADO TIPO TRACTOCAMION. STD.
-
-- Año recibido: 2010.
-- Marca recibida: TRACTO CAMION.
-- Submarca recibida: vacía.
-- Tipo recibido: TRACTO.
-- Top-3 devuelto, en orden: `O0003Q|C000DF|E0006A`.
-- Etapa del fallo: Ranking: el esperado fue recuperado, pero quedó fuera de los tres primeros.
-- Posición de recuperación del esperado: 50.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 7290.
-
-**Respuesta esperada según la etiqueta: `T0004H`**
-
-- Variante 1: TR MAN TGA 26.430
-  Fabricante: MAN; submodelo: TGA TRACTOCAMION; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-
-**Primera respuesta devuelta: `O0003Q`**
-
-- Variante 1: TRACTOCAMION MACK
-  Fabricante: MACK; submodelo: MACK TRACTOCAMION; tipo: TRACTO CAMION; segmento: TRACTOCAMION.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.07862068965517242, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.23458364009857177, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Inspeccionar las señales del esperado frente a las alternativas superiores; comprobar si similitud, año o metadatos favorecieron una opción incompatible. No asumir que aumentar el número de candidatos corrige este ordenamiento.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0358 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2018.
-- Marca recibida: TYRSOL.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|Z0003K|R0002X`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40210620760917665, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0359 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2017.
-- Marca recibida: TYRSOL.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|Y0001Z|Z0003K`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.40210620760917665, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0361 — development — OTHER
-
-**Consulta original:** VENTURE EXT
-
-- Año recibido: 1998.
-- Marca recibida: VENTURE.
-- Submarca recibida: VENTURE EXT.
-- Tipo recibido: vacío.
-- Top-3 devuelto, en orden: `M0000S|U0001I|J00063`.
-- Etapa del fallo: Ranking: el esperado sí está en el top-3, pero otra alternativa quedó primera.
-- Posición de recuperación del esperado: 2.0.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 6168.
-
-**Respuesta esperada según la etiqueta: `U0001I`**
-
-- Variante 1: VENTURE VAN LT V6 AUT 5P CA CE PIEL CD CB
-  Fabricante: GENERAL MOTORS; submodelo: VENTURE; tipo: AUTO; segmento: VAN/MINIVAN.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003.
-
-**Primera respuesta devuelta: `M0000S`**
-
-- Variante 1: VENTURE LS V6 AUT 5P ABS CA CE TELA CD SQ CB
-  Fabricante: GENERAL MOTORS; submodelo: VENTURE; tipo: AUTO; segmento: VAN/MINIVAN.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.02, "tfidf": 0.5289071023464204, "vehicle_type": 0.0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar atributos que distinguen las opciones y comprobar si aparecen en la entrada. Si faltan motor, versión, capacidad o tracción, pedir esa información y mantener revisión.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0369 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2015.
-- Marca recibida: VISUSA.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|L0008A|U0007D`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3996225893497467, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
-
-### q0370 — development — REMOLQUE
-
-**Consulta original:** TOLVA
-
-- Año recibido: 2013.
-- Marca recibida: VISUSA.
-- Submarca recibida: vacía.
-- Tipo recibido: TOLVA.
-- Top-3 devuelto, en orden: `Z0005P|L0008A|U0007D`.
-- Etapa del fallo: Recuperación: el código esperado no entró en los 50 candidatos.
-- Posición de recuperación del esperado: fuera de los 50.
-- Conflictos detectados en top-1: ninguno reconocido; esto no garantiza compatibilidad.
-- Catálogo ambiguo para top-1: no según fabricante/submodelo/tipo.
-- Registro del catálogo usado por el top-1: 12996.
-
-**Respuesta esperada según la etiqueta: `Z0000M`**
-
-- Variante 1: RM CAJA CERRADA 2 EJES 40
-  Fabricante: SEMIRREMOLQUES; submodelo: CAJA SECA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
-
-**Primera respuesta devuelta: `Z0005P`**
-
-- Variante 1: TOLVA CEMENTERA.
-  Fabricante: SEMIRREMOLQUES; submodelo: TOLVA CEMENTERA; tipo: SEMIREMOLQUE; segmento: SEMIREMOLQUE.
-
-Años registrados por código: 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
-
-**Contribuciones al score del top-1:**
-
-`{"fuzzy": 0.0855, "manufacturer": 0.0, "submodel": 0.0, "tfidf": 0.3996225893497467, "vehicle_type": 0, "year": 0.12}`
-
-**Investigación propuesta:** Comparar la representación textual del esperado con la consulta; comprobar campos faltantes, vocabulario y posibles reglas de dominio. Modificar solo el ranking no puede rescatar un candidato que no se recuperó.
-
-**Pregunta adicional al experto:** este código se repite en 33 etiquetas y describe
-una caja cerrada. Confirmar si existe una regla genérica de negocio que explique su
-uso en consultas diferentes. No añadirlo como fallback ni corregir la etiqueta por suposición.
-
-**Seguimiento:** pendiente de revisión al cierre. Anotar aquí la causa confirmada,
-acción decidida y resultado de cualquier experimento futuro, sin borrar el diagnóstico original.
+Investigation: verify domain classification and missing/version-specific attributes before changing labels or adding rules. Inspect retrieval coverage separately from ordering; obtain new validation evidence for any proposed change.
