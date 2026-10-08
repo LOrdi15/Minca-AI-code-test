@@ -30,15 +30,16 @@ etiquetas por suposición. Actualizar el seguimiento sin borrar diagnósticos pr
   utilidad. Se seleccionó review general: la calibración no respalda automatizar.
 - [x] Impedir aceptación automática ante contradicciones, variantes ambiguas,
   relaciones incompletas, ausencia de evidencia o alternativas casi empatadas.
-- [ ] Integrar la solución en `make predict`; por ahora ese objetivo sigue usando
-  el baseline. Debe generar las 155 predicciones ciegas sin pasos manuales.
-- [ ] Validar el CSV final con el validador oficial y comprobaciones adicionales:
+- [x] Integrar la solución en `make predict`; genera las 155 predicciones ciegas
+  sin pasos manuales con `python -m solution.predict`.
+- [x] Validar el CSV final con el validador oficial y comprobaciones adicionales:
   códigos existentes, tres códigos distintos y top-1 como primer candidato.
 - [x] Escribir `DECISIONS.md` y actualizar `EVAL.md` con confianza, decisiones,
   experimentos y limitaciones. Revisar su estado final al integrar ejecución ciega.
-- [ ] Comprobar ejecución desde una copia limpia, tiempo y gasto del proceso ciego.
-  La evaluación local de esta etapa tardó 24.73 segundos; eso no es todavía una
-  medición de la futura ejecución ciega.
+- [x] Comprobar código portátil desde una copia aislada, tiempo y gasto del proceso
+  ciego: 20.35 segundos de proceso, 1.25 de matching, USD 0. Copia aislada idéntica
+  sin `.env`, etiquetas o reportes; dependencias ya instaladas. Make no disponible
+  localmente: se validó su comando de Python, no se ejecutó el binario.
 - [ ] Preparar ZIP incluyendo `.git`, siguiendo las instrucciones de devolución.
 
 ## Hallazgos y preguntas para revisar detenidamente
@@ -67,7 +68,26 @@ ranking corresponden a la misma configuración (firma guardada en el modelo).
 
 Prioridad para la revisión final: estudiar los seis errores automáticos **simulados**
 de `evaluation/decision_diagnostic_errors.csv`. No suceden bajo la política actual.
-El siguiente paso necesario sigue siendo integrar la ejecución ciega y la entrega.
+La ejecución ciega quedó integrada y validada; la revisión final y el empaquetado
+siguen pendientes.
+
+### Integración final: estado y límites para revisar
+
+Se creó `solution/predict.py` y el paquete `solution/__init__.py`. Catálogo e índices
+se cargan una vez. Se verificó la firma de pesos del calibrador, considerando la
+equivalencia JSON `0`/`0.0`. No se cambiaron algoritmos, pesos o política. Pasaron
+las 89 pruebas. Ambas ejecuciones completas tuvieron cero fallbacks de filas o
+calibrador. El validador oficial reportó SUBMISSION VALID para 233 y 155 filas.
+
+Los fallos simulados por consulta producen tres códigos válidos/distintos,
+confianza cero y review. Si la entrada no tiene IDs válidos/únicos o el catálogo
+no permite tres códigos, se informa un error global; no se fabrican IDs ni
+alternativas duplicadas. El fallback preserva formato, no garantiza calidad del
+match. Las limitaciones de remolques, etiquetas, confianza y revisión 100% siguen.
+
+Registro reproducible: `evaluation/integration_metrics.json`. No se puede puntuar
+la entrega ciega sin etiquetas. Pendiente de verificación ambiental: `make setup`
+en un entorno completamente nuevo y el binario GNU Make, no disponible aquí.
 
 ### 1. Códigos duplicados y coherencia del catálogo
 

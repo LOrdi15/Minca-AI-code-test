@@ -16,9 +16,9 @@ DEV    := data/queries_labeled.csv
 setup:
 	$(PYTHON) -m pip install -r requirements.txt
 
-## Produce predictions.csv for the blind set. Point this at your own entry point.
+## Run the complete frozen pipeline; no evaluation artifacts or labels needed.
 predict:
-	$(PYTHON) solution/baseline.py --queries $(BLIND) --versions data/versions.csv --out predictions.csv
+	$(PYTHON) -m solution.predict --queries $(BLIND) --out predictions.csv
 
 ## Score yourself on the labeled dev set. Generate dev_predictions.csv first.
 score:

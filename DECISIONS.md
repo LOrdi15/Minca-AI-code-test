@@ -1,8 +1,11 @@
 # Decisiones de implementación
 
-Estado: ranking y política evaluados; integración de `make predict` y ejecución
-ciega pendientes. Se priorizó una solución local, reproducible y explicable dentro
-de tres horas. No hay llamadas a LLM ni gasto de API.
+Estado: pipeline integrado en `make predict`, 155 predicciones ciegas generadas
+y **SUBMISSION VALID**. Se priorizó una solución local, reproducible y explicable
+dentro de tres horas. La ejecución ciega tomó 20.35 segundos incluyendo arranque,
+catálogo e índices, con cero fallbacks y gasto de API USD 0. Una copia aislada
+reprodujo el CSV sin etiquetas, `.env` o reportes. GNU Make no está instalado aquí;
+se validó el comando del target con Python, no el binario Make.
 
 ## Qué conservamos y qué rechazamos
 

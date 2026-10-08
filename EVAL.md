@@ -4,8 +4,9 @@ Estado actual: recuperación, ranking y confianza por grupos de evidencia
 implementados. La política seleccionada conserva `review` porque ningún umbral
 superó los requisitos de incertidumbre y soporte. En la etapa original de ranking
 la confianza era `0.0`; ahora se exporta una estimación empírica suavizada. El score
-de ranking no es una probabilidad. `make predict` sigue ejecutando el baseline hasta
-la etapa de integración final; esta no es todavía la entrega ciega.
+de ranking no es una probabilidad. `make predict` ya ejecuta el pipeline integrado;
+se generaron las 155 predicciones ciegas y su formato fue validado oficialmente.
+La utilidad ciega no puede medirse sin las etiquetas que conserva el evaluador.
 
 ## 1. Resultados y separación de componentes
 
@@ -235,10 +236,58 @@ python submission_check.py --predictions dev_predictions.csv --queries data/quer
 También se añadieron `make evaluate`, `make evaluate-decision` y `make test`. El baseline original se
 conserva intacto. Recuperación/ranking no usan APIs ni gasto de LLM.
 
-En la etapa de ranking pasaron 56 pruebas; con decisión hay 79 pruebas y todas
-pasaron. Se reprodujo la fase de validación de ranking (incluyendo carga del
+En la etapa de ranking pasaron 56 pruebas; con decisión fueron 79 y con integración
+hay 89 pruebas, todas aprobadas. Se reprodujo la fase de validación de ranking (incluyendo carga del
 catálogo, índices y evaluación de los 233 casos) en 24.73 segundos en esta máquina.
 Esto es tiempo de evaluación local, no una medición del futuro proceso ciego.
 Se verificó igualdad de las predicciones del baseline frente a su script original,
 y cobertura, códigos válidos, tres códigos distintos y top-1 en primera posición
 para las 233 predicciones. `submission_check.py` las acepta.
+
+### Integración ejecutable y medición final
+
+```bash
+python -m solution.predict --queries data/queries_labeled.csv --out dev_predictions.csv
+python score.py --predictions dev_predictions.csv --labels data/queries_labeled.csv
+python -m solution.predict --queries data/queries_blind.csv --out predictions.csv
+python submission_check.py --predictions predictions.csv --queries data/queries_blind.csv
+```
+
+El pipeline carga un catálogo, construye una vez los índices de palabras y
+caracteres, reutiliza un ranker y carga la política guardada. Solo admite los
+campos observables para matching, conserva IDs como texto y normaliza con las
+reglas existentes. No lee etiquetas, resultados de evaluación, cachés o `.env`.
+El modelo se vincula a los pesos de ranking; se admite la equivalencia numérica
+de JSON entre `0` y `0.0`, sin cambiar pesos o reglas.
+
+Los fallos por consulta conservan la fila, devuelven tres códigos válidos y
+distintos, confianza cero y review. Se preservan candidatos útiles disponibles y
+se completan, si hace falta, con códigos deterministas del catálogo, sin atribuir
+certeza al fallback. Los fallbacks se reportan. Si falta o no corresponde el
+calibrador, se usa review sin respaldo empírico (prior 0.5) y se informa la condición.
+Un archivo sin IDs válidos/únicos o un catálogo sin tres códigos no puede cumplir
+el contrato y falla explícitamente, antes de escribir una salida engañosa.
+
+| Ejecución | Filas | Tiempo total del proceso | Procesamiento de consultas | Fallbacks |
+|---|---:|---:|---:|---:|
+| Etiquetadas | 233 | 21.02 s | 1.87 s | 0 |
+| Ciegas | 155 | 20.35 s | 1.25 s | 0 |
+| Ciegas, copia aislada | 155 | 21.05 s | Incluido en total | 0 |
+
+Los tiempos totales incluyen arranque de Python, integración del catálogo e
+índices; no son solo el bucle de matching. No hubo fallback de calibración ni
+llamadas de LLM: costo de API USD 0. El scoring end-to-end etiquetado conserva
+top-1 60.9%, top-3 80.3% y utilidad +0.1105. Las 155 consultas ciegas quedan en
+review conforme a la política seleccionada.
+
+El validador oficial reportó **SUBMISSION VALID** tanto para desarrollo como para
+la entrega ciega. Se comprobaron además códigos existentes, tres alternativas
+distintas, top-1 primero, orden/cobertura de IDs y confianza finita. El CSV ciego
+se reprodujo byte a byte en una copia sin `.env`, sin datos etiquetados y sin
+directorio `evaluation`; se utilizaron dependencias ya instaladas, sin repetir
+instalación en un entorno virtual nuevo. Registro: `evaluation/integration_metrics.json`.
+
+Limitación de verificación local: GNU Make no está instalado en esta máquina.
+Se actualizó el target y se ejecutó exactamente su comando mediante Python, pero
+no se ejecutó el binario `make`. No se modificaron `score.py` ni
+`submission_check.py`, ni los componentes previos de matching en esta etapa.

@@ -1,0 +1,55 @@
+{
+  "labeled": {
+    "out": "dev_predictions.csv",
+    "rows": 233,
+    "decisions": {
+      "review": 233
+    },
+    "fallback_rows": 0,
+    "calibration_fallback": false,
+    "seconds": {
+      "catalog": 14.275419599998713,
+      "indexes_and_ranker": 1.4684014000013121,
+      "inference": 1.8717147999996087,
+      "total": 17.63714919999984
+    },
+    "llm_calls": 0,
+    "wall_seconds_including_python_startup": 21.017958099997486,
+    "sha256": "b9b497f0d009b3f2be70959b3b5725df46c0373eb71c0c4d51c1975ce62a00f9"
+  },
+  "blind": {
+    "out": "predictions.csv",
+    "rows": 155,
+    "decisions": {
+      "review": 155
+    },
+    "fallback_rows": 0,
+    "calibration_fallback": false,
+    "seconds": {
+      "catalog": 14.186720300000161,
+      "indexes_and_ranker": 1.5065811999993457,
+      "inference": 1.2468171000000439,
+      "total": 16.95928560000175
+    },
+    "llm_calls": 0,
+    "wall_seconds_including_python_startup": 20.346204500001477,
+    "sha256": "304d5591fa54d22f5eda57e05a2da198ad3ccdaad286994d2815eaa5bb4e5bc9"
+  },
+  "labeled_metrics": {
+    "n": 233,
+    "mean_utility": 0.11051502145922747,
+    "accuracy_top1": 0.6094420600858369,
+    "recall_top3": 0.8025751072961373,
+    "auto_accept_rate": 0.0
+  },
+  "clean_copy": {
+    "identical_predictions": true,
+    "wall_seconds": 21.05392230000143,
+    "without_labeled_data": true,
+    "without_env_or_evaluation_artifacts": true,
+    "submission_check": "SUBMISSION VALID",
+    "freshly_installed_dependencies": false
+  },
+  "make_executable_available": false,
+  "tests_passed": 89
+}
