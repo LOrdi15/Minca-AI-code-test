@@ -1,108 +1,324 @@
-test_adjusted_interval_is_wider_and_reproducible (test_audit_confidence.ConfidenceAuditTests.test_adjusted_interval_is_wider_and_reproducible) ... ok
-test_delta_uses_official_asymmetric_penalties (test_audit_confidence.ConfidenceAuditTests.test_delta_uses_official_asymmetric_penalties) ... ok
-test_review_reference_has_zero_uncertainty (test_audit_confidence.ConfidenceAuditTests.test_review_reference_has_zero_uncertainty) ... ok
-test_paired_interval_does_not_invent_improvement (test_audit_evaluation.AuditEvaluationTests.test_paired_interval_does_not_invent_improvement) ... ok
-test_repeated_rows_keep_their_original_weight (test_audit_evaluation.AuditEvaluationTests.test_repeated_rows_keep_their_original_weight) ... ok
-test_trial_keeps_engine_units_and_drivetrain (test_audit_evaluation.AuditEvaluationTests.test_trial_keeps_engine_units_and_drivetrain) ... ok
-test_conflicting_variants_keep_their_own_relationships (test_catalog.CatalogFixtureTests.test_conflicting_variants_keep_their_own_relationships) ... ok
-test_duplicate_dimension_key_fails_instead_of_multiplying_rows (test_catalog.CatalogFixtureTests.test_duplicate_dimension_key_fails_instead_of_multiplying_rows) ... ok
-test_even_identical_version_rows_remain_available (test_catalog.CatalogFixtureTests.test_even_identical_version_rows_remain_available) ... ok
-test_manufacturer_disagreement_is_visible (test_catalog.CatalogFixtureTests.test_manufacturer_disagreement_is_visible) ... ok
-test_missing_relationships_do_not_discard_versions (test_catalog.CatalogFixtureTests.test_missing_relationships_do_not_discard_versions) ... ok
-test_missing_required_column_is_explained (test_catalog.CatalogFixtureTests.test_missing_required_column_is_explained) ... ok
-test_orphan_and_invalid_years_are_reported_and_kept (test_catalog.CatalogFixtureTests.test_orphan_and_invalid_years_are_reported_and_kept) ... ok
-test_variants_and_years_are_preserved_without_cartesian_expansion (test_catalog.CatalogFixtureTests.test_variants_and_years_are_preserved_without_cartesian_expansion) ... ok
-test_real_catalog_preserves_every_version_and_all_codes (test_catalog.SuppliedCatalogTests.test_real_catalog_preserves_every_version_and_all_codes) ... ok
-test_a_group_with_any_error_is_not_counted_as_a_success (test_decision.ConfidenceTests.test_a_group_with_any_error_is_not_counted_as_a_success) ... ok
-test_confidence_comes_from_observed_outcomes_not_similarity (test_decision.ConfidenceTests.test_confidence_comes_from_observed_outcomes_not_similarity) ... ok
-test_duplicates_do_not_inflate_calibration_support (test_decision.ConfidenceTests.test_duplicates_do_not_inflate_calibration_support) ... ok
-test_unseen_bucket_has_a_prior_but_no_empirical_support (test_decision.ConfidenceTests.test_unseen_bucket_has_a_prior_but_no_empirical_support) ... ok
-test_wilson_bound_and_invalid_counts (test_decision.ConfidenceTests.test_wilson_bound_and_invalid_counts) ... ok
-test_a_harmful_fold_prevents_selection_despite_positive_average_gain (test_decision.DecisionEvaluationTests.test_a_harmful_fold_prevents_selection_despite_positive_average_gain) ... ok
-test_grouped_oof_never_counts_validation_groups_as_training_support (test_decision.DecisionEvaluationTests.test_grouped_oof_never_counts_validation_groups_as_training_support) ... ok
-test_point_estimate_diagnostic_does_not_change_protected_decisions (test_decision.DecisionEvaluationTests.test_point_estimate_diagnostic_does_not_change_protected_decisions) ... ok
-test_small_lucky_validation_sample_does_not_enable_automation (test_decision.DecisionEvaluationTests.test_small_lucky_validation_sample_does_not_enable_automation) ... ok
-test_supported_consistent_validation_gains_can_enable_automation (test_decision.DecisionEvaluationTests.test_supported_consistent_validation_gains_can_enable_automation) ... ok
-test_utility_matches_the_four_official_outcomes (test_decision.DecisionEvaluationTests.test_utility_matches_the_four_official_outcomes) ... ok
-test_a_model_with_different_bucket_rules_is_rejected (test_decision.DecisionTests.test_a_model_with_different_bucket_rules_is_rejected) ... ok
-test_compatibility_conflict_cannot_be_hidden_by_an_empty_conflicts_list (test_decision.DecisionTests.test_compatibility_conflict_cannot_be_hidden_by_an_empty_conflicts_list) ... ok
-test_each_known_attribute_conflict_blocks_acceptance (test_decision.DecisionTests.test_each_known_attribute_conflict_blocks_acceptance) ... ok
-test_features_use_distinct_runner_up_and_structured_compatibility (test_decision.DecisionTests.test_features_use_distinct_runner_up_and_structured_compatibility) ... ok
-test_high_similarity_without_support_requires_review (test_decision.DecisionTests.test_high_similarity_without_support_requires_review) ... ok
-test_invalid_parameters_and_scores_are_rejected (test_decision.DecisionTests.test_invalid_parameters_and_scores_are_rejected) ... ok
-test_missing_or_ambiguous_evidence_blocks_acceptance (test_decision.DecisionTests.test_missing_or_ambiguous_evidence_blocks_acceptance) ... ok
-test_point_estimate_above_threshold_is_not_enough (test_decision.DecisionTests.test_point_estimate_above_threshold_is_not_enough) ... ok
-test_safe_default_is_review_even_with_high_confidence (test_decision.DecisionTests.test_safe_default_is_review_even_with_high_confidence) ... ok
-test_saved_policy_round_trips (test_decision.DecisionTests.test_saved_policy_round_trips) ... ok
-test_score_and_margin_both_define_evidence_bucket (test_decision.DecisionTests.test_score_and_margin_both_define_evidence_bucket) ... ok
-test_supported_compatible_case_can_be_accepted (test_decision.DecisionTests.test_supported_compatible_case_can_be_accepted) ... ok
-test_abstention_keeps_local_order_and_does_not_claim_confidence (test_llm_rerank.LLMRerankingTests.test_abstention_keeps_local_order_and_does_not_claim_confidence) ... ok
-test_budget_prevents_a_request_before_any_spend (test_llm_rerank.LLMRerankingTests.test_budget_prevents_a_request_before_any_spend) ... ok
-test_input_reservation_counts_unicode_bytes_and_schema (test_llm_rerank.LLMRerankingTests.test_input_reservation_counts_unicode_bytes_and_schema) ... ok
-test_invalid_response_retains_usage_and_falls_back (test_llm_rerank.LLMRerankingTests.test_invalid_response_retains_usage_and_falls_back) ... ok
-test_output_rejects_invented_duplicate_or_nonstring_codes (test_llm_rerank.LLMRerankingTests.test_output_rejects_invented_duplicate_or_nonstring_codes) ... ok
-test_quota_error_stops_without_retry_or_secret_in_logs (test_llm_rerank.LLMRerankingTests.test_quota_error_stops_without_retry_or_secret_in_logs) ... ok
-test_reservation_precedes_request_and_replay_never_calls_twice (test_llm_rerank.LLMRerankingTests.test_reservation_precedes_request_and_replay_never_calls_twice) ... ok
-test_schema_limits_response_to_supplied_codes (test_llm_rerank.LLMRerankingTests.test_schema_limits_response_to_supplied_codes) ... ok
-test_missing_columns_are_reported (test_normalization.NormalizeColumnsTests.test_missing_columns_are_reported) ... ok
-test_normalizing_a_table_twice_has_the_same_result (test_normalization.NormalizeColumnsTests.test_normalizing_a_table_twice_has_the_same_result) ... ok
-test_original_values_and_nulls_are_untouched (test_normalization.NormalizeColumnsTests.test_original_values_and_nulls_are_untouched) ... ok
-test_decimal_dots_are_different_from_abbreviation_dots (test_normalization.NormalizeTextTests.test_decimal_dots_are_different_from_abbreviation_dots) ... ok
-test_decomposed_unicode_accents (test_normalization.NormalizeTextTests.test_decomposed_unicode_accents) ... ok
-test_dotted_initials_are_compacted_without_inventing_words (test_normalization.NormalizeTextTests.test_dotted_initials_are_compacted_without_inventing_words) ... ok
-test_drivetrain_tokens_remain_intact (test_normalization.NormalizeTextTests.test_drivetrain_tokens_remain_intact) ... ok
-test_empty_or_only_separators_returns_empty_text (test_normalization.NormalizeTextTests.test_empty_or_only_separators_returns_empty_text) ... ok
-test_engine_decimals_and_suffixes_remain_intact (test_normalization.NormalizeTextTests.test_engine_decimals_and_suffixes_remain_intact) ... ok
-test_fullwidth_letters_and_digits_are_comparable (test_normalization.NormalizeTextTests.test_fullwidth_letters_and_digits_are_comparable) ... ok
-test_important_vehicle_differences_do_not_become_identical (test_normalization.NormalizeTextTests.test_important_vehicle_differences_do_not_become_identical) ... ok
-test_measurement_marks_are_not_lost_as_generic_punctuation (test_normalization.NormalizeTextTests.test_measurement_marks_are_not_lost_as_generic_punctuation) ... ok
-test_missing_text_returns_empty_string (test_normalization.NormalizeTextTests.test_missing_text_returns_empty_string) ... ok
-test_model_numbers_are_not_dropped_or_joined (test_normalization.NormalizeTextTests.test_model_numbers_are_not_dropped_or_joined) ... ok
-test_no_aliases_or_spelling_corrections (test_normalization.NormalizeTextTests.test_no_aliases_or_spelling_corrections) ... ok
-test_non_text_is_rejected_instead_of_becoming_a_description (test_normalization.NormalizeTextTests.test_non_text_is_rejected_instead_of_becoming_a_description) ... ok
-test_normalization_is_idempotent (test_normalization.NormalizeTextTests.test_normalization_is_idempotent) ... ok
-test_power_capacity_and_transmission_remain_intact (test_normalization.NormalizeTextTests.test_power_capacity_and_transmission_remain_intact) ... ok
-test_punctuation_separates_instead_of_concatenating_words (test_normalization.NormalizeTextTests.test_punctuation_separates_instead_of_concatenating_words) ... ok
-test_quotes_around_words_are_separators (test_normalization.NormalizeTextTests.test_quotes_around_words_are_separators) ... ok
-test_typographic_measurement_marks_are_preserved (test_normalization.NormalizeTextTests.test_typographic_measurement_marks_are_preserved) ... ok
-test_uppercase_and_accents (test_normalization.NormalizeTextTests.test_uppercase_and_accents) ... ok
-test_whitespace_including_nonbreaking_spaces (test_normalization.NormalizeTextTests.test_whitespace_including_nonbreaking_spaces) ... ok
-test_years_and_leading_zeros_remain_intact (test_normalization.NormalizeTextTests.test_years_and_leading_zeros_remain_intact) ... ok
-test_actual_broker_descriptions (test_normalization.RealNormalizationTests.test_actual_broker_descriptions) ... ok
-test_actual_catalog_descriptions (test_normalization.RealNormalizationTests.test_actual_catalog_descriptions) ... ok
-test_catalog_normalization_preserves_rows_variants_and_years (test_normalization.RealNormalizationTests.test_catalog_normalization_preserves_rows_variants_and_years) ... ok
-test_query_normalization_preserves_ids_years_and_labels (test_normalization.RealNormalizationTests.test_query_normalization_preserves_ids_years_and_labels) ... ok
-test_real_descriptions_preserve_numbers_decimals_and_drivetrains (test_normalization.RealNormalizationTests.test_real_descriptions_preserve_numbers_decimals_and_drivetrains) ... ok
-test_bad_description_only_falls_back_its_own_row (test_predict.PredictionTests.test_bad_description_only_falls_back_its_own_row) ... ok
-test_catalog_and_index_are_built_once_and_reused_across_rows (test_predict.PredictionTests.test_catalog_and_index_are_built_once_and_reused_across_rows) ... ok
-test_cli_runs_without_openai_key_and_writes_exact_schema (test_predict.PredictionTests.test_cli_runs_without_openai_key_and_writes_exact_schema) ... ok
-test_csv_ids_and_codes_remain_strings_and_optional_fields_are_filled (test_predict.PredictionTests.test_csv_ids_and_codes_remain_strings_and_optional_fields_are_filled) ... ok
-test_empty_or_malformed_rank_output_still_has_valid_top_three (test_predict.PredictionTests.test_empty_or_malformed_rank_output_still_has_valid_top_three) ... ok
-test_failure_in_each_stage_keeps_every_row_and_forces_review (test_predict.PredictionTests.test_failure_in_each_stage_keeps_every_row_and_forces_review) ... ok
-test_ids_that_cannot_be_scored_are_rejected_before_inference (test_predict.PredictionTests.test_ids_that_cannot_be_scored_are_rejected_before_inference) ... ok
-test_invalid_confidence_or_decision_cannot_reach_the_csv (test_predict.PredictionTests.test_invalid_confidence_or_decision_cannot_reach_the_csv) ... ok
-test_labels_and_extra_columns_do_not_influence_predictions (test_predict.PredictionTests.test_labels_and_extra_columns_do_not_influence_predictions) ... ok
-test_missing_or_stale_calibrator_fails_closed_to_review (test_predict.PredictionTests.test_missing_or_stale_calibrator_fails_closed_to_review) ... ok
-test_retrieval_and_ranking_metrics_have_separate_denominators (test_ranking.EvaluationTests.test_retrieval_and_ranking_metrics_have_separate_denominators) ... ok
-test_split_is_reproducible_exhaustive_and_grouped (test_ranking.EvaluationTests.test_split_is_reproducible_exhaustive_and_grouped) ... ok
-test_answers_and_ids_cannot_influence_retrieval_or_ranking (test_ranking.RankingTests.test_answers_and_ids_cannot_influence_retrieval_or_ranking) ... ok
-test_disabled_type_scoring_still_flags_incompatibility (test_ranking.RankingTests.test_disabled_type_scoring_still_flags_incompatibility) ... ok
-test_empty_query_is_deterministic_and_requires_review (test_ranking.RankingTests.test_empty_query_is_deterministic_and_requires_review) ... ok
-test_exact_text_is_retrievable (test_ranking.RankingTests.test_exact_text_is_retrievable) ... ok
-test_invalid_retrieval_parameters_are_rejected (test_ranking.RankingTests.test_invalid_retrieval_parameters_are_rejected) ... ok
-test_known_submodel_incompatibility_is_visible (test_ranking.RankingTests.test_known_submodel_incompatibility_is_visible) ... ok
-test_manufacturer_contradiction_can_outweigh_text_similarity (test_ranking.RankingTests.test_manufacturer_contradiction_can_outweigh_text_similarity) ... ok
-test_no_catalog_years_is_unknown_instead_of_incompatible (test_ranking.RankingTests.test_no_catalog_years_is_unknown_instead_of_incompatible) ... ok
-test_retrieval_returns_distinct_codes_and_keeps_all_variants (test_ranking.RankingTests.test_retrieval_returns_distinct_codes_and_keeps_all_variants) ... ok
-test_top_three_are_distinct_even_if_candidates_repeat (test_ranking.RankingTests.test_top_three_are_distinct_even_if_candidates_repeat) ... ok
-test_type_alignment_does_not_assume_ambiguous_categories (test_ranking.RankingTests.test_type_alignment_does_not_assume_ambiguous_categories) ... ok
-test_type_incompatibility_is_penalized (test_ranking.RankingTests.test_type_incompatibility_is_penalized) ... ok
-test_unknown_or_missing_metadata_is_neutral (test_ranking.RankingTests.test_unknown_or_missing_metadata_is_neutral) ... ok
-test_variants_do_not_borrow_metadata_from_each_other (test_ranking.RankingTests.test_variants_do_not_borrow_metadata_from_each_other) ... ok
-test_wrong_variant_code_is_rejected (test_ranking.RankingTests.test_wrong_variant_code_is_rejected) ... ok
-test_year_breaks_an_otherwise_identical_text_tie (test_ranking.RankingTests.test_year_breaks_an_otherwise_identical_text_tie) ... ok
-
-----------------------------------------------------------------------
-Ran 103 tests in 36.356s
-
-OK
+test_adjusted_interval_is_wider_and_reproducible (test_audit_confidence.ConfidenceAuditTests.test_adjusted_interval_is_wider_and_reproducible) ... ok
+
+
+test_delta_uses_official_asymmetric_penalties (test_audit_confidence.ConfidenceAuditTests.test_delta_uses_official_asymmetric_penalties) ... ok
+
+
+test_review_reference_has_zero_uncertainty (test_audit_confidence.ConfidenceAuditTests.test_review_reference_has_zero_uncertainty) ... ok
+
+
+test_paired_interval_does_not_invent_improvement (test_audit_evaluation.AuditEvaluationTests.test_paired_interval_does_not_invent_improvement) ... ok
+
+
+test_repeated_rows_keep_their_original_weight (test_audit_evaluation.AuditEvaluationTests.test_repeated_rows_keep_their_original_weight) ... ok
+
+
+test_trial_keeps_engine_units_and_drivetrain (test_audit_evaluation.AuditEvaluationTests.test_trial_keeps_engine_units_and_drivetrain) ... ok
+
+
+test_conflicting_variants_keep_their_own_relationships (test_catalog.CatalogFixtureTests.test_conflicting_variants_keep_their_own_relationships) ... ok
+
+
+test_duplicate_dimension_key_fails_instead_of_multiplying_rows (test_catalog.CatalogFixtureTests.test_duplicate_dimension_key_fails_instead_of_multiplying_rows) ... ok
+
+
+test_even_identical_version_rows_remain_available (test_catalog.CatalogFixtureTests.test_even_identical_version_rows_remain_available) ... ok
+
+
+test_manufacturer_disagreement_is_visible (test_catalog.CatalogFixtureTests.test_manufacturer_disagreement_is_visible) ... ok
+
+
+test_missing_relationships_do_not_discard_versions (test_catalog.CatalogFixtureTests.test_missing_relationships_do_not_discard_versions) ... ok
+
+
+test_missing_required_column_is_explained (test_catalog.CatalogFixtureTests.test_missing_required_column_is_explained) ... ok
+
+
+test_orphan_and_invalid_years_are_reported_and_kept (test_catalog.CatalogFixtureTests.test_orphan_and_invalid_years_are_reported_and_kept) ... ok
+
+
+test_variants_and_years_are_preserved_without_cartesian_expansion (test_catalog.CatalogFixtureTests.test_variants_and_years_are_preserved_without_cartesian_expansion) ... ok
+
+
+test_real_catalog_preserves_every_version_and_all_codes (test_catalog.SuppliedCatalogTests.test_real_catalog_preserves_every_version_and_all_codes) ... ok
+
+
+test_a_group_with_any_error_is_not_counted_as_a_success (test_decision.ConfidenceTests.test_a_group_with_any_error_is_not_counted_as_a_success) ... ok
+
+
+test_confidence_comes_from_observed_outcomes_not_similarity (test_decision.ConfidenceTests.test_confidence_comes_from_observed_outcomes_not_similarity) ... ok
+
+
+test_duplicates_do_not_inflate_calibration_support (test_decision.ConfidenceTests.test_duplicates_do_not_inflate_calibration_support) ... ok
+
+
+test_unseen_bucket_has_a_prior_but_no_empirical_support (test_decision.ConfidenceTests.test_unseen_bucket_has_a_prior_but_no_empirical_support) ... ok
+
+
+test_wilson_bound_and_invalid_counts (test_decision.ConfidenceTests.test_wilson_bound_and_invalid_counts) ... ok
+
+
+test_a_harmful_fold_prevents_selection_despite_positive_average_gain (test_decision.DecisionEvaluationTests.test_a_harmful_fold_prevents_selection_despite_positive_average_gain) ... ok
+
+
+test_grouped_oof_never_counts_validation_groups_as_training_support (test_decision.DecisionEvaluationTests.test_grouped_oof_never_counts_validation_groups_as_training_support) ... ok
+
+
+test_point_estimate_diagnostic_does_not_change_protected_decisions (test_decision.DecisionEvaluationTests.test_point_estimate_diagnostic_does_not_change_protected_decisions) ... ok
+
+
+test_small_lucky_validation_sample_does_not_enable_automation (test_decision.DecisionEvaluationTests.test_small_lucky_validation_sample_does_not_enable_automation) ... ok
+
+
+test_supported_consistent_validation_gains_can_enable_automation (test_decision.DecisionEvaluationTests.test_supported_consistent_validation_gains_can_enable_automation) ... ok
+
+
+test_utility_matches_the_four_official_outcomes (test_decision.DecisionEvaluationTests.test_utility_matches_the_four_official_outcomes) ... ok
+
+
+test_a_model_with_different_bucket_rules_is_rejected (test_decision.DecisionTests.test_a_model_with_different_bucket_rules_is_rejected) ... ok
+
+
+test_compatibility_conflict_cannot_be_hidden_by_an_empty_conflicts_list (test_decision.DecisionTests.test_compatibility_conflict_cannot_be_hidden_by_an_empty_conflicts_list) ... ok
+
+
+test_each_known_attribute_conflict_blocks_acceptance (test_decision.DecisionTests.test_each_known_attribute_conflict_blocks_acceptance) ... ok
+
+
+test_features_use_distinct_runner_up_and_structured_compatibility (test_decision.DecisionTests.test_features_use_distinct_runner_up_and_structured_compatibility) ... ok
+
+
+test_high_similarity_without_support_requires_review (test_decision.DecisionTests.test_high_similarity_without_support_requires_review) ... ok
+
+
+test_invalid_parameters_and_scores_are_rejected (test_decision.DecisionTests.test_invalid_parameters_and_scores_are_rejected) ... ok
+
+
+test_missing_or_ambiguous_evidence_blocks_acceptance (test_decision.DecisionTests.test_missing_or_ambiguous_evidence_blocks_acceptance) ... ok
+
+
+test_point_estimate_above_threshold_is_not_enough (test_decision.DecisionTests.test_point_estimate_above_threshold_is_not_enough) ... ok
+
+
+test_safe_default_is_review_even_with_high_confidence (test_decision.DecisionTests.test_safe_default_is_review_even_with_high_confidence) ... ok
+
+
+test_saved_policy_round_trips (test_decision.DecisionTests.test_saved_policy_round_trips) ... ok
+
+
+test_score_and_margin_both_define_evidence_bucket (test_decision.DecisionTests.test_score_and_margin_both_define_evidence_bucket) ... ok
+
+
+test_supported_compatible_case_can_be_accepted (test_decision.DecisionTests.test_supported_compatible_case_can_be_accepted) ... ok
+
+
+test_abstention_keeps_local_order_and_does_not_claim_confidence (test_llm_rerank.LLMRerankingTests.test_abstention_keeps_local_order_and_does_not_claim_confidence) ... ok
+
+
+test_budget_prevents_a_request_before_any_spend (test_llm_rerank.LLMRerankingTests.test_budget_prevents_a_request_before_any_spend) ... ok
+
+
+test_input_reservation_counts_unicode_bytes_and_schema (test_llm_rerank.LLMRerankingTests.test_input_reservation_counts_unicode_bytes_and_schema) ... ok
+
+
+test_invalid_response_retains_usage_and_falls_back (test_llm_rerank.LLMRerankingTests.test_invalid_response_retains_usage_and_falls_back) ... ok
+
+
+test_output_rejects_invented_duplicate_or_nonstring_codes (test_llm_rerank.LLMRerankingTests.test_output_rejects_invented_duplicate_or_nonstring_codes) ... ok
+
+
+test_quota_error_stops_without_retry_or_secret_in_logs (test_llm_rerank.LLMRerankingTests.test_quota_error_stops_without_retry_or_secret_in_logs) ... ok
+
+
+test_reservation_precedes_request_and_replay_never_calls_twice (test_llm_rerank.LLMRerankingTests.test_reservation_precedes_request_and_replay_never_calls_twice) ... ok
+
+
+test_schema_limits_response_to_supplied_codes (test_llm_rerank.LLMRerankingTests.test_schema_limits_response_to_supplied_codes) ... ok
+
+
+test_missing_columns_are_reported (test_normalization.NormalizeColumnsTests.test_missing_columns_are_reported) ... ok
+
+
+test_normalizing_a_table_twice_has_the_same_result (test_normalization.NormalizeColumnsTests.test_normalizing_a_table_twice_has_the_same_result) ... ok
+
+
+test_original_values_and_nulls_are_untouched (test_normalization.NormalizeColumnsTests.test_original_values_and_nulls_are_untouched) ... ok
+
+
+test_decimal_dots_are_different_from_abbreviation_dots (test_normalization.NormalizeTextTests.test_decimal_dots_are_different_from_abbreviation_dots) ... ok
+
+
+test_decomposed_unicode_accents (test_normalization.NormalizeTextTests.test_decomposed_unicode_accents) ... ok
+
+
+test_dotted_initials_are_compacted_without_inventing_words (test_normalization.NormalizeTextTests.test_dotted_initials_are_compacted_without_inventing_words) ... ok
+
+
+test_drivetrain_tokens_remain_intact (test_normalization.NormalizeTextTests.test_drivetrain_tokens_remain_intact) ... ok
+
+
+test_empty_or_only_separators_returns_empty_text (test_normalization.NormalizeTextTests.test_empty_or_only_separators_returns_empty_text) ... ok
+
+
+test_engine_decimals_and_suffixes_remain_intact (test_normalization.NormalizeTextTests.test_engine_decimals_and_suffixes_remain_intact) ... ok
+
+
+test_fullwidth_letters_and_digits_are_comparable (test_normalization.NormalizeTextTests.test_fullwidth_letters_and_digits_are_comparable) ... ok
+
+
+test_important_vehicle_differences_do_not_become_identical (test_normalization.NormalizeTextTests.test_important_vehicle_differences_do_not_become_identical) ... ok
+
+
+test_measurement_marks_are_not_lost_as_generic_punctuation (test_normalization.NormalizeTextTests.test_measurement_marks_are_not_lost_as_generic_punctuation) ... ok
+
+
+test_missing_text_returns_empty_string (test_normalization.NormalizeTextTests.test_missing_text_returns_empty_string) ... ok
+
+
+test_model_numbers_are_not_dropped_or_joined (test_normalization.NormalizeTextTests.test_model_numbers_are_not_dropped_or_joined) ... ok
+
+
+test_no_aliases_or_spelling_corrections (test_normalization.NormalizeTextTests.test_no_aliases_or_spelling_corrections) ... ok
+
+
+test_non_text_is_rejected_instead_of_becoming_a_description (test_normalization.NormalizeTextTests.test_non_text_is_rejected_instead_of_becoming_a_description) ... ok
+
+
+test_normalization_is_idempotent (test_normalization.NormalizeTextTests.test_normalization_is_idempotent) ... ok
+
+
+test_power_capacity_and_transmission_remain_intact (test_normalization.NormalizeTextTests.test_power_capacity_and_transmission_remain_intact) ... ok
+
+
+test_punctuation_separates_instead_of_concatenating_words (test_normalization.NormalizeTextTests.test_punctuation_separates_instead_of_concatenating_words) ... ok
+
+
+test_quotes_around_words_are_separators (test_normalization.NormalizeTextTests.test_quotes_around_words_are_separators) ... ok
+
+
+test_typographic_measurement_marks_are_preserved (test_normalization.NormalizeTextTests.test_typographic_measurement_marks_are_preserved) ... ok
+
+
+test_uppercase_and_accents (test_normalization.NormalizeTextTests.test_uppercase_and_accents) ... ok
+
+
+test_whitespace_including_nonbreaking_spaces (test_normalization.NormalizeTextTests.test_whitespace_including_nonbreaking_spaces) ... ok
+
+
+test_years_and_leading_zeros_remain_intact (test_normalization.NormalizeTextTests.test_years_and_leading_zeros_remain_intact) ... ok
+
+
+test_actual_broker_descriptions (test_normalization.RealNormalizationTests.test_actual_broker_descriptions) ... ok
+
+
+test_actual_catalog_descriptions (test_normalization.RealNormalizationTests.test_actual_catalog_descriptions) ... ok
+
+
+test_catalog_normalization_preserves_rows_variants_and_years (test_normalization.RealNormalizationTests.test_catalog_normalization_preserves_rows_variants_and_years) ... ok
+
+
+test_query_normalization_preserves_ids_years_and_labels (test_normalization.RealNormalizationTests.test_query_normalization_preserves_ids_years_and_labels) ... ok
+
+
+test_real_descriptions_preserve_numbers_decimals_and_drivetrains (test_normalization.RealNormalizationTests.test_real_descriptions_preserve_numbers_decimals_and_drivetrains) ... ok
+
+
+test_bad_description_only_falls_back_its_own_row (test_predict.PredictionTests.test_bad_description_only_falls_back_its_own_row) ... ok
+
+
+test_catalog_and_index_are_built_once_and_reused_across_rows (test_predict.PredictionTests.test_catalog_and_index_are_built_once_and_reused_across_rows) ... ok
+
+
+test_cli_runs_without_openai_key_and_writes_exact_schema (test_predict.PredictionTests.test_cli_runs_without_openai_key_and_writes_exact_schema) ... ok
+
+
+test_csv_ids_and_codes_remain_strings_and_optional_fields_are_filled (test_predict.PredictionTests.test_csv_ids_and_codes_remain_strings_and_optional_fields_are_filled) ... ok
+
+
+test_empty_or_malformed_rank_output_still_has_valid_top_three (test_predict.PredictionTests.test_empty_or_malformed_rank_output_still_has_valid_top_three) ... ok
+
+
+test_failure_in_each_stage_keeps_every_row_and_forces_review (test_predict.PredictionTests.test_failure_in_each_stage_keeps_every_row_and_forces_review) ... ok
+
+
+test_ids_that_cannot_be_scored_are_rejected_before_inference (test_predict.PredictionTests.test_ids_that_cannot_be_scored_are_rejected_before_inference) ... ok
+
+
+test_invalid_confidence_or_decision_cannot_reach_the_csv (test_predict.PredictionTests.test_invalid_confidence_or_decision_cannot_reach_the_csv) ... ok
+
+
+test_labels_and_extra_columns_do_not_influence_predictions (test_predict.PredictionTests.test_labels_and_extra_columns_do_not_influence_predictions) ... ok
+
+
+test_missing_or_stale_calibrator_fails_closed_to_review (test_predict.PredictionTests.test_missing_or_stale_calibrator_fails_closed_to_review) ... ok
+
+
+test_retrieval_and_ranking_metrics_have_separate_denominators (test_ranking.EvaluationTests.test_retrieval_and_ranking_metrics_have_separate_denominators) ... ok
+
+
+test_split_is_reproducible_exhaustive_and_grouped (test_ranking.EvaluationTests.test_split_is_reproducible_exhaustive_and_grouped) ... ok
+
+
+test_answers_and_ids_cannot_influence_retrieval_or_ranking (test_ranking.RankingTests.test_answers_and_ids_cannot_influence_retrieval_or_ranking) ... ok
+
+
+test_disabled_type_scoring_still_flags_incompatibility (test_ranking.RankingTests.test_disabled_type_scoring_still_flags_incompatibility) ... ok
+
+
+test_empty_query_is_deterministic_and_requires_review (test_ranking.RankingTests.test_empty_query_is_deterministic_and_requires_review) ... ok
+
+
+test_exact_text_is_retrievable (test_ranking.RankingTests.test_exact_text_is_retrievable) ... ok
+
+
+test_invalid_retrieval_parameters_are_rejected (test_ranking.RankingTests.test_invalid_retrieval_parameters_are_rejected) ... ok
+
+
+test_known_submodel_incompatibility_is_visible (test_ranking.RankingTests.test_known_submodel_incompatibility_is_visible) ... ok
+
+
+test_manufacturer_contradiction_can_outweigh_text_similarity (test_ranking.RankingTests.test_manufacturer_contradiction_can_outweigh_text_similarity) ... ok
+
+
+test_no_catalog_years_is_unknown_instead_of_incompatible (test_ranking.RankingTests.test_no_catalog_years_is_unknown_instead_of_incompatible) ... ok
+
+
+test_retrieval_returns_distinct_codes_and_keeps_all_variants (test_ranking.RankingTests.test_retrieval_returns_distinct_codes_and_keeps_all_variants) ... ok
+
+
+test_top_three_are_distinct_even_if_candidates_repeat (test_ranking.RankingTests.test_top_three_are_distinct_even_if_candidates_repeat) ... ok
+
+
+test_type_alignment_does_not_assume_ambiguous_categories (test_ranking.RankingTests.test_type_alignment_does_not_assume_ambiguous_categories) ... ok
+
+
+test_type_incompatibility_is_penalized (test_ranking.RankingTests.test_type_incompatibility_is_penalized) ... ok
+
+
+test_unknown_or_missing_metadata_is_neutral (test_ranking.RankingTests.test_unknown_or_missing_metadata_is_neutral) ... ok
+
+
+test_variants_do_not_borrow_metadata_from_each_other (test_ranking.RankingTests.test_variants_do_not_borrow_metadata_from_each_other) ... ok
+
+
+test_wrong_variant_code_is_rejected (test_ranking.RankingTests.test_wrong_variant_code_is_rejected) ... ok
+
+
+test_year_breaks_an_otherwise_identical_text_tie (test_ranking.RankingTests.test_year_breaks_an_otherwise_identical_text_tie) ... ok
+
+
+
+
+
+----------------------------------------------------------------------
+
+
+Ran 103 tests in 36.356s
+
+
+
+
+
+OK
+
+
