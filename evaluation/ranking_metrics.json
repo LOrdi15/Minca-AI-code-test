@@ -1,0 +1,220 @@
+{
+  "development": {
+    "selected": {
+      "n": 174,
+      "top1_correct": 107,
+      "top3_correct": 140,
+      "retrieved_at_50": 151,
+      "accuracy_top1": 0.6149425287356322,
+      "recall_top3": 0.8045977011494253,
+      "recall_at_50": 0.867816091954023,
+      "ranking_accuracy_given_retrieved": 0.7086092715231788,
+      "review_all_utility": 0.11091954022988507
+    },
+    "baseline": {
+      "n": 174,
+      "top1_correct": 56,
+      "top3_correct": 76,
+      "retrieved_at_50": 121,
+      "accuracy_top1": 0.3218390804597701,
+      "recall_top3": 0.4367816091954023,
+      "recall_at_50": 0.6954022988505747,
+      "ranking_accuracy_given_retrieved": 0.4628099173553719,
+      "review_all_utility": 0.037356321839080456
+    }
+  },
+  "validation": {
+    "selected": {
+      "n": 59,
+      "top1_correct": 35,
+      "top3_correct": 47,
+      "retrieved_at_50": 53,
+      "accuracy_top1": 0.5932203389830508,
+      "recall_top3": 0.7966101694915254,
+      "recall_at_50": 0.8983050847457628,
+      "ranking_accuracy_given_retrieved": 0.660377358490566,
+      "review_all_utility": 0.10932203389830507
+    },
+    "baseline": {
+      "n": 59,
+      "top1_correct": 16,
+      "top3_correct": 25,
+      "retrieved_at_50": 36,
+      "accuracy_top1": 0.2711864406779661,
+      "recall_top3": 0.423728813559322,
+      "recall_at_50": 0.6101694915254238,
+      "ranking_accuracy_given_retrieved": 0.4444444444444444,
+      "review_all_utility": 0.03474576271186441
+    }
+  },
+  "all_descriptive": {
+    "selected": {
+      "n": 233,
+      "top1_correct": 142,
+      "top3_correct": 187,
+      "retrieved_at_50": 204,
+      "accuracy_top1": 0.6094420600858369,
+      "recall_top3": 0.8025751072961373,
+      "recall_at_50": 0.8755364806866953,
+      "ranking_accuracy_given_retrieved": 0.696078431372549,
+      "review_all_utility": 0.11051502145922747
+    },
+    "baseline": {
+      "n": 233,
+      "top1_correct": 72,
+      "top3_correct": 101,
+      "retrieved_at_50": 157,
+      "accuracy_top1": 0.3090128755364807,
+      "recall_top3": 0.4334763948497854,
+      "recall_at_50": 0.6738197424892703,
+      "ranking_accuracy_given_retrieved": 0.4585987261146497,
+      "review_all_utility": 0.03669527896995708
+    }
+  },
+  "by_segment": {
+    "AUTO": {
+      "selected": {
+        "n": 67,
+        "top1_correct": 52,
+        "top3_correct": 62,
+        "retrieved_at_50": 66,
+        "accuracy_top1": 0.7761194029850746,
+        "recall_top3": 0.9253731343283582,
+        "recall_at_50": 0.9850746268656716,
+        "ranking_accuracy_given_retrieved": 0.7878787878787878,
+        "review_all_utility": 0.13507462686567162
+      },
+      "baseline": {
+        "n": 67,
+        "top1_correct": 25,
+        "top3_correct": 35,
+        "retrieved_at_50": 57,
+        "accuracy_top1": 0.373134328358209,
+        "recall_top3": 0.5223880597014925,
+        "recall_at_50": 0.8507462686567164,
+        "ranking_accuracy_given_retrieved": 0.43859649122807015,
+        "review_all_utility": 0.05447761194029851
+      }
+    },
+    "CAMION": {
+      "selected": {
+        "n": 41,
+        "top1_correct": 22,
+        "top3_correct": 33,
+        "retrieved_at_50": 34,
+        "accuracy_top1": 0.5365853658536586,
+        "recall_top3": 0.8048780487804879,
+        "recall_at_50": 0.8292682926829268,
+        "ranking_accuracy_given_retrieved": 0.6470588235294118,
+        "review_all_utility": 0.11097560975609756
+      },
+      "baseline": {
+        "n": 41,
+        "top1_correct": 12,
+        "top3_correct": 20,
+        "retrieved_at_50": 31,
+        "accuracy_top1": 0.2926829268292683,
+        "recall_top3": 0.4878048780487805,
+        "recall_at_50": 0.7560975609756098,
+        "ranking_accuracy_given_retrieved": 0.3870967741935484,
+        "review_all_utility": 0.04756097560975609
+      }
+    },
+    "OTHER": {
+      "selected": {
+        "n": 55,
+        "top1_correct": 35,
+        "top3_correct": 50,
+        "retrieved_at_50": 53,
+        "accuracy_top1": 0.6363636363636364,
+        "recall_top3": 0.9090909090909091,
+        "recall_at_50": 0.9636363636363636,
+        "ranking_accuracy_given_retrieved": 0.660377358490566,
+        "review_all_utility": 0.1318181818181818
+      },
+      "baseline": {
+        "n": 55,
+        "top1_correct": 16,
+        "top3_correct": 25,
+        "retrieved_at_50": 39,
+        "accuracy_top1": 0.2909090909090909,
+        "recall_top3": 0.45454545454545453,
+        "recall_at_50": 0.7090909090909091,
+        "ranking_accuracy_given_retrieved": 0.41025641025641024,
+        "review_all_utility": 0.04090909090909091
+      }
+    },
+    "PICKUP": {
+      "selected": {
+        "n": 18,
+        "top1_correct": 11,
+        "top3_correct": 16,
+        "retrieved_at_50": 18,
+        "accuracy_top1": 0.6111111111111112,
+        "recall_top3": 0.8888888888888888,
+        "recall_at_50": 1.0,
+        "ranking_accuracy_given_retrieved": 0.6111111111111112,
+        "review_all_utility": 0.12777777777777777
+      },
+      "baseline": {
+        "n": 18,
+        "top1_correct": 9,
+        "top3_correct": 10,
+        "retrieved_at_50": 14,
+        "accuracy_top1": 0.5,
+        "recall_top3": 0.5555555555555556,
+        "recall_at_50": 0.7777777777777778,
+        "ranking_accuracy_given_retrieved": 0.6428571428571429,
+        "review_all_utility": 0.0611111111111111
+      }
+    },
+    "REMOLQUE": {
+      "selected": {
+        "n": 35,
+        "top1_correct": 9,
+        "top3_correct": 11,
+        "retrieved_at_50": 17,
+        "accuracy_top1": 0.2571428571428571,
+        "recall_top3": 0.3142857142857143,
+        "recall_at_50": 0.4857142857142857,
+        "ranking_accuracy_given_retrieved": 0.5294117647058824,
+        "review_all_utility": 0.012857142857142853
+      },
+      "baseline": {
+        "n": 35,
+        "top1_correct": 6,
+        "top3_correct": 6,
+        "retrieved_at_50": 9,
+        "accuracy_top1": 0.17142857142857143,
+        "recall_top3": 0.17142857142857143,
+        "recall_at_50": 0.2571428571428571,
+        "ranking_accuracy_given_retrieved": 0.6666666666666666,
+        "review_all_utility": -0.01571428571428572
+      }
+    },
+    "TRACTO": {
+      "selected": {
+        "n": 17,
+        "top1_correct": 13,
+        "top3_correct": 15,
+        "retrieved_at_50": 16,
+        "accuracy_top1": 0.7647058823529411,
+        "recall_top3": 0.8823529411764706,
+        "recall_at_50": 0.9411764705882353,
+        "ranking_accuracy_given_retrieved": 0.8125,
+        "review_all_utility": 0.1264705882352941
+      },
+      "baseline": {
+        "n": 17,
+        "top1_correct": 4,
+        "top3_correct": 5,
+        "retrieved_at_50": 7,
+        "accuracy_top1": 0.23529411764705882,
+        "recall_top3": 0.29411764705882354,
+        "recall_at_50": 0.4117647058823529,
+        "ranking_accuracy_given_retrieved": 0.5714285714285714,
+        "review_all_utility": 0.008823529411764702
+      }
+    }
+  }
+}
