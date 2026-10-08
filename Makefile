@@ -7,6 +7,8 @@
 #
 # Budget, enforced on our re-run: under $2 of LLM spend and under 10 minutes.
 
+# Linux default; command-line overrides take precedence.
+# Windows with an activated virtual environment: make predict PYTHON=python
 PYTHON ?= python3
 BLIND  := data/queries_blind.csv
 DEV    := data/queries_labeled.csv
