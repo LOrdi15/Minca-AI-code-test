@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Mapping, Sequence
 
 from rapidfuzz import fuzz, process
@@ -43,6 +43,8 @@ class RankedCandidate:
     contributions: dict[str, float]
     conflicts: tuple[str, ...]
     catalog_ambiguous: bool
+    compatibility: dict[str, str] = field(default_factory=dict)
+    catalog_relations_complete: bool = True
 
     @property
     def needs_review(self) -> bool:
@@ -129,20 +131,25 @@ class CandidateRanker:
                 fuzzy_score = fuzz.WRatio(text, self.retriever.texts[index]) / 100 if text else 0.0
                 contributions = {"tfidf": weights.tfidf * tfidf_score, "fuzzy": weights.fuzzy * fuzzy_score}
                 conflicts = []
+                compatibility = {}
                 for name, expected, actual, bonus, penalty in (
                     ("manufacturer", manufacturer, row.marca_normalized, weights.manufacturer_bonus, weights.manufacturer_penalty),
                     ("submodel", submodel, row.submarca_normalized, weights.submodel_bonus, weights.submodel_penalty),
                     ("vehicle_type", category, vehicle_category(row.tipveh), weights.type_bonus, weights.type_penalty),
                 ):
                     contributions[name] = 0.0
+                    compatibility[name] = "unknown"
                     if expected and actual:
                         matches = expected == actual
+                        compatibility[name] = "match" if matches else "conflict"
                         contributions[name] = bonus if matches else -penalty
                         if not matches:
                             conflicts.append(name)
                 contributions["year"] = 0.0
+                compatibility["year"] = "unknown"
                 if year is not None and row.valid_years:
                     matches = year in row.valid_years
+                    compatibility["year"] = "match" if matches else "conflict"
                     contributions["year"] = weights.year_bonus if matches else -weights.year_penalty
                     if not matches:
                         conflicts.append("year")
@@ -150,7 +157,8 @@ class CandidateRanker:
                 ambiguous = len(entry.manufacturers) > 1 or len(entry.submodels) > 1 or len(entry.vehicle_types) > 1
                 result = RankedCandidate(
                     candidate.code, sum(contributions.values()), tfidf_score, fuzzy_score,
-                    row.source_row, contributions, tuple(conflicts), ambiguous,
+                    row.source_row, contributions, tuple(conflicts), ambiguous, compatibility,
+                    bool(row.manufacturer_found and row.submodel_found and row.manufacturer_consistent),
                 )
                 previous = ranked.get(candidate.code)
                 if previous is None or result.score > previous.score:

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "threshold": null,
+  "min_groups": 20,
+  "bins": {
+    "moderate": {
+      "groups": 42,
+      "correct_groups": 29
+    },
+    "blocked": {
+      "groups": 87,
+      "correct_groups": 40
+    },
+    "strong": {
+      "groups": 43,
+      "correct_groups": 37
+    }
+  },
+  "evidence_rules": {
+    "min_score": 0.55,
+    "min_margin": 0.03,
+    "strong_score": 0.75,
+    "strong_margin": 0.08
+  },
+  "metadata": {
+    "labeled_sha256": "70004739e7ef31ac513c126f1f306871226a4e4de8928463e3d55e8ae35c8631",
+    "ranking_signature": "2786e76c19ddc7c67113f6699ab5cc123c14df70b45f1ac6c3223f43b360a336",
+    "calibration_source": "174 ranking-development rows, grouped evidence counts",
+    "selection_source": "four grouped out-of-fold calibration folds, seed 17",
+    "ranking_holdout_previously_inspected": true,
+    "selection_reason": "Review retained: no threshold passed evidence and utility requirements"
+  }
+}

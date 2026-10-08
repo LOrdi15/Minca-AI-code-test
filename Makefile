@@ -11,7 +11,7 @@ PYTHON ?= python3
 BLIND  := data/queries_blind.csv
 DEV    := data/queries_labeled.csv
 
-.PHONY: setup predict score check baseline evaluate test clean
+.PHONY: setup predict score check baseline evaluate evaluate-decision test clean
 
 setup:
 	$(PYTHON) -m pip install -r requirements.txt
@@ -33,10 +33,14 @@ baseline:
 	$(PYTHON) solution/baseline.py --queries $(DEV) --versions data/versions.csv --out dev_predictions.csv
 	$(PYTHON) score.py --predictions dev_predictions.csv --labels $(DEV)
 
-## Select using development only, then evaluate the frozen validation split.
+## Select ranking on development, evaluate it, then calibrate decision policy.
 evaluate:
 	$(PYTHON) -m solution.evaluate --phase develop
 	$(PYTHON) -m solution.evaluate --phase validate
+	$(PYTHON) -m solution.evaluate_decision
+
+evaluate-decision:
+	$(PYTHON) -m solution.evaluate_decision
 
 test:
 	$(PYTHON) -m unittest discover -s tests -v

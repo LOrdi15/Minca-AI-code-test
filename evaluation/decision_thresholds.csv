@@ -1,0 +1,10 @@
+policy_kind,threshold,n,mean_utility,auto_accept_count,auto_accept_errors,auto_accept_precision,auto_accept_rate,review_rate,top3_recall,top1_accuracy,auto_accept_groups,auto_accept_precision_lower_bound,min_fold_utility_gain,fold_utility_gains,empirically_supported,reason
+guarded,,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,0.0,"[0.0, 0.0, 0.0, 0.0]",False,
+guarded,0.8,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,0.0,"[0.0, 0.0, 0.0, 0.0]",False,
+guarded,0.85,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,0.0,"[0.0, 0.0, 0.0, 0.0]",False,
+guarded,0.9,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,0.0,"[0.0, 0.0, 0.0, 0.0]",False,
+guarded,0.95,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,0.0,"[0.0, 0.0, 0.0, 0.0]",False,
+diagnostic_point_estimate_only,0.8,174,0.19137931034482758,44,6,0.8636363636363636,0.25287356321839083,0.7471264367816092,0.8045977011494253,0.6149425287356322,43,0.727361234055743,,,,Diagnostic only: ignores conditional calibration uncertainty; not selected
+diagnostic_point_estimate_only,0.85,174,0.12155172413793103,25,5,0.8,0.14367816091954022,0.8563218390804598,0.8045977011494253,0.6149425287356322,25,0.6086866446346176,,,,Diagnostic only: ignores conditional calibration uncertainty; not selected
+diagnostic_point_estimate_only,0.9,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,,,,Diagnostic only: ignores conditional calibration uncertainty; not selected
+diagnostic_point_estimate_only,0.95,174,0.11091954022988507,0,0,,0.0,1.0,0.8045977011494253,0.6149425287356322,0,0.0,,,,Diagnostic only: ignores conditional calibration uncertainty; not selected

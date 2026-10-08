@@ -26,22 +26,48 @@ etiquetas por suposición. Actualizar el seguimiento sin borrar diagnósticos pr
 
 ## Pendientes necesarios para la entrega
 
-- [ ] Diseñar y evaluar confianza y política `auto_accept` / `review` mediante
-  utilidad, no solo accuracy. El score de ranking no es una probabilidad.
-- [ ] Definir cómo impedir aceptación automática ante contradicciones, variantes
-  ambiguas, ausencia de evidencia o alternativas casi empatadas.
+- [x] Diseñar y evaluar confianza y política `auto_accept` / `review` mediante
+  utilidad. Se seleccionó review general: la calibración no respalda automatizar.
+- [x] Impedir aceptación automática ante contradicciones, variantes ambiguas,
+  relaciones incompletas, ausencia de evidencia o alternativas casi empatadas.
 - [ ] Integrar la solución en `make predict`; por ahora ese objetivo sigue usando
   el baseline. Debe generar las 155 predicciones ciegas sin pasos manuales.
 - [ ] Validar el CSV final con el validador oficial y comprobaciones adicionales:
   códigos existentes, tres códigos distintos y top-1 como primer candidato.
-- [ ] Completar `DECISIONS.md` (máximo dos páginas) y actualizar `EVAL.md` al estado
-  final, incluyendo resultados, experimentos y diez fallos.
+- [x] Escribir `DECISIONS.md` y actualizar `EVAL.md` con confianza, decisiones,
+  experimentos y limitaciones. Revisar su estado final al integrar ejecución ciega.
 - [ ] Comprobar ejecución desde una copia limpia, tiempo y gasto del proceso ciego.
   La evaluación local de esta etapa tardó 24.73 segundos; eso no es todavía una
   medición de la futura ejecución ciega.
 - [ ] Preparar ZIP incluyendo `.git`, siguiendo las instrucciones de devolución.
 
 ## Hallazgos y preguntas para revisar detenidamente
+
+### Confianza y decisión: hallazgo de esta etapa
+
+Se implementó `solution/decision.py`. Usa score, margen contra el segundo y
+compatibilidad, y estima confianza con aciertos por grupos de evidencia. No
+convierte similitud en probabilidad. Calibración solo sobre desarrollo, con
+selección por cuatro folds agrupados; el ranking permanece congelado. La antigua
+validación de 59 casos ya fue inspeccionada y no se presenta como un test nuevo.
+
+La cohorte fuerte tiene 37/43 grupos correctos, confianza suavizada 84.4% y límite
+inferior Wilson 72.7%. Ningún umbral protegido 0.80/0.85/0.90/0.95 habilitó
+aceptaciones. Se conserva review general. Una referencia que ignora incertidumbre
+y usa confianza central >=0.80 aceptaría 44 casos, con seis errores y utilidad
++0.1914, pero no tiene respaldo suficiente en el límite inferior de precisión.
+La política seleccionada obtiene +0.1109 en validación agrupada de desarrollo y
++0.1093 en la antigua validación; revisión 100%. No confundir ausencia de errores
+automáticos con precisión 100%: sin aceptaciones, esa precisión no es estimable.
+
+Pasaron las 79 pruebas. El modelo guardado reproduce las 233 confianzas y
+decisiones. `DECISIONS.md` documenta el razonamiento, mejoras rechazadas, uso del
+experto y trabajo futuro. Al integrar predicción, comprobar que calibrador y
+ranking corresponden a la misma configuración (firma guardada en el modelo).
+
+Prioridad para la revisión final: estudiar los seis errores automáticos **simulados**
+de `evaluation/decision_diagnostic_errors.csv`. No suceden bajo la política actual.
+El siguiente paso necesario sigue siendo integrar la ejecución ciega y la entrega.
 
 ### 1. Códigos duplicados y coherencia del catálogo
 

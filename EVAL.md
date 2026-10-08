@@ -1,9 +1,10 @@
 # Evaluación — recuperación y ranking
 
-Estado de esta etapa: recuperación y ranking implementados; aceptación automática
-y calibración pendientes. Todas las predicciones de desarrollo usan `review` y
-confianza `0.0`, como marcador explícito de que aún no está calibrada. El score de
-ranking no es una probabilidad. `make predict` sigue ejecutando el baseline hasta
+Estado actual: recuperación, ranking y confianza por grupos de evidencia
+implementados. La política seleccionada conserva `review` porque ningún umbral
+superó los requisitos de incertidumbre y soporte. En la etapa original de ranking
+la confianza era `0.0`; ahora se exporta una estimación empírica suavizada. El score
+de ranking no es una probabilidad. `make predict` sigue ejecutando el baseline hasta
 la etapa de integración final; esta no es todavía la entrega ciega.
 
 ## 1. Resultados y separación de componentes
@@ -88,6 +89,86 @@ incluso camiones. Esto puede reflejar una regla del dominio o etiquetas discutib
 no se corrigieron etiquetas ni se introdujo ese código como fallback para elevar
 la métrica. Es una pregunta prioritaria para el experto de dominio.
 
+### Confianza y política de decisión
+
+Se congeló el ranking E8. La calibración usa solo los 174 casos de desarrollo;
+los 59 casos reservados no se usan para ajustarla ni seleccionar umbrales. Para
+seleccionar la política se ejecutan cuatro folds agrupados por descripción + año
+(semilla 17): cada caso recibe confianza de un calibrador que no vio su grupo.
+Esto es validación fuera de fold **del calibrador**. Los pesos del ranking ya
+fueron seleccionados con ese desarrollo: no es validación anidada del sistema
+entero. Además, los 59 casos ya se habían inspeccionado en la etapa anterior;
+su comparación secundaria no se presenta como un nuevo test intacto.
+
+Antes de observar resultados de esta etapa se fijaron tres grupos de evidencia:
+
+- Bloqueado: contradicciones, relaciones incompletas, catálogo ambiguo, descripción
+  no informativa, falta de segundo candidato, similitud TF-IDF nula, año no
+  confirmado, ningún otro atributo confirmado, score <0.55 o margen <0.03.
+- Fuerte: sin bloqueos, score >=0.75 y margen contra el segundo >=0.08.
+- Moderado: sin bloqueos, pero sin cumplir ambos requisitos del grupo fuerte.
+
+La confianza es `(grupos correctos + 1) / (grupos observados + 2)`, con suavizado
+Beta(1,1). Un grupo repetido cuenta una vez por cohorte; si alguna de sus filas
+falla, se cuenta como fallo del grupo. Así las repeticiones no inflan soporte.
+No es similitud ni una probabilidad individual garantizada. Un grupo no observado
+recibe prior 0.5, soporte cero y revisión obligatoria.
+
+| Cohorte, calibrador final sobre desarrollo | Grupos correctos / total | Confianza | Límite inferior Wilson 95% |
+|---|---:|---:|---:|
+| Bloqueado | 40/87 | 46.1% | 35.9% |
+| Moderado | 29/42 | 68.2% | 54.0% |
+| Fuerte | 37/43 | 84.4% | 72.7% |
+
+Para aceptar se requieren al menos 20 grupos de calibración y que el **límite
+inferior**, no solo la estimación central, supere el umbral. La utilidad esperada
+de aceptar es `4p−3`; la revisión puede valer hasta 0.15. Superar esa alternativa
+requiere `p>0.7875`. Elegimos 0.80 como mínimo conservador y comparamos 0.80,
+0.85, 0.90 y 0.95 sin buscar cortes específicos para consultas individuales.
+
+Para seleccionar una política además exigimos 20 grupos distintos aceptados en
+validación agrupada, precisión con límite inferior >=0.80, utilidad mayor que
+revisar todo y ningún fold con utilidad inferior a esa referencia. Empates
+favorecen menor automatización. Ningún umbral cumplió las condiciones.
+
+| Política protegida, validación agrupada de desarrollo (174) | Aceptados | Precisión auto | Revisión | Top-3 recall | Utilidad |
+|---|---:|---:|---:|---:|---:|
+| Review general, seleccionado | 0 | No estimable | 100% | 80.5% | +0.1109 |
+| Umbral 0.80, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
+| Umbral 0.85, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
+| Umbral 0.90, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
+| Umbral 0.95, con soporte y Wilson | 0 | No estimable | 100% | 80.5% | +0.1109 |
+| Baseline original, review general | 0 | No estimable | 100% | 43.7% | +0.0374 |
+
+También medimos referencias diagnósticas que conservan bloqueos y mínimo de
+soporte pero **ignoran el intervalo** y confían solo en la estimación central:
+
+| Referencia diagnóstica, no desplegada | Aceptados / errores | Precisión auto | Revisión | Top-3 recall | Utilidad |
+|---|---:|---:|---:|---:|---:|
+| Confianza central >=0.80 | 44 / 6 | 86.4% | 74.7% | 80.5% | +0.1914 |
+| Confianza central >=0.85 | 25 / 5 | 80.0% | 85.6% | 80.5% | +0.1216 |
+| Confianza central >=0.90 | 0 / 0 | No estimable | 100% | 80.5% | +0.1109 |
+| Confianza central >=0.95 | 0 / 0 | No estimable | 100% | 80.5% | +0.1109 |
+
+**No afirmamos que review maximice la utilidad observada sin restricciones.** La
+referencia 0.80 obtiene una media mayor, pero su precisión agrupada tiene límite
+inferior 72.7%, insuficiente frente al mínimo de negocio conservador. La de 0.85
+es inestable y su límite inferior cae a 60.9%. No se habilitó automatización para
+perseguir esos números con una muestra pequeña. Los seis errores de la primera
+referencia quedan en `evaluation/decision_diagnostic_errors.csv`; no son errores
+automáticos de la política desplegada, que conserva revisión.
+
+En los 59 casos previamente reservados, la política seleccionada mantiene utilidad
++0.1093, top-3 79.7% y revisión 100%; el baseline obtiene +0.0347 y top-3 42.4%.
+El top-3 no cambia al cambiar decisiones: los candidatos son los mismos.
+
+Limitaciones: tres cohortes amplias no capturan diferencias por segmento; los
+límites Wilson suponen grupos aproximadamente independientes y no protegen ante
+cambio de distribución o errores sistemáticos de etiquetas. El ranking tuvo ajuste
+previo sobre desarrollo. La confianza final de desarrollo es interna a calibración;
+la evidencia para escoger el umbral es la evaluación fuera de fold. Hacen falta
+más etiquetas verificadas, especialmente comerciales, para habilitar aceptación.
+
 ## 2. Registro de experimentos
 
 Todas las decisiones se tomaron con los **174 casos de desarrollo**, priorizando
@@ -113,6 +194,12 @@ La configuración final es E8. La mejora incremental de marca/submodelo es peque
 (un caso); no se interpreta como evidencia de una calibración sólida. Las
 configuraciones rechazadas siguen reproducibles en el evaluador, pero no están
 activas por defecto.
+
+Experimentos de decisión: D0, tres cohortes fijas y confianza suavizada; D1–D4,
+umbrales protegidos 0.80/0.85/0.90/0.95, sin evidencia para automatizar; D5–D8,
+referencias de estimación central sin Wilson, solo diagnósticas y rechazadas para
+producción. Se conserva review general. Los conteos y métricas exactos están en
+`evaluation/decision_thresholds.csv` y `evaluation/decision_metrics.json`.
 
 ## 3. Diez fallos concretos de validación
 
@@ -140,14 +227,16 @@ etiquetas ni hechos confirmados por un experto.
 python -m unittest discover -s tests -v
 python -m solution.evaluate --phase develop
 python -m solution.evaluate --phase validate
+python -m solution.evaluate_decision
 python score.py --predictions dev_predictions.csv --labels data/queries_labeled.csv
 python submission_check.py --predictions dev_predictions.csv --queries data/queries_labeled.csv
 ```
 
-También se añadieron `make evaluate` y `make test`. El baseline original se
+También se añadieron `make evaluate`, `make evaluate-decision` y `make test`. El baseline original se
 conserva intacto. Recuperación/ranking no usan APIs ni gasto de LLM.
 
-Las 56 pruebas pasaron. Se reprodujo la fase de validación (incluyendo carga del
+En la etapa de ranking pasaron 56 pruebas; con decisión hay 79 pruebas y todas
+pasaron. Se reprodujo la fase de validación de ranking (incluyendo carga del
 catálogo, índices y evaluación de los 233 casos) en 24.73 segundos en esta máquina.
 Esto es tiempo de evaluación local, no una medición del futuro proceso ciego.
 Se verificó igualdad de las predicciones del baseline frente a su script original,

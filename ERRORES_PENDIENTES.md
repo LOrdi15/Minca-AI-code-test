@@ -18,6 +18,30 @@ una nueva estrategia de evaluación antes de atribuirle generalización independ
 
 ## Fichas de errores
 
+### Seguimiento especial: errores de aceptación automática simulada
+
+En la etapa de confianza se comparó, solo como diagnóstico, aceptar con estimación
+central >=0.80 sin comprobar el intervalo Wilson. En validación agrupada de los
+174 casos de desarrollo aceptaría 44 filas y cometería estos seis errores.
+**La política seleccionada mantiene revisión: ninguno se acepta automáticamente.**
+Los detalles numéricos están en `evaluation/decision_diagnostic_errors.csv` y las
+fichas originales por query_id permanecen abajo, sin sobrescribirlas.
+
+| Consulta | Esperado | Devuelto | Qué debemos investigar al cierre |
+|---|---|---|---|
+| q0014 | Z0000M | S0008A | PLATAFORMA de dos ejes frente a etiqueta CAJA CERRADA. Confirmar si existe una regla genérica de negocio; año y tipo compatibles no resuelven la semántica de la etiqueta. |
+| q0015 | Z0000M | S0008A | Mismo patrón de plataforma/caja, con otro año. No contar el parecido de casos como prueba de que la confianza individual sea fiable. |
+| q0074 | G00001 | I0007V | WRANGLER SAHARA: esperado UNLIMITED, cuatro puertas; devuelto toldo duro, dos puertas. La entrada no identifica esas diferencias con suficiente claridad. |
+| q0093 | Z0000M | W000CD | VOLTEO DINA: el candidato es un camión de volteo y la etiqueta describe caja cerrada. Preguntar por reglas de catálogo genérico o discrepancias de etiquetado. |
+| q0134 | N0001W | U0008Z | CASCADIA con DD13: esperado NEW CASCADIA EURO V FULLER 18VEL, devuelto CASCADIA 116. Investigar configuración y el dato CASCADIA 125 de la submarca; la coincidencia de marca no distingue la variante. |
+| q0180 | G0003R | K000B7 | QX56 AWD: opciones muy similares; esperado especifica siete velocidades y ocho ocupantes. Pedir atributos de versión y verificar qué diferencia los códigos de catálogo. |
+
+El grupo fuerte del calibrador tiene confianza suavizada 84.4%, pero límite
+inferior 72.7%. Este contraste, y los seis casos anteriores, son evidencia para
+conservar review mientras no haya soporte suficiente. No afirmar que review
+maximiza la utilidad observada: es la opción elegida bajo los requisitos de
+incertidumbre y respaldo definidos. Revisar primero estos casos en la sesión final.
+
 ### q0005 — validation — CAMION
 
 **Consulta original:** FORD F 700 GASOLINA 28000 LBS CHASIS CABIN

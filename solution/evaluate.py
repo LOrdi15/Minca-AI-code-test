@@ -3,7 +3,8 @@
     python -m solution.evaluate --phase develop
     python -m solution.evaluate --phase validate
 
-No acceptance policy is calibrated at this stage: all predictions use review.
+This command measures ranking and emits review-only, uncalibrated predictions.
+Run solution.evaluate_decision afterward to calibrate and compare decisions.
 """
 from __future__ import annotations
 
