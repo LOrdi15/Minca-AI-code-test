@@ -1,5 +1,14 @@
 # Memoria de trabajo y temas para revisar al terminar
 
+Auditoría de todo review: `evaluation/confidence_audit/REPORT.md`. No es un fallo
+de pipeline: threshold null y ningún límite inferior de cohorte supera 0.80.
+Central 0.80 mejora utilidad observada, con 44 aceptaciones/6 errores desarrollo
+OOF y 9/9 correctas en validación anterior; la ganancia en desarrollo tiene
+intervalo 95% que incluye pérdidas. Se mantiene review por los criterios previos,
+reconociendo la ganancia potencial sacrificada. Futura investigación: confianza
+con más evidencia/granularidad y datos nuevos; no buscar excepciones por los seis
+errores conocidos. Distribución actual 117 blocked, 63 moderate, 53 strong.
+
 Última reevaluación: 233 consultas (no 223), baseline reproducido y comparado con
 el pipeline. Resultados y diez errores con evidencia actual en
 `evaluation/reassessment/REPORT.md` y `ten_errors.csv`. R1 tokeniza 2.0L completo:

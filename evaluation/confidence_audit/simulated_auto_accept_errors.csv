@@ -1,0 +1,12 @@
+query_id,subset,family,threshold,expected_code,top1_code,top3_codes,correct,utility_delta_vs_review,confidence,decision,reason,bucket,calibration_groups,precision_lower_bound
+q0014,development_oof,point_estimate_diagnostic,0.8,Z0000M,S0008A,S0008A|U0007I|D0006V,False,-2.95,0.8709677419354839,auto_accept,diagnostic_point_estimate_only,strong,29,0.7361455275293085
+q0015,development_oof,point_estimate_diagnostic,0.8,Z0000M,S0008A,S0008A|U0007I|D0006V,False,-2.95,0.8529411764705882,auto_accept,diagnostic_point_estimate_only,strong,32,0.7193135021517204
+q0074,development_oof,point_estimate_diagnostic,0.8,G00001,I0007V,I0007V|G00001|M0004C,False,-3.15,0.8333333333333334,auto_accept,diagnostic_point_estimate_only,strong,34,0.6987161182594804
+q0093,development_oof,point_estimate_diagnostic,0.8,Z0000M,W000CD,W000CD|B0001Z|Y000DW,False,-2.95,0.8709677419354839,auto_accept,diagnostic_point_estimate_only,strong,29,0.7361455275293085
+q0134,development_oof,point_estimate_diagnostic,0.8,N0001W,U0008Z,U0008Z|N0001W|H0001S,False,-3.15,0.8709677419354839,auto_accept,diagnostic_point_estimate_only,strong,29,0.7361455275293085
+q0180,development_oof,point_estimate_diagnostic,0.8,G0003R,K000B7,K000B7|G0003R|F0003D,False,-3.15,0.8529411764705882,auto_accept,diagnostic_point_estimate_only,strong,32,0.7193135021517204
+q0014,development_oof,point_estimate_diagnostic,0.85,Z0000M,S0008A,S0008A|U0007I|D0006V,False,-2.95,0.8709677419354839,auto_accept,diagnostic_point_estimate_only,strong,29,0.7361455275293085
+q0015,development_oof,point_estimate_diagnostic,0.85,Z0000M,S0008A,S0008A|U0007I|D0006V,False,-2.95,0.8529411764705882,auto_accept,diagnostic_point_estimate_only,strong,32,0.7193135021517204
+q0093,development_oof,point_estimate_diagnostic,0.85,Z0000M,W000CD,W000CD|B0001Z|Y000DW,False,-2.95,0.8709677419354839,auto_accept,diagnostic_point_estimate_only,strong,29,0.7361455275293085
+q0134,development_oof,point_estimate_diagnostic,0.85,N0001W,U0008Z,U0008Z|N0001W|H0001S,False,-3.15,0.8709677419354839,auto_accept,diagnostic_point_estimate_only,strong,29,0.7361455275293085
+q0180,development_oof,point_estimate_diagnostic,0.85,G0003R,K000B7,K000B7|G0003R|F0003D,False,-3.15,0.8529411764705882,auto_accept,diagnostic_point_estimate_only,strong,32,0.7193135021517204

@@ -1,5 +1,13 @@
 # Evaluación — recuperación y ranking
 
+Auditoría adicional de confianza: [comparación de umbrales](evaluation/confidence_audit/REPORT.md).
+53 de 233 consultas sí tienen confidence 0.8444; ninguna cohorte tiene límite
+inferior Wilson >=0.80. Central 0.80 es la mejor simulación por utilidad observada
+(+0.191379 desarrollo OOF, +0.238983 validación anterior), pero su intervalo de
+ganancia en desarrollo incluye pérdidas. Se conserva la política protegida de
+review y se documenta su costo de oportunidad; no se presenta como el máximo
+promedio observado. Sin usar blind ni modificar el modelo. Suite: 95 pruebas.
+
 Reevaluación más reciente: [informe y diez errores](evaluation/reassessment/REPORT.md).
 Se reprodujeron baseline y pipeline sobre 233 consultas: 142 top-1, 187 top-3,
 204 recuperaciones entre 50, utilidad +0.110515. Precisión auto-accept no estimable

@@ -1,0 +1,18 @@
+{
+  "thresholds": [
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "families": [
+    "review_all",
+    "protected_wilson",
+    "point_estimate_diagnostic"
+  ],
+  "development": "174 rows, grouped 4-fold out-of-fold calibration, seed 17",
+  "validation": "59 previously inspected cases; development-only calibrator; never used for selection",
+  "selection": "Choose the highest development OOF observed utility only for diagnostic comparison; assess original safety requirements and paired grouped utility uncertainty.",
+  "uncertainty": "20000 paired group bootstrap samples; 95% and Bonferroni-adjusted intervals for four point thresholds. Descriptive evidence, not a fresh nested evaluation.",
+  "limitations": "Ranking already selected using development labels. Holdout already inspected. Bootstrap ignores calibrator refit/threshold-selection uncertainty. No blind data read."
+}

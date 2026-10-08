@@ -1,0 +1,17 @@
+{
+  "tests_passed": 95,
+  "test_seconds": 32.697,
+  "blind_used_for_audit": false,
+  "production_components_unchanged": true,
+  "sha256": {
+    "solution/decision.py": "b5f20263695e16c11e09d7e9a63a87cd3d0716bdc33effa6ca964f97192135ff",
+    "solution/decision_config.json": "19f6af3fcedc02a2af2ff587bf330ba509ae2a668d9df697f8d47c05308efe61",
+    "solution/predict.py": "9413b3ec7e51ba3ee788e7f944ddf7b88d7d3f040398b99fb21172611c353ba7",
+    "solution/ranking.py": "0675ca990c149848ec62ea90a22b4a0ddc28a0ab162bd9b8d86c075fffc68d59",
+    "solution/retrieval.py": "feb72dac4d8202cdb1ccbd51cbd85c89d7e71b47741c4c2b4d2949c0851d0bd3",
+    "score.py": "fa9cfaaf232720b21963543b3f40e150d96d2bca864574ec2a4d077909d89057",
+    "submission_check.py": "1e879cc73d0f37ed19653ea8d18e2ba3b010097405b78b1f92bfd5c1486130e4"
+  },
+  "labeled_score": "OVERALL  (n=233)\n  mean utility per row     +0.1105   <- headline\n  top-1 accuracy            60.9%\n  top-3 recall              80.3%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   80.3%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -0.5622\n  if you reviewed every row        +0.1105\n",
+  "labeled_check": "SUBMISSION VALID\n  rows                  233\n  decisions             {'auto_accept': 0, 'review': 233}\n  distinct confidences  3\n"
+}
