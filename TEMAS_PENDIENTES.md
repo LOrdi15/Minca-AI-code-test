@@ -4,6 +4,13 @@ Este archivo conserva los temas de la conversación y los hallazgos del proyecto
 Se actualizará al cerrar cada etapa. Registrar una posible mejora no significa
 implementarla: primero se prioriza la entrega funcional, medible y explicable.
 
+**Prioridad especial del usuario: conservar los errores con detalle para revisarlos
+al terminar.** `ERRORES_PENDIENTES.md` contiene las 91 fichas de fallos top-1 de la
+etapa actual: entrada original, etiqueta, top-3, etapa del fallo, variantes y años,
+conflictos, contribuciones del score e investigación propuesta. De esos casos,
+24 pertenecen a validación. Los hechos se separan de las hipótesis; no se corrigen
+etiquetas por suposición. Actualizar el seguimiento sin borrar diagnósticos previos.
+
 ## Contexto y acuerdos
 
 - Plazo de trabajo acordado: tres horas; el reto original permite cinco horas.
