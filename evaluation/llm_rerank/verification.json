@@ -1,0 +1,16 @@
+{
+  "tests_passed": 103,
+  "full_suite_seconds": 37.241,
+  "targeted_experiment_tests_passed": 8,
+  "blind_pipeline_seconds": 16.7140378,
+  "blind_inference_seconds": 1.2765776,
+  "blind_llm_calls": 0,
+  "blind_fallback_rows": 0,
+  "production_source_unchanged": true,
+  "production_blind_sha256": "304d5591fa54d22f5eda57e05a2da198ad3ccdaad286994d2815eaa5bb4e5bc9",
+  "production_csv_byte_identical": true,
+  "validation_local_score": "OVERALL  (n=59)\n  mean utility per row     +0.1093   <- headline\n  top-1 accuracy            59.3%\n  top-3 recall              79.7%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   79.7%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -0.6271\n  if you reviewed every row        +0.1093\n",
+  "validation_fallback_score": "OVERALL  (n=59)\n  mean utility per row     +0.1093   <- headline\n  top-1 accuracy            59.3%\n  top-3 recall              79.7%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   79.7%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -0.6271\n  if you reviewed every row        +0.1093\n",
+  "validation_check": "SUBMISSION VALID\n  rows                  59\n  decisions             {'auto_accept': 0, 'review': 59}\n  distinct confidences  1\n  note: your confidence column is nearly constant. That is a legitimate choice,\n        but be aware it is also the signature of an uncalibrated system.\n",
+  "blind_check": "SUBMISSION VALID\n  rows                  155\n  decisions             {'auto_accept': 0, 'review': 155}\n  distinct confidences  3\n"
+}

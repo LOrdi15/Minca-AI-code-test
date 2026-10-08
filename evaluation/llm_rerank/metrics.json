@@ -1,0 +1,45 @@
+{
+  "local": {
+    "n": 59,
+    "accuracy_top1": 0.5932203389830508,
+    "recall_top3": 0.7966101694915254,
+    "mean_utility": 0.10932203389830507,
+    "auto_accept_count": 0,
+    "auto_accept_precision": null
+  },
+  "llm_with_fallbacks": {
+    "n": 59,
+    "accuracy_top1": 0.5932203389830508,
+    "recall_top3": 0.7966101694915254,
+    "mean_utility": 0.10932203389830507,
+    "auto_accept_count": 0,
+    "auto_accept_precision": null
+  },
+  "eligible": 38,
+  "calls": 1,
+  "successes": 0,
+  "abstentions": 0,
+  "errors_or_pending": 1,
+  "estimated_cost_usd_from_reported_usage": 0,
+  "unknown_usage_calls": 1,
+  "conservative_budget_charge_usd": 0.0039368,
+  "sequential_api_seconds": 1.5407881000028283,
+  "improved_top3_queries": [],
+  "regressed_top3_queries": [],
+  "paired_utility": {
+    "delta_mean_utility": 0.0,
+    "group_bootstrap_95_interval": [
+      0.0,
+      0.0
+    ],
+    "groups": 58,
+    "repetitions": 5000,
+    "seed": 20261007
+  },
+  "complete": false,
+  "clear_observed_improvement": false,
+  "outcome": "inconclusive_incomplete_api_run",
+  "production_modified": false,
+  "blind_used": false,
+  "limits": "Single frozen prompt/model. Previously inspected validation. No new independent test or LLM confidence calibration."
+}

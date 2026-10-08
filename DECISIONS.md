@@ -19,8 +19,12 @@ empeoraron desarrollo y se desactivaron. Los conflictos de tipo siguen visibles
 para revisión. Aumentar la penalización del año no dio beneficio. Los experimentos,
 incluidos los fallidos, están en `EVAL.md`.
 
-No incorporamos un LLM: no identificamos todavía un beneficio medido que justifique
-añadir costo, latencia e integración. Tampoco añadimos el código recurrente
+No incorporamos un LLM. Probamos un reranker aislado con diez candidatos y 38
+consultas ambiguas de validación, tras autorizar el envío de datos. La primera
+llamada respondió HTTP 429; cero respuestas válidas. La prueba es inconclusa,
+no evidencia de igualdad de calidad. Se detuvo sin reintentos y se conservó el
+registro; no existe mejora medida que justifique dependencia de API en la entrega.
+Tampoco añadimos el código recurrente
 `Z0000M` como fallback para mejorar artificialmente el score; su uso requiere
 explicación de dominio.
 
@@ -45,6 +49,10 @@ intervalo y usar solo confianza >=0.80 daría utilidad +0.1914, pero seis errore
 en 44 aceptaciones; ese resultado no respalda todavía automatización conservadora.
 Review obtiene +0.1109 en desarrollo agrupado y +0.1093 en los 59 casos reservados,
 frente a +0.0347 del baseline en estos últimos.
+
+La auditoría adicional confirmó que central 0.80 maximiza utilidad observada y
+acierta 9/9 aceptaciones en validación, pero el intervalo de ganancia en desarrollo
+incluye pérdidas. Se conserva review reconociendo esa oportunidad sacrificada.
 
 La validación anterior ya fue inspeccionada. El fuera de fold valida calibración,
 no todo el proceso de selección del ranking. Las cohortes son amplias y Wilson

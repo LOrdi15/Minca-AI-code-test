@@ -1,5 +1,10 @@
 # Ejecutar la entrega
 
+La entrega conserva el modelo local: top-1 60.94%, top-3 80.26%, recall@50 87.55%
+y utilidad +0.110515 sobre las 233 consultas etiquetadas. Suite: 103 pruebas.
+El experimento OpenAI está aislado y no integra `make predict`; quedó inconcluso
+por HTTP 429. Su informe se reproduce sin red: `python -m experiments.llm_rerank`.
+
 Trabajar desde la raíz que contiene `Makefile`, `data/` y `solution/`.
 
 ```bash
@@ -53,3 +58,11 @@ La predicción ciega se validó: 155 filas, SUBMISSION VALID, unos 20.35 segundo
 totales y sin llamadas a LLM. GNU Make no estaba instalado localmente; se ejecutó
 el comando equivalente de Python. Las predicciones están ignoradas por Git y se
 regeneran con el comando anterior; incluir `predictions.csv` en el ZIP de entrega.
+
+## Paquete de entrega
+
+El ZIP preparado contiene archivos versionados, `predictions.csv` y `.git`.
+Se excluyen claves `.env`, entornos virtuales y cachés. Incluye datos confidenciales
+del reto: compartir únicamente por el canal de devolución indicado por quien lo
+envió. No publicar el ZIP. La documentación central es `EVAL.md`, `DECISIONS.md`
+y este archivo; los experimentos detallados se conservan bajo `evaluation/`.

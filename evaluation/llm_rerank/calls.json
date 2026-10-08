@@ -1,0 +1,14 @@
+{
+  "q0003": {
+    "request_sha256": "7cfc399d49f0cb2ddd3c4b12d7d7859673cb895e540c8f5230043c8844d1dc41",
+    "status": "error",
+    "budget_charge_usd": 0.0039368,
+    "actual_estimated_usd": null,
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "top3_codes": null,
+    "error_type": "RateLimitError",
+    "http_status": 429,
+    "seconds": 1.5407881000028283
+  }
+}

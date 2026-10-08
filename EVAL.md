@@ -1,5 +1,13 @@
 # Evaluación — recuperación y ranking
 
+Experimento L1, [reranking OpenAI aislado](evaluation/llm_rerank/REPORT.md): 38 consultas
+ambiguas planeadas de 59 de validación, diez candidatos de la recuperación actual;
+gpt-4.1-mini-2025-04-14. Primera llamada HTTP 429, cero respuestas válidas, sin
+reintentos. Ejecución **inconclusa**, excluida de producción. Top-3 79.66% y utilidad
++0.109322 de la salida experimental solo comprueban el fallback local, no calidad
+del LLM. Reserva conservadora USD 0.0039368; costo facturado no medido sin usage.
+Se conservan plan, requests, ledger y reporte; suite completa 103 pruebas aprobadas.
+
 Auditoría adicional de confianza: [comparación de umbrales](evaluation/confidence_audit/REPORT.md).
 53 de 233 consultas sí tienen confidence 0.8444; ninguna cohorte tiene límite
 inferior Wilson >=0.80. Central 0.80 es la mejor simulación por utilidad observada

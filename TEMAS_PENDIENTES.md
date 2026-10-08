@@ -1,5 +1,13 @@
 # Memoria de trabajo y temas para revisar al terminar
 
+OpenAI L1: permiso explícito para datos mínimos y clave existente. Prueba aislada
+en `experiments/llm_rerank.py`; 38 llamadas planeadas, solo primera intentada,
+HTTP 429, sin uso reportado ni resultados LLM válidos. No afirmar igualdad de
+calidad por la métrica del fallback. Estado inconcluso; excluido de producción
+para cerrar entrega. Causa concreta del 429 no registrada inicialmente; futura
+prueba debe resolver acceso/cuota y preservar ledger, sin reintentos automáticos.
+Protocolo, costos reservados y evidencia en `evaluation/llm_rerank/REPORT.md`.
+
 Auditoría de todo review: `evaluation/confidence_audit/REPORT.md`. No es un fallo
 de pipeline: threshold null y ningún límite inferior de cohorte supera 0.80.
 Central 0.80 mejora utilidad observada, con 44 aceptaciones/6 errores desarrollo
