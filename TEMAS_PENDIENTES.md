@@ -1,5 +1,14 @@
 # Memoria de trabajo y temas para revisar al terminar
 
+Última reevaluación: 233 consultas (no 223), baseline reproducido y comparado con
+el pipeline. Resultados y diez errores con evidencia actual en
+`evaluation/reassessment/REPORT.md` y `ten_errors.csv`. R1 tokeniza 2.0L completo:
+mejora tres top-1 y dos recuperaciones en desarrollo, cero mejora en utilidad o
+validación; rechazado, sin modificar producción. Guardar para revisión futura.
+La precisión de auto-accept es no estimable por cero aceptaciones; el 0% del
+scorer es una convención de salida. No interpretar esta reevaluación como un
+test independiente: la validación anterior ya había sido inspeccionada.
+
 Este archivo conserva los temas de la conversación y los hallazgos del proyecto.
 Se actualizará al cerrar cada etapa. Registrar una posible mejora no significa
 implementarla: primero se prioriza la entrega funcional, medible y explicable.

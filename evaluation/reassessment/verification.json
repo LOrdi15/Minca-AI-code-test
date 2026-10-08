@@ -1,0 +1,25 @@
+{
+  "baseline_cli_identical": true,
+  "tests_passed": 92,
+  "tests_seconds": 36.494,
+  "blind_inference_seconds": 1.2743529,
+  "blind_pipeline_total_seconds": 17.3786181,
+  "blind_fallback_rows": 0,
+  "blind_calibration_fallback": false,
+  "production_blind_sha256": "304d5591fa54d22f5eda57e05a2da198ad3ccdaad286994d2815eaa5bb4e5bc9",
+  "make_available": false,
+  "outputs": {
+    "evaluation\\reassessment\\current_predictions.csv": {
+      "rows": 233,
+      "official_check": "SUBMISSION VALID\n  rows                  233\n  decisions             {'auto_accept': 0, 'review': 233}\n  distinct confidences  3\n",
+      "extra_contract_checks": true
+    },
+    "predictions.csv": {
+      "rows": 155,
+      "official_check": "SUBMISSION VALID\n  rows                  155\n  decisions             {'auto_accept': 0, 'review': 155}\n  distinct confidences  3\n",
+      "extra_contract_checks": true
+    }
+  },
+  "current_official_score": "OVERALL  (n=233)\n  mean utility per row     +0.1105   <- headline\n  top-1 accuracy            60.9%\n  top-3 recall              80.3%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   80.3%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -0.5622\n  if you reviewed every row        +0.1105\n",
+  "baseline_official_score": "OVERALL  (n=233)\n  mean utility per row     +0.0367   <- headline\n  top-1 accuracy            30.9%\n  top-3 recall              43.3%\n  auto-accept rate           0.0%\n  auto-accept precision      0.0%   <- drives the -3.00 penalty\n  top-3 recall on reviews   43.3%\n\nReference policies, applied to your own candidate lists:\n  if you auto-accepted every row   -1.7639\n  if you reviewed every row        +0.0367\n"
+}

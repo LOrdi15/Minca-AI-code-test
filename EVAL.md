@@ -1,5 +1,13 @@
 # Evaluación — recuperación y ranking
 
+Reevaluación más reciente: [informe y diez errores](evaluation/reassessment/REPORT.md).
+Se reprodujeron baseline y pipeline sobre 233 consultas: 142 top-1, 187 top-3,
+204 recuperaciones entre 50, utilidad +0.110515. Precisión auto-accept no estimable
+(cero aceptaciones). R1 conserva motores con unidad en un token y sube top-1 a
+145 y recuperación a 206, pero mantiene top-3/utilidad y no mejora validación:
+se rechaza para producción. Métricas y cambios reales quedan en
+`evaluation/reassessment/metrics.json` y `R1_changed_queries.csv`. Suite: 92 pruebas.
+
 Estado actual: recuperación, ranking y confianza por grupos de evidencia
 implementados. La política seleccionada conserva `review` porque ningún umbral
 superó los requisitos de incertidumbre y soporte. En la etapa original de ranking

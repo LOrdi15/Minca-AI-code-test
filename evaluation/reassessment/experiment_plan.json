@@ -1,0 +1,9 @@
+{
+  "experiment": "R1_decimal_with_unit_token",
+  "hypothesis": "Keep decimal engines such as 2.0L in one word token instead of 2 and 0L.",
+  "token_pattern": "(?u)\\b[A-Z0-9]+(?:\\.[0-9]+[A-Z0-9]*)*\\b",
+  "fixed_parameters": "Existing ranking weights, character weight, normalization and catalog.",
+  "promotion_rule": "Positive development paired-group 95% lower bound and positive old-validation utility delta; recalibrate before any deployment.",
+  "limitations": "Development informed earlier selection; validation already inspected. No new independent labels.",
+  "experimental_decision": "All review; saved confidence model is not transferable to changed retrieval."
+}
